@@ -10,7 +10,7 @@ SITE = {
     "pinterest": "https://www.pinterest.com/soieetor/",
     "pinterest_label": "pinterest.com/soieetor",
     # Paste the content value of Pinterest's claim meta tag here (Settings > Claimed accounts > Websites)
-    "pinterest_verify": "",
+    "pinterest_verify": "befd5a5bd7eca69fc2921fe79cef2cc9",
 }
 
 DISCLOSURE_SHORT = ("This article contains affiliate links. If you buy through them, Soie et Or may earn a small "
