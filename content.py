@@ -10,7 +10,7 @@ SITE = {
     "pinterest": "https://www.pinterest.com/soieetor/",
     "pinterest_label": "pinterest.com/soieetor",
     # Paste the content value of Pinterest's claim meta tag here (Settings > Claimed accounts > Websites)
-    "pinterest_verify": "",
+    "pinterest_verify": "befd5a5bd7eca69fc2921fe79cef2cc9",
 }
 
 DISCLOSURE_SHORT = ("This article contains affiliate links. If you buy through them, Soie et Or may earn a small "
@@ -201,6 +201,7 @@ CONTACT = """
 <p>We are happy to hear from readers, brands and retailers.</p>
 <p>Email: <a href="mailto:{email}">{email}</a></p>
 <p>We read every message and aim to reply within a few working days. For collaborations, please include a short description of what you have in mind.</p>
+<p>Follow Soie et Or on Pinterest: <a href="{pinterest}" rel="noopener">{pinterest_label}</a></p>
 """
 
 DISCLOSURE = """
