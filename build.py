@@ -164,7 +164,7 @@ def shell(title, desc, body, depth, current="", canonical=""):
 </main>
 <footer><div class="wrap">
 <div class="foot-row"><a class="logo" href="{p}index.html">SOIE ET OR</a>
-<nav class="nav" aria-label="Footer"><a href="{p}affiliate-disclosure.html">Affiliate disclosure</a><a href="{p}privacy.html">Privacy</a><a href="{p}terms.html">Terms</a><a href="{p}contact.html">Contact</a></nav></div>
+<nav class="nav" aria-label="Footer"><a href="{p}affiliate-disclosure.html">Affiliate disclosure</a><a href="{p}privacy.html">Privacy</a><a href="{p}terms.html">Terms</a><a href="{p}contact.html">Contact</a><a href="{SITE['pinterest']}" rel="noopener">Pinterest</a></nav></div>
 <hr class="gold-rule">
 <p class="foot-note">Soie et Or is an independent editorial site. Some links are affiliate links: we may earn a commission when you buy, at no extra cost to you. Brand names belong to their owners; we are not affiliated with or endorsed by the brands we write about.</p>
 <p class="foot-note">&copy; 2026 Soie et Or &middot; {SITE['domain']}</p>

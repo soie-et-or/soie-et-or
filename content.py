@@ -201,6 +201,7 @@ CONTACT = """
 <p>We are happy to hear from readers, brands and retailers.</p>
 <p>Email: <a href="mailto:{email}">{email}</a></p>
 <p>We read every message and aim to reply within a few working days. For collaborations, please include a short description of what you have in mind.</p>
+<p>Follow Soie et Or on Pinterest: <a href="{pinterest}" rel="noopener">{pinterest_label}</a></p>
 """
 
 DISCLOSURE = """
