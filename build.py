@@ -186,10 +186,17 @@ def tile(word, cls="", img=None, depth=0):
                 f'loading="lazy" style="object-position:{pos}"></div>')
     return f'<div class="tile {cls}" aria-hidden="true"><span class="rule"></span><span class="word">{word}</span></div>'
 
+def card_img(a):
+    """Cards use the optional 'card' crop of an article's image when there is one."""
+    img = a.get("image")
+    if img and img.get("card"):
+        return {**img, "file": img["card"], "pos": img.get("card_pos", "center")}
+    return img
+
 def card(a, depth):
     p = rel(depth)
     return f"""<a class="card" href="{p}journal/{a['slug']}.html">
-{tile(a['category'], img=a.get('image'), depth=depth)}
+{tile(a['category'], img=card_img(a), depth=depth)}
 <span class="label">{a['category']} &middot; {a['read']}</span>
 <h3>{a['title']}</h3><p>{a['dek']}</p></a>"""
 
