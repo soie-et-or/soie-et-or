@@ -10,6 +10,9 @@ SITE = {
     "pinterest": "https://www.pinterest.com/soieetor/",
     "pinterest_label": "pinterest.com/soieetor",
     # Paste the content value of Pinterest's claim meta tag here (Settings > Claimed accounts > Websites)
+    # Homepage hero photo (file lives in images/)
+    "hero_image": {"file": "portrait-black-blazer.jpg", "pos": "center 30%",
+                   "alt": "Woman in a black tailored blazer, leather gloves, statement rings and a steel watch"},
     "pinterest_verify": "befd5a5bd7eca69fc2921fe79cef2cc9",
 }
 
@@ -25,6 +28,8 @@ ARTICLES = [
   "date": "20 October 2026",
   "read": "6 min",
   "tone": "camel",
+  "image": {"file": "cafe-le-progres.jpg", "pos": "center 75%",
+            "alt": "Cream Haussmann building with a red-awninged corner café in Paris"},
   "body": """
 <p>Parisian style has a reputation for looking effortless. The effort is real, but it goes into choosing, not into dressing. A Parisian wardrobe tends to be small, quiet in colour and very well edited. Almost everything works with almost everything else, so getting dressed takes two minutes.</p>
 <p>This is the ten-piece capsule we would build for autumn. The palette stays narrow on purpose: navy, black, ecru, camel and one deep accent. That restraint is what lets ten pieces turn into dozens of outfits.</p>
@@ -114,6 +119,8 @@ ARTICLES = [
   "date": "20 October 2026",
   "read": "5 min",
   "tone": "blush",
+  "image": {"file": "cafe-vrai-paris.jpg", "pos": "center 35%",
+            "alt": "Paris café terrace with a neon sign under a canopy of colourful flowers"},
   "body": """
 <p>If you shop for Parisian ready-to-wear, two names come up again and again: Sandro and IRO. They sit at a similar level and are often found on the same rails, yet their mood is quite different. Knowing which one fits you saves a lot of returns.</p>
 <h2>Sandro: polished and feminine</h2>
