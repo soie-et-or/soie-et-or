@@ -148,6 +148,9 @@ ARTICLES = [
   "date": "20 October 2026",
   "read": "4 min",
   "tone": "stone",
+  "image": {"file": "paris-eiffel-street-wide.jpg", "card": "paris-eiffel-street-card.jpg", "pos": "center 40%",
+            "card_pos": "center",
+            "alt": "Quiet Paris street in the 7th arrondissement at dusk, with the Eiffel Tower at the end"},
   "body": """
 <p>Quiet luxury became a buzzword, which is a little ironic for something meant to be quiet. Strip away the headlines and it describes a way of dressing that Parisian women have practised for a long time: buy fewer things, buy better things, and let them speak softly.</p>
 <h2>What it is</h2>
