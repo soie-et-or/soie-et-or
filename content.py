@@ -61,6 +61,9 @@ ARTICLES = [
   "date": "20 October 2026",
   "read": "5 min",
   "tone": "gold",
+  "image": {"file": "silk-gold-gloves-wide.jpg", "card": "silk-gold-gloves-card.jpg", "pos": "center 20%",
+            "card_pos": "center 30%",
+            "alt": "Woman in a white blouse and gold satin gloves, seated in a striped armchair"},
   "body": """
 <p>There is a particular kind of elegance in a woman wearing a cashmere sweater, old jeans and one serious gold ring. Nothing matches, nothing is trying, and yet the whole look reads as considered. That is everyday gold, and it is one of the easiest ways to make a simple wardrobe feel luxurious.</p>
 <h2>Start with one signature piece</h2>
@@ -145,6 +148,9 @@ ARTICLES = [
   "date": "20 October 2026",
   "read": "4 min",
   "tone": "stone",
+  "image": {"file": "paris-eiffel-street-wide.jpg", "card": "paris-eiffel-street-card.jpg", "pos": "center 40%",
+            "card_pos": "center",
+            "alt": "Quiet Paris street in the 7th arrondissement at dusk, with the Eiffel Tower at the end"},
   "body": """
 <p>Quiet luxury became a buzzword, which is a little ironic for something meant to be quiet. Strip away the headlines and it describes a way of dressing that Parisian women have practised for a long time: buy fewer things, buy better things, and let them speak softly.</p>
 <h2>What it is</h2>
