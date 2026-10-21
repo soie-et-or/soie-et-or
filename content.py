@@ -61,6 +61,9 @@ ARTICLES = [
   "date": "20 October 2026",
   "read": "5 min",
   "tone": "gold",
+  "image": {"file": "silk-gold-gloves-wide.jpg", "card": "silk-gold-gloves-card.jpg", "pos": "center 20%",
+            "card_pos": "center 30%",
+            "alt": "Woman in a white blouse and gold satin gloves, seated in a striped armchair"},
   "body": """
 <p>There is a particular kind of elegance in a woman wearing a cashmere sweater, old jeans and one serious gold ring. Nothing matches, nothing is trying, and yet the whole look reads as considered. That is everyday gold, and it is one of the easiest ways to make a simple wardrobe feel luxurious.</p>
 <h2>Start with one signature piece</h2>
