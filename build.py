@@ -11,6 +11,9 @@ GROUPS = {
                  "cats": ["Wardrobe", "Brands", "Style notes"]},
     "jewelry": {"label": "Jewelry", "title": "Jewelry", "dek": "Fine jewelry to wear every day.", "cats": ["Jewelry"]},
     "watches": {"label": "Watches", "title": "Watches", "dek": "Watches, new and pre-owned, and how to buy them well.", "cats": ["Watches"]},
+    "lingerie": {"label": "Lingerie", "title": "Lingerie", "dek": "French lingerie: silk, fine lace and the right fit.", "cats": ["Lingerie"]},
+    "boots": {"label": "Boots", "title": "Boots", "dek": "The boots a Parisian wardrobe needs, and how to make them last.", "cats": ["Boots"]},
+    "travel": {"label": "Travel", "title": "Chic travel", "dek": "Bags, outfits, sunglasses and caps for travelling light and well.", "cats": ["Travel"]},
 }
 def group_of(a):
     for k, g in GROUPS.items():
@@ -89,7 +92,8 @@ img{max-width:100%;display:block}
 /* pillars */
 .pillars{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
 .pillar{padding:36px clamp(20px,3vw,40px);border-right:1px solid var(--line);display:flex;flex-direction:column;gap:10px;text-decoration:none}
-.pillar:last-child{border-right:0}
+.pillar:nth-child(3n){border-right:0}
+.pillar:nth-child(-n+3){border-bottom:1px solid var(--line)}
 .pillar h3{font:400 28px/1.15 var(--display);color:var(--ink);margin:0}
 .pillar p{margin:0;color:var(--muted);font-size:15.5px}
 @media (max-width:820px){.pillars{grid-template-columns:1fr}.pillar{border-right:0;border-bottom:1px solid var(--line)}.pillar:last-child{border-bottom:0}}
@@ -159,16 +163,16 @@ def shell(title, desc, body, depth, current="", canonical=""):
 </head>
 <body>
 <header class="top"><div class="wrap">
-<nav class="nav" aria-label="Sections">{a('clothing.html','Clothing','clothing')}{a('jewelry.html','Jewelry','jewelry')}{a('watches.html','Watches','watches')}</nav>
+<nav class="nav" aria-label="Sections">{a('clothing.html','Clothing','clothing')}{a('lingerie.html','Lingerie','lingerie')}{a('boots.html','Boots','boots')}</nav>
 <a class="logo" href="{p}index.html" aria-label="Soie et Or, home">SOIE ET OR</a>
-<nav class="nav right" aria-label="More">{a('journal/index.html','Journal','journal')}{a('about.html','About','about')}</nav>
+<nav class="nav right" aria-label="More sections">{a('jewelry.html','Jewelry','jewelry')}{a('watches.html','Watches','watches')}{a('travel.html','Travel','travel')}</nav>
 </div></header>
 <main>
 {body}
 </main>
 <footer><div class="wrap">
 <div class="foot-row"><a class="logo" href="{p}index.html">SOIE ET OR</a>
-<nav class="nav" aria-label="Footer"><a href="{p}affiliate-disclosure.html">Affiliate disclosure</a><a href="{p}privacy.html">Privacy</a><a href="{p}terms.html">Terms</a><a href="{p}contact.html">Contact</a><a href="{SITE['pinterest']}" rel="noopener">Pinterest</a></nav></div>
+<nav class="nav" aria-label="Footer"><a href="{p}journal/index.html">Journal</a><a href="{p}about.html">About</a><a href="{p}affiliate-disclosure.html">Affiliate disclosure</a><a href="{p}privacy.html">Privacy</a><a href="{p}terms.html">Terms</a><a href="{p}contact.html">Contact</a><a href="{SITE['pinterest']}" rel="noopener">Pinterest</a></nav></div>
 <hr class="gold-rule">
 <p class="foot-note">Soie et Or is an independent editorial site. Some links are affiliate links: we may earn a commission when you buy, at no extra cost to you. Brand names belong to their owners; we are not affiliated with or endorsed by the brands we write about.</p>
 <p class="foot-note">&copy; 2026 Soie et Or &middot; {SITE['domain']}</p>
@@ -243,6 +247,9 @@ def build():
 <a class="pillar" href="clothing.html"><span class="label">Soie</span><h3>Clothing</h3><p>Parisian ready-to-wear from Sandro, IRO, Acne Studios, Marni and Miu Miu. Capsule wardrobes built to last.</p></a>
 <a class="pillar" href="jewelry.html"><span class="label">Or</span><h3>Jewelry</h3><p>Fine jewelry to wear every day, from houses like Pomellato and Chopard.</p></a>
 <a class="pillar" href="watches.html"><span class="label">Temps</span><h3>Watches</h3><p>Watches, new and pre-owned, with honest guidance on buying well.</p></a>
+<a class="pillar" href="lingerie.html"><span class="label">Dessous</span><h3>Lingerie</h3><p>French lingerie in silk and fine lace: the first layer of a good outfit.</p></a>
+<a class="pillar" href="boots.html"><span class="label">Bottes</span><h3>Boots</h3><p>Ankle, riding and heeled boots that see you through every winter.</p></a>
+<a class="pillar" href="travel.html"><span class="label">Voyage</span><h3>Chic travel</h3><p>One good bag, a few pieces that all combine, sunglasses and a cap.</p></a>
 </section>
 """
     write("index.html", shell(f"{SITE['name']} · Quiet Parisian style, in silk and gold",
@@ -282,7 +289,7 @@ def build():
     nf = head_block("404", "This page has slipped away", 'The link may be old or mistyped. <a href="/index.html">Back to the home page</a>.')
     write("404.html", shell(f"Page not found · {SITE['name']}", "Page not found", nf, 0, "", "404.html"))
 
-    urls = ["", "clothing.html", "jewelry.html", "watches.html", "journal/", "about.html", "contact.html",
+    urls = ["", "clothing.html", "lingerie.html", "boots.html", "jewelry.html", "watches.html", "travel.html", "journal/", "about.html", "contact.html",
             "affiliate-disclosure.html", "privacy.html", "terms.html"] + [f"journal/{a['slug']}.html" for a in ARTICLES]
     sm = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + \
          "\n".join(f"  <url><loc>{SITE['url']}/{u}</loc></url>" for u in urls) + "\n</urlset>\n"

@@ -198,11 +198,103 @@ ARTICLES = [
 <p>Cost per wear is a tool, not a rule. Some pieces are worth it for one perfect evening. The idea is not to stop enjoying fashion, but to spend with intention.</p>
 """
  },
+ {
+  "slug": "chic-travel-packing",
+  "title": "The Chic Carry-On: Packing for a Weekend in Paris",
+  "dek": "One good bag, a handful of pieces that all work together, and the accessories that make travel look effortless.",
+  "category": "Travel",
+  "date": "21 October 2026",
+  "read": "5 min",
+  "tone": "camel",
+  "body": """
+<p>The most elegant travellers are rarely the ones with the most luggage. They carry one good bag, a few pieces that all combine, and accessories that do the work of a whole outfit. Here is how to pack a weekend in Paris, or anywhere, the quiet way.</p>
+<h2>The bags</h2>
+<ul>
+<li><strong>A structured weekender.</strong> Leather or heavy canvas, with a shape that holds when it is half full. It should fit in the overhead bin and look just as good on a hotel luggage rack.</li>
+<li><strong>A soft tote for the day.</strong> Big enough for a scarf, sunglasses and a book. Leave the logo bags at home; a plain tote in black, tan or ecru goes with everything.</li>
+<li><strong>A small crossbody for the evening.</strong> Keys, phone, lipstick. Nothing more.</li>
+</ul>
+<h2>The outfits</h2>
+<p>Pack in one palette so everything mixes: navy, black, cream and camel, with one accent colour at most. Travel in your bulkiest pieces, the coat and the knit, so the bag stays light.</p>
+<ul>
+<li>A long coat that works over everything</li>
+<li>Straight jeans and one pair of fluid trousers</li>
+<li>A fine knit, a white shirt and a silk top</li>
+<li>One dress that goes from lunch to dinner</li>
+<li>Loafers for walking, and one slightly dressier pair</li>
+</ul>
+<h2>Sunglasses</h2>
+<p>The fastest way to look put together after a flight. Choose a shape that suits your face and that you will wear every day rather than a trend frame. Miu Miu is known for sunglasses with a playful, feminine edge; a classic black or tortoiseshell frame is the quiet alternative.</p>
+<h2>The cap</h2>
+<p>A cap is the travel accessory people forget, and it solves a lot: bad hair after a night train, bright sun in the south, a rainy morning in the city. Keep it plain, in wool, cashmere or cotton, in a neutral that matches your coat. Acne Studios makes caps and beanies in exactly that understated spirit.</p>
+<h2>The rule</h2>
+<p>If a piece only works with one other piece, leave it at home. Everything in the bag should earn its place twice.</p>
+"""
+ },
+ {
+  "slug": "french-lingerie-guide",
+  "title": "French Lingerie: The Quiet Art of Dressing Underneath",
+  "dek": "Silk, fine lace and the right fit. Why French women treat lingerie as the first layer of a good outfit.",
+  "category": "Lingerie",
+  "date": "21 October 2026",
+  "read": "5 min",
+  "tone": "blush",
+  "body": """
+<p>In France, lingerie is not reserved for special occasions. It is simply the first layer of getting dressed, chosen with the same care as a coat or a pair of shoes. Nobody else needs to see it. That is exactly the point.</p>
+<h2>Fit comes first</h2>
+<p>Beautiful lingerie that does not fit is never beautiful. Get measured properly, and measure again every year or two, because sizes change. A good fit makes everything you wear over it sit better, from a silk blouse to a fine knit.</p>
+<h2>Fabrics worth paying for</h2>
+<ul>
+<li><strong>Silk.</strong> Soft, breathable and quietly luxurious. A silk camisole works under a blazer as well as on its own.</li>
+<li><strong>Fine lace.</strong> Look for lace that lies flat and does not show through clothes.</li>
+<li><strong>Cotton and modal.</strong> For everyday comfort, in good quality, they are just as chic.</li>
+</ul>
+<h2>Colours that work under everything</h2>
+<p>Build the basics in shades close to your skin tone, plus black and ivory. Then add one or two sets in a colour you love simply because it makes you feel good.</p>
+<h2>Pieces that go beyond underwear</h2>
+<p>A silk slip dress, a lace-trimmed camisole or a fine bodysuit can be worn as part of an outfit. Under an oversized blazer, or with a lace hem peeking out beneath a knit, they add softness to tailoring. It is a very Parisian contrast.</p>
+<h2>Caring for it</h2>
+<ul>
+<li>Hand wash in cool water, or use a mesh bag on a delicate cycle.</li>
+<li>Never tumble dry silk or lace.</li>
+<li>Store bras flat or cup-in-cup so they keep their shape.</li>
+</ul>
+<p>Treated well, good lingerie lasts for years. In cost-per-wear terms it is one of the best investments in a wardrobe.</p>
+"""
+ },
+ {
+  "slug": "three-boots-parisian-wardrobe",
+  "title": "The Three Boots Every Parisian Wardrobe Needs",
+  "dek": "A flat ankle boot, a knee-high riding boot and one with a heel. Together they cover every autumn and winter day.",
+  "category": "Boots",
+  "date": "21 October 2026",
+  "read": "5 min",
+  "tone": "ink",
+  "body": """
+<p>Paris is a walking city, and from October to March its women walk in boots. Not dozens of pairs, just three good ones that together cover every occasion.</p>
+<h2>1. The flat ankle boot</h2>
+<p>A Chelsea or a simple zip ankle boot in black leather or dark brown suede. It is the boot you wear four days a week: with straight jeans, wide trousers, a midi skirt. Choose a slim sole and a clean toe so it looks as good at a dinner as on the street.</p>
+<h2>2. The knee-high riding boot</h2>
+<p>Flat or with a low heel, in smooth leather that fits the calf well. Worn with a knee-length skirt or a sweater dress, it is the most elegant winter outfit there is. With tucked-in jeans it turns casual and very French.</p>
+<h2>3. The boot with a heel</h2>
+<p>An ankle boot with a block or slim heel for evenings, offices and anything slightly dressed up. A pointed or almond toe looks sharpest under trousers.</p>
+<h2>And for something tougher</h2>
+<p>A lace-up combat boot adds edge to a feminine outfit: a silk skirt, a soft knit, chunky boots. Miu Miu and Acne Studios both do versions that balance tough and refined.</p>
+<h2>Making them last</h2>
+<ul>
+<li>Protect new leather and suede with a spray before the first rain.</li>
+<li>Use boot shapers or rolled magazines in tall boots so the shaft keeps its shape.</li>
+<li>Have a cobbler add protective rubber soles; it can add years.</li>
+<li>Let them dry slowly, away from the radiator.</li>
+</ul>
+<p>Three pairs, looked after well, will see you through many winters. That is the Parisian way of buying shoes.</p>
+"""
+ }
 ]
 
 ABOUT = """
 <p>Soie et Or means silk and gold. It is the shortest way we know to describe a certain kind of Parisian elegance: soft fabrics, a few precious things, and nothing that shouts.</p>
-<p>This site is an edit of quiet luxury. We write about Parisian ready-to-wear, fine jewelry and watches, and the art of building a small wardrobe that lasts. We cover labels such as Sandro, IRO, Acne Studios, Marni and Miu Miu, and fine jewelry and watches from houses like Pomellato, Cartier and Chopard, including pre-owned pieces.</p>
+<p>This site is an edit of quiet luxury. We write about Parisian ready-to-wear, French lingerie, boots, fine jewelry and watches, chic travel, and the art of building a small wardrobe that lasts. We cover labels such as Sandro, IRO, Acne Studios, Marni and Miu Miu, and fine jewelry and watches from houses like Pomellato, Cartier and Chopard, including pre-owned pieces.</p>
 <h2>How we choose</h2>
 <ul>
 <li>We favour quality, fit and longevity over trends.</li>
