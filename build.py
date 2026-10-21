@@ -102,6 +102,10 @@ img{max-width:100%;display:block}
 .crumb{text-decoration:none}
 .gold-rule{width:56px;height:1px;background:var(--gold);border:0;margin:0}
 .hero-tile{aspect-ratio:16/7;max-width:100%;margin-bottom:44px}
+.tile.photo{padding:0}
+.tile.photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.hero .tile.photo{min-height:640px}
+@media (max-width:820px){.hero .tile.photo{min-height:420px}.hero-tile.photo{aspect-ratio:4/3}}
 .disclose{font-size:14px;line-height:1.55;color:var(--muted);border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:12px 0;margin:0 0 34px}
 .prose{color:var(--body-ink)}
 .prose h2{font:400 30px/1.2 var(--display);color:var(--ink);margin:46px 0 12px;text-wrap:balance}
@@ -174,13 +178,18 @@ def shell(title, desc, body, depth, current="", canonical=""):
 """
     return fix_links(html, depth)
 
-def tile(word, cls=""):
+def tile(word, cls="", img=None, depth=0):
+    """A photo when one is set ({file, alt, pos}), otherwise the silk tile with an italic word."""
+    if img:
+        pos = img.get("pos", "center")
+        return (f'<div class="tile photo {cls}"><img src="{rel(depth)}assets/img/{img["file"]}" alt="{img["alt"]}" '
+                f'loading="lazy" style="object-position:{pos}"></div>')
     return f'<div class="tile {cls}" aria-hidden="true"><span class="rule"></span><span class="word">{word}</span></div>'
 
 def card(a, depth):
     p = rel(depth)
     return f"""<a class="card" href="{p}journal/{a['slug']}.html">
-{tile(a['category'])}
+{tile(a['category'], img=a.get('image'), depth=depth)}
 <span class="label">{a['category']} &middot; {a['read']}</span>
 <h3>{a['title']}</h3><p>{a['dek']}</p></a>"""
 
@@ -204,11 +213,14 @@ def build():
     if os.path.exists(OUT): shutil.rmtree(OUT)
     os.makedirs(os.path.join(OUT, "assets"))
     with open(os.path.join(OUT, "assets", "style.css"), "w") as f: f.write(CSS)
+    imgsrc = os.path.join(os.path.dirname(os.path.abspath(__file__)), "images")
+    if os.path.isdir(imgsrc):
+        shutil.copytree(imgsrc, os.path.join(OUT, "assets", "img"))
 
     lead, rest = ARTICLES[0], ARTICLES[1:]
     row = "\n".join(card(a, 0) for a in rest[:4])
     home = f"""<section class="hero">
-{tile('Soie')}
+{tile('Soie', img=SITE.get('hero_image'))}
 <div class="copy">
 <span class="kicker">The edit &middot; {lead['category']}</span>
 <h1>{lead['title']}</h1>
@@ -246,7 +258,7 @@ def build():
         more = "\n".join(card(o, 1) for o in others)
         body = f"""<article>
 {head_block(a['category'], a['title'], a['dek'], f"{a['date']} &middot; {a['read']} read", f"/{g}.html")}
-<div class="wrap">{tile(a['category'], 'hero-tile')}</div>
+<div class="wrap">{tile(a['category'], 'hero-tile', img=a.get('image'), depth=1)}</div>
 <div class="wrap narrow page-body prose">
 <p class="disclose">{DISCLOSURE_SHORT}</p>
 {a['body']}
