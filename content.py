@@ -194,7 +194,7 @@ ABOUT = """
 <h2>How we are funded</h2>
 <p>Some links on this site are affiliate links. When you buy through them, we may earn a commission from the retailer, at no extra cost to you. Retailers never pay to be featured and never see our articles before they are published. Read our full <a href="/affiliate-disclosure.html">affiliate disclosure</a>.</p>
 <h2>Who is behind Soie et Or</h2>
-<p>Soie et Or is curated by Stefanie, based in Rotterdam, the Netherlands. Every article, edit and pin on this site is chosen and written by her.</p>
+<p>Soie et Or is curated by Philippine, based in Rotterdam, the Netherlands. Every article, edit and pin on this site is chosen and written by her.</p>
 """
 
 CONTACT = """
@@ -226,7 +226,7 @@ PRIVACY = """
 <p class="meta">Last updated: {updated}</p>
 <p>This privacy policy explains what personal data Soie et Or collects when you visit {domain}, why, and what your rights are under the EU General Data Protection Regulation (GDPR).</p>
 <h2>Who is responsible</h2>
-<p>The data controller is Stefanie, publisher of Soie et Or, based in Rotterdam, the Netherlands. Contact: <a href="mailto:{email}">{email}</a>.</p>
+<p>The data controller is Philippine, publisher of Soie et Or, based in Rotterdam, the Netherlands. Contact: <a href="mailto:{email}">{email}</a>.</p>
 <h2>What we collect</h2>
 <ul>
 <li><strong>Server logs.</strong> Our hosting provider automatically processes technical data such as IP address, browser type and the pages you visit, to deliver the site and keep it secure. Legal basis: legitimate interest.</li>
