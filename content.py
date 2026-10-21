@@ -90,6 +90,8 @@ ARTICLES = [
   "date": "20 October 2026",
   "read": "6 min",
   "tone": "ink",
+  "image": {"file": "watch-pocket-bw-wide.jpg", "card": "watch-pocket-bw-card.jpg", "pos": "center",
+            "alt": "Black and white close-up of an open skeleton pocket watch with Roman numerals and a chain"},
   "body": """
 <p>Few watches suit the Parisian wardrobe better than a Cartier. The Tank, with its rectangular case, has been worn by the most stylish people of the last century and still looks modern with a white shirt. The Santos and the Panthère have their own followings. Buying pre-owned can bring these pieces within reach, but it pays to know what you are looking at.</p>
 <h2>1. Buy from a platform that authenticates</h2>
