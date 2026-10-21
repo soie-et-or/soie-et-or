@@ -178,6 +178,9 @@ ARTICLES = [
   "date": "20 October 2026",
   "read": "4 min",
   "tone": "camel",
+  "image": {"file": "leather-jacket-street-wide.jpg", "card": "leather-jacket-street-card.jpg", "pos": "center 30%",
+            "card_pos": "center",
+            "alt": "Black and white street photo of a woman in an oversized leather jacket and lace-trimmed skirt"},
   "body": """
 <p>Cost per wear is the price of a piece divided by the number of times you wear it. It is a simple idea, and it is the clearest way to judge whether a luxury purchase is indulgent or sensible.</p>
 <h2>An example</h2>
