@@ -110,7 +110,8 @@ img{max-width:100%;display:block}
 .tile.photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 .hero .tile.photo{min-height:640px}
 @media (max-width:820px){.hero .tile.photo{min-height:420px}.hero-tile.photo{aspect-ratio:4/3}}
-.disclose{font-size:14px;line-height:1.55;color:var(--muted);border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:12px 0;margin:0 0 34px}
+.disclose{font-size:12.5px;line-height:1.5;color:var(--muted);text-align:center;margin:-18px auto 28px;max-width:60ch}
+.disclose a{color:var(--muted)}
 .prose{color:var(--body-ink)}
 .prose h2{font:400 30px/1.2 var(--display);color:var(--ink);margin:46px 0 12px;text-wrap:balance}
 .prose p{margin:0 0 18px}
@@ -272,9 +273,9 @@ def build():
         more = "\n".join(card(o, 1) for o in others)
         body = f"""<article>
 {head_block(a['category'], a['title'], a['dek'], f"{a['date']} &middot; {a['read']} read", f"/{g}.html")}
+<div class="wrap narrow"><p class="disclose">{DISCLOSURE_SHORT}</p></div>
 <div class="wrap">{tile(a['category'], 'hero-tile', img=a.get('image'), depth=1)}</div>
 <div class="wrap narrow page-body prose">
-<p class="disclose">{DISCLOSURE_SHORT}</p>
 {a['body']}
 </div></article>
 <section class="wrap sec" style="border-top:1px solid var(--line)"><div class="sec-head"><h2>Keep reading</h2><a href="/journal/index.html">All articles</a></div><div class="grid">{more}</div></section>"""

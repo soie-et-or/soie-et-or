@@ -16,8 +16,8 @@ SITE = {
     "pinterest_verify": "befd5a5bd7eca69fc2921fe79cef2cc9",
 }
 
-DISCLOSURE_SHORT = ("This article contains affiliate links. If you buy through them, Soie et Or may earn a small "
-                    "commission at no extra cost to you. <a href=\"/affiliate-disclosure.html\">How this works</a>.")
+DISCLOSURE_SHORT = ('Some links are affiliate links; we may earn a small commission. '
+                    '<a href="/affiliate-disclosure.html">How this works</a>')
 
 ARTICLES = [
  {
