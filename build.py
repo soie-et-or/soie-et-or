@@ -1,6 +1,6 @@
 """Builds the static site for soie-et-or.com into ./site. Run: python3 build.py"""
 import os, re, shutil
-from content import SITE, ARTICLES, ABOUT, CONTACT, DISCLOSURE, PRIVACY, TERMS, DISCLOSURE_SHORT
+from content import SITE, ARTICLES, ABOUT, CONTACT, DISCLOSURE, PRIVACY, TERMS, DISCLOSURE_SHORT, AFFILIATE_DOMAINS
 
 OUT = os.path.join(os.path.dirname(__file__), "site")
 FMT = dict(SITE)
@@ -112,6 +112,17 @@ img{max-width:100%;display:block}
 @media (max-width:820px){.hero .tile.photo{min-height:420px}.hero-tile.photo{aspect-ratio:4/3}}
 .disclose{font-size:12.5px;line-height:1.5;color:var(--muted);text-align:center;margin:-18px auto 28px;max-width:60ch}
 .disclose a{color:var(--muted)}
+.shop{padding-block:8px 64px}
+.shop-head{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap;border-top:1px solid var(--line);padding-top:28px;margin-bottom:24px}
+.shop-head h2{font:400 28px/1.2 var(--display);color:var(--ink);margin:0}
+.products{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:32px 24px}
+.product{display:flex;flex-direction:column;gap:6px;text-decoration:none;color:var(--ink);min-width:0}
+.product-img{aspect-ratio:4/5;max-width:100%;background:var(--silk);position:relative;overflow:hidden;margin-bottom:8px;display:flex;align-items:flex-end;padding:14px}
+.product-img img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.product-img .word{font:italic 400 28px/1 var(--display);color:var(--ink)}
+.product-name{font:400 18px/1.3 var(--display)}
+.product-shop{font-size:13px;color:var(--muted)}
+.product:hover .product-name{text-decoration:underline;text-underline-offset:3px}
 .prose{color:var(--body-ink)}
 .prose h2{font:400 30px/1.2 var(--display);color:var(--ink);margin:46px 0 12px;text-wrap:balance}
 .prose p{margin:0 0 18px}
@@ -198,6 +209,36 @@ def card_img(a):
         return {**img, "file": img["card"], "pos": img.get("card_pos", "center")}
     return img
 
+def is_affiliate(url):
+    host = re.sub(r"^https?://", "", url).split("/")[0].lower()
+    return any(d in host for d in AFFILIATE_DOMAINS)
+
+def mark_affiliate_links(html):
+    """Give every affiliate link rel="sponsored noopener" and open it in a new tab."""
+    def fix(m):
+        tag, url = m.group(0), m.group(1)
+        if not is_affiliate(url) or "rel=" in tag:
+            return tag
+        return tag[:-1] + ' rel="sponsored noopener" target="_blank">'
+    return re.sub(r'<a\s[^>]*href="([^"]+)"[^>]*>', fix, html)
+
+def shop_block(products):
+    if not products:
+        return ""
+    items = []
+    for pr in products:
+        img = (f'<img src="{pr["image"]}" alt="{pr["brand"]} {pr["name"]}" loading="lazy">' if pr.get("image")
+               else '<span class="word">Shop</span>')
+        price = f' &middot; {pr["price"]}' if pr.get("price") else ""
+        items.append(f'''<a class="product" href="{pr["url"]}">
+<div class="product-img">{img}</div>
+<span class="label">{pr["brand"]}</span>
+<span class="product-name">{pr["name"]}</span>
+<span class="product-shop">at {pr["shop"]}{price}</span></a>''')
+    return f'''<section class="shop wrap" aria-label="Shop the edit">
+<div class="shop-head"><h2>Shop the edit</h2><span class="label">Affiliate links &middot; we earn a commission</span></div>
+<div class="products">{"".join(items)}</div></section>'''
+
 def card(a, depth):
     p = rel(depth)
     return f"""<a class="card" href="{p}journal/{a['slug']}.html">
@@ -271,14 +312,19 @@ def build():
         g = group_of(a)
         others = [o for o in ARTICLES if o["slug"] != a["slug"]][:3]
         more = "\n".join(card(o, 1) for o in others)
+        shop = shop_block(a.get("products"))
+        has_aff = bool(shop) or any(is_affiliate(u) for u in re.findall(r'href="([^"]+)"', a["body"]))
+        notice = f'<div class="wrap narrow"><p class="disclose">{DISCLOSURE_SHORT}</p></div>' if has_aff else ""
         body = f"""<article>
 {head_block(a['category'], a['title'], a['dek'], f"{a['date']} &middot; {a['read']} read", f"/{g}.html")}
-<div class="wrap narrow"><p class="disclose">{DISCLOSURE_SHORT}</p></div>
+{notice}
 <div class="wrap">{tile(a['category'], 'hero-tile', img=a.get('image'), depth=1)}</div>
 <div class="wrap narrow page-body prose">
 {a['body']}
-</div></article>
+</div>
+{shop}</article>
 <section class="wrap sec" style="border-top:1px solid var(--line)"><div class="sec-head"><h2>Keep reading</h2><a href="/journal/index.html">All articles</a></div><div class="grid">{more}</div></section>"""
+        body = mark_affiliate_links(body)
         write(f"journal/{a['slug']}.html", shell(f"{a['title']} · {SITE['name']}", a["dek"], body, 1, g, f"journal/{a['slug']}.html"))
 
     simple_page("about.html", "About Soie et Or", "About", ABOUT, "about")
