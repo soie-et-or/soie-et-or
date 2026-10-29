@@ -16,7 +16,7 @@ SITE = {
     "pinterest_verify": "befd5a5bd7eca69fc2921fe79cef2cc9",
 }
 
-DISCLOSURE_SHORT = ('Contains affiliate links: we earn a commission on purchases, at no extra cost to you. '
+DISCLOSURE_SHORT = ('Some links are affiliate links; we may earn a small commission. '
                     '<a href="/affiliate-disclosure.html">How this works</a>')
 
 # Links to these domains count as affiliate links. The build adds rel="sponsored"

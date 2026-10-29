@@ -236,7 +236,7 @@ def shop_block(products):
 <span class="product-name">{pr["name"]}</span>
 <span class="product-shop">at {pr["shop"]}{price}</span></a>''')
     return f'''<section class="shop wrap" aria-label="Shop the edit">
-<div class="shop-head"><h2>Shop the edit</h2><span class="label">Affiliate links &middot; we earn a commission</span></div>
+<div class="shop-head"><h2>Shop the edit</h2><span class="label">Affiliate links &middot; we may earn a small commission</span></div>
 <div class="products">{"".join(items)}</div></section>'''
 
 def card(a, depth):
