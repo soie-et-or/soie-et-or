@@ -223,6 +223,9 @@ ARTICLES = [
   "date": "21 October 2026",
   "read": "5 min",
   "tone": "camel",
+  "image": {"file": "paris-hotel-breakfast-wide.jpg", "card": "paris-hotel-breakfast-card.jpg", "pos": "center 40%",
+            "card_pos": "center",
+            "alt": "Breakfast tray with coffee, juice and croissants on a white bed by a Paris balcony window"},
   "body": """
 <p>The most elegant travellers are rarely the ones with the most luggage. They carry one good bag, a few pieces that all combine, and accessories that do the work of a whole outfit. Here is how to pack a weekend in Paris, or anywhere, the quiet way.</p>
 <h2>The bags</h2>
@@ -256,6 +259,9 @@ ARTICLES = [
   "date": "21 October 2026",
   "read": "5 min",
   "tone": "blush",
+  "image": {"file": "silk-ivory-wide.jpg", "card": "silk-ivory-card.jpg", "pos": "center",
+            "card_pos": "center",
+            "alt": "Draped ivory silk satin"},
   "body": """
 <p>In France, lingerie is not reserved for special occasions. It is simply the first layer of getting dressed, chosen with the same care as a coat or a pair of shoes. Nobody else needs to see it. That is exactly the point.</p>
 <h2>Fit comes first</h2>
@@ -287,6 +293,9 @@ ARTICLES = [
   "date": "21 October 2026",
   "read": "5 min",
   "tone": "ink",
+  "image": {"file": "boots-street-bw-wide.jpg", "card": "boots-street-bw-card.jpg", "pos": "center 60%",
+            "card_pos": "center 70%",
+            "alt": "Black and white photo of black leather knee-high boots and grey socks on a city pavement"},
   "body": """
 <p>Paris is a walking city, and from October to March its women walk in boots. Not dozens of pairs, just three good ones that together cover every occasion.</p>
 <h2>1. The flat ankle boot</h2>
