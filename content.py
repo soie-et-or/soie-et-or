@@ -16,8 +16,25 @@ SITE = {
     "pinterest_verify": "befd5a5bd7eca69fc2921fe79cef2cc9",
 }
 
-DISCLOSURE_SHORT = ("This article contains affiliate links. If you buy through them, Soie et Or may earn a small "
-                    "commission at no extra cost to you. <a href=\"/affiliate-disclosure.html\">How this works</a>.")
+DISCLOSURE_SHORT = ('Some links are affiliate links; we may earn a small commission. '
+                    '<a href="/affiliate-disclosure.html">How this works</a>')
+
+# Links to these domains count as affiliate links. The build adds rel="sponsored"
+# to them and shows DISCLOSURE_SHORT at the top of any article that contains one.
+AFFILIATE_DOMAINS = [
+    "awin1.com", "tidd.ly",                                   # Awin
+    "prf.hn",                                                 # Partnerize (Farfetch)
+    "click.linksynergy.com", "linksynergy.com",               # Rakuten (Net-a-Porter)
+    "anrdoezrs.net", "jdoqocy.com", "tkqlhce.com", "dpbolvw.net", "kqzyfj.com",  # CJ (Mytheresa, Vestiaire)
+    "go.skimresources.com", "go.redirectingat.com",           # Skimlinks
+    "sovrn.co", "shareasale.com", "shopmy.us", "liketk.it", "rstyle.me", "daisycon",
+]
+
+# How to add products to an article (shown as a "Shop the edit" row under the text):
+#   "products": [
+#     {"name": "Wool blazer", "brand": "Sandro", "shop": "Farfetch", "price": "€450",
+#      "url": "https://www.awin1.com/...", "image": "https://.../product.jpg"},
+#   ],
 
 ARTICLES = [
  {
