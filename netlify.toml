@@ -16,3 +16,9 @@
     Referrer-Policy = "strict-origin-when-cross-origin"
     Permissions-Policy = "camera=(), microphone=(), geolocation=(), payment=(), usb=(), interest-cohort=()"
     Cross-Origin-Opener-Policy = "same-origin"
+
+# Old article address (brand names may not appear in URLs under some affiliate terms)
+[[redirects]]
+  from = "/journal/sandro-vs-iro.html"
+  to = "/journal/two-takes-on-parisian-chic.html"
+  status = 301

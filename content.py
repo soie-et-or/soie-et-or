@@ -134,7 +134,7 @@ ARTICLES = [
 """
  },
  {
-  "slug": "sandro-vs-iro",
+  "slug": "two-takes-on-parisian-chic",
   "title": "Sandro or IRO? Two Takes on Parisian Chic",
   "dek": "Both are Parisian, both are loved, but they dress very different women. Here is how to tell which one is yours.",
   "category": "Brands",
