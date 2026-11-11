@@ -324,6 +324,8 @@ ARTICLES = [
   "date": "2 November 2026",
   "read": "5 min",
   "tone": "gold",
+  "image": {"file": "small-watch-wrist-bw-wide.jpg", "card": "small-watch-wrist-bw-card.jpg", "pos": "center",
+            "alt": "Black and white close-up of a wrist with a small watch on a link bracelet and a slim bangle"},
   "body": """
 <p>Look at the wrists in old photographs of Paris and you will notice how small the watches are. A thin rectangle on a leather strap, a round gold face no bigger than a coin, half hidden under a cuff. For a long while watches grew larger and louder. Now the mood has turned again, and small watches are back where they belong: on the wrists of women who want something good rather than something seen.</p>
 <h2>Why small looks right now</h2>
@@ -362,6 +364,8 @@ ARTICLES = [
   "date": "9 November 2026",
   "read": "5 min",
   "tone": "gold",
+  "image": {"file": "gold-hands-shadow-wide.jpg", "card": "gold-hands-shadow-card.jpg", "pos": "center",
+            "alt": "Two hands against a sunlit white wall wearing gold rings, a gold link bracelet and a fine tennis bracelet"},
   "body": """
 <p>Every November the same question arrives: what to give, and what to ask for. If the answer is gold, this year it comes with a second question, because gold has rarely been so expensive. The World Gold Council's latest report on jewellery demand, for the third quarter of 2026, describes buyers around the world turning to lighter, smaller and lower-carat pieces as high prices bite. In Europe, fewer pieces were sold, yet more money was spent on them.</p>
 <p>That is not a bad instinct. It is, in fact, the Parisian one: fewer things, chosen with more care. Here is how to buy one good piece of gold well.</p>
