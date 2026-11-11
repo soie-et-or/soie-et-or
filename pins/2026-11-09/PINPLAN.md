@@ -6,7 +6,7 @@ Upload each image in Pinterest, paste the fields and pick the board.
 
 ![How to Buy Fine Gold Jewelry When Gold Is Expensive](01-one-good-piece.png)
 
-- **When:** Tue 10 Nov, 20:00
+- **When:** Thu 12 Nov, 20:00
 - **Board:** Everyday Gold Jewelry
 - **Title:** How to Buy Fine Gold Jewelry When Gold Is Expensive
 - **Link:** https://www.soie-et-or.com/journal/buying-gold-jewelry-high-prices.html
@@ -22,7 +22,7 @@ Gold prices are high, so buy less and choose better. What 18k and 9k really mean
 
 ![French Lingerie: Silk, Fine Lace and the Right Fit](02-french-lingerie.png)
 
-- **When:** Wed 11 Nov, 20:00
+- **When:** Sat 14 Nov, 20:00
 - **Board:** Elegant French Lingerie
 - **Title:** French Lingerie: Silk, Fine Lace and the Right Fit
 - **Link:** https://www.soie-et-or.com/journal/french-lingerie-guide.html
@@ -38,7 +38,7 @@ Why French women treat lingerie as the first layer of a good outfit. How to get 
 
 ![Sandro or IRO? Two Takes on Parisian Chic](03-sandro-or-iro.png)
 
-- **When:** Thu 12 Nov, 20:00
+- **When:** Fri 20 Nov, 20:00
 - **Board:** Parisian Style Outfits
 - **Title:** Sandro or IRO? Two Takes on Parisian Chic
 - **Link:** https://www.soie-et-or.com/journal/two-takes-on-parisian-chic.html
@@ -54,7 +54,7 @@ Two Paris labels, two moods: Sandro's polished tailoring and IRO's rock-edged le
 
 ![Fine Gold Jewelry Gift Ideas: A Chain, a Charm or a Pinky Ring](04-gold-gift.png)
 
-- **When:** Fri 13 Nov, 20:00
+- **When:** Wed 18 Nov, 20:00
 - **Board:** Investment Pieces
 - **Title:** Fine Gold Jewelry Gift Ideas: A Chain, a Charm or a Pinky Ring
 - **Link:** https://www.soie-et-or.com/journal/buying-gold-jewelry-high-prices.html
@@ -70,7 +70,7 @@ Thinking of gold jewelry as a gift this winter? Simple advice on choosing a chai
 
 ![What Quiet Luxury Really Means (and What It Does Not)](05-quiet-luxury.png)
 
-- **When:** Sat 14 Nov, 20:00
+- **When:** Mon 16 Nov, 20:00
 - **Board:** Quiet Luxury
 - **Title:** What Quiet Luxury Really Means (and What It Does Not)
 - **Link:** https://www.soie-et-or.com/journal/what-is-quiet-luxury.html
@@ -86,7 +86,7 @@ Quiet luxury is not a beige uniform or a price tag. What the look is really abou
 
 ![How Parisians Wear Flat Knee-High Boots in Winter](06-knee-high-boots.png)
 
-- **When:** Sun 15 Nov, 20:00
+- **When:** Sun 22 Nov, 20:00
 - **Board:** Chic & Cool Boots Outfit
 - **Title:** How Parisians Wear Flat Knee-High Boots in Winter
 - **Link:** https://www.soie-et-or.com/journal/three-boots-parisian-wardrobe.html
@@ -102,7 +102,7 @@ Flat knee-high riding boots with a sweater dress, a knee-length skirt or tucked-
 
 ![Buying a Pre-Owned Cartier Watch: What to Check Before You Pay](07-pre-owned-cartier.png)
 
-- **When:** Mon 16 Nov, 20:00
+- **When:** Tue 24 Nov, 20:00
 - **Board:** Luxury Watches for Women
 - **Title:** Buying a Pre-Owned Cartier Watch: What to Check Before You Pay
 - **Link:** https://www.soie-et-or.com/journal/pre-owned-cartier-watch-guide.html
