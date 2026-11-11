@@ -315,6 +315,85 @@ ARTICLES = [
 </ul>
 <p>Three pairs, looked after well, will see you through many winters. That is the Parisian way of buying shoes.</p>
 """
+ },
+ {
+  "slug": "the-case-for-a-small-watch",
+  "title": "The Case for a Small Watch",
+  "dek": "Big dials had their decade. A small, slim watch is quieter, easier to wear and closer to how Parisian women have always worn time.",
+  "category": "Watches",
+  "date": "2 November 2026",
+  "read": "5 min",
+  "tone": "gold",
+  "body": """
+<p>Look at the wrists in old photographs of Paris and you will notice how small the watches are. A thin rectangle on a leather strap, a round gold face no bigger than a coin, half hidden under a cuff. For a long while watches grew larger and louder. Now the mood has turned again, and small watches are back where they belong: on the wrists of women who want something good rather than something seen.</p>
+<h2>Why small looks right now</h2>
+<p>A small watch fits the quiet way of dressing. It sits under a sweater sleeve instead of pushing it up. It does not compete with your jewelry; it becomes part of it. And it reads as a choice rather than a statement, which is the whole point of <a href="/journal/what-is-quiet-luxury.html">quiet luxury</a>.</p>
+<p>The watch world has noticed. Elite Traveler described this year how smaller cases are replacing oversized ones as a marker of taste, with many brands now working in the mid-thirties of millimetres rather than the forties. In 2024 Cartier introduced a mini version of the Tank Louis Cartier at Watches and Wonders in Geneva, with a case of 24 by 16.5 millimetres. Rolex still makes its Oyster Perpetual in a 28 millimetre size. Small, in other words, is not a niche; it is a category again.</p>
+<h2>Shape matters as much as size</h2>
+<p>A rectangular watch looks smaller and more elegant on the wrist than a round one of the same width, because it follows the line of the arm. That is part of why the Cartier Tank has lasted. Conceived by Louis Cartier in 1917 and released in 1919, it still looks right with a white shirt more than a century later.</p>
+<p>Round watches suit a softer, more classic look. Oval and cushion shapes, like the Baignoire that Cartier brought back with a bangle version in 2023, feel more like jewelry than instruments. Choose the shape that matches the rest of what you wear: clean lines for a tailored wardrobe, curves if you lean romantic.</p>
+<h2>How to choose the right size for you</h2>
+<ul>
+<li><strong>Measure your wrist.</strong> A soft tape measure just above the wrist bone is enough. Slim wrists can wear very small cases without the watch looking lost.</li>
+<li><strong>Look at the lugs, not only the dial.</strong> The full length from one end of the case to the other decides how a watch sits. It should not overhang the sides of your wrist.</li>
+<li><strong>Try it with a sleeve.</strong> A watch you wear in autumn and winter will live under knitwear and coat cuffs. Check that it slides under them easily.</li>
+<li><strong>Read it from arm's length.</strong> A tiny dial is charming, but you should still be able to tell the time at a glance.</li>
+</ul>
+<h2>Strap or bracelet</h2>
+<p>A leather strap makes a small watch look softer and more vintage, and it is easy to change with the season: black or dark brown for winter, something lighter for spring. A metal bracelet turns the same watch into a piece of jewelry and stacks well with a bangle or a chain bracelet. If you can, buy the watch on one and add the other later. It is the simplest way to make one watch feel like two.</p>
+<h2>Quartz is not a compromise</h2>
+<p>Many small watches have quartz movements, simply because there is little room inside a small case. For everyday wear that is a quiet advantage: quartz is accurate, needs little attention and keeps running when you leave it in a drawer for a week. If you love mechanical watchmaking, there are hand-wound small watches too, but you do not need one to own something beautiful.</p>
+<h2>New or pre-owned</h2>
+<p>Small vintage watches are one of the best-value corners of the market, because for years they were out of fashion. A careful pre-owned purchase can bring a classic shape within reach. Our guide to <a href="/journal/pre-owned-cartier-watch-guide.html">buying a pre-owned Cartier</a> explains what to check before you pay.</p>
+<h2>How to wear it</h2>
+<ol class="numbered">
+<li>Alone, on a leather strap, with a white shirt and a navy knit. Nothing else needed.</li>
+<li>On a bracelet, next to one gold bangle, with a cashmere turtleneck.</li>
+<li>Under the cuff of a camel coat, so it only shows when you reach for something.</li>
+</ol>
+<p>A small watch asks very little of you. It suits most outfits, it ages well and it never shouts. That is exactly why it lasts.</p>
+"""
+ },
+ {
+  "slug": "buying-gold-jewelry-high-prices",
+  "title": "One Good Piece: Buying Gold Jewelry When Gold Is Expensive",
+  "dek": "Gold has rarely cost more. That is a reason to buy less and choose better, whether the piece is a gift or for yourself.",
+  "category": "Jewelry",
+  "date": "9 November 2026",
+  "read": "5 min",
+  "tone": "gold",
+  "body": """
+<p>Every November the same question arrives: what to give, and what to ask for. If the answer is gold, this year it comes with a second question, because gold has rarely been so expensive. The World Gold Council's latest report on jewellery demand, for the third quarter of 2026, describes buyers around the world turning to lighter, smaller and lower-carat pieces as high prices bite. In Europe, fewer pieces were sold, yet more money was spent on them.</p>
+<p>That is not a bad instinct. It is, in fact, the Parisian one: fewer things, chosen with more care. Here is how to buy one good piece of gold well.</p>
+<h2>Understand what you are paying for</h2>
+<p>The carat number tells you how much of the metal is actually gold. Eighteen carat is 75 per cent gold, often stamped 750. Nine carat is 37.5 per cent, stamped 375. In France, solid 18-carat gold carries a small eagle's head hallmark, while 9 carat carries a three-leaf clover. If you buy in Paris, or buy French vintage, look for these marks with a loupe.</p>
+<ul>
+<li><strong>18 carat</strong> has the deep, warm colour most people picture when they think of fine gold. It is the standard for serious jewelry in France and Italy.</li>
+<li><strong>9 or 14 carat</strong> is paler and harder, so it scratches less. It costs less for the same design, and for a fine chain or a small ring that is worn daily it is a perfectly honest choice.</li>
+<li><strong>Gold-plated and vermeil</strong> pieces have a thin layer of gold over another metal. They can be pretty, but the layer wears away with time. Buy them as fashion, not as an heirloom.</li>
+</ul>
+<h2>Choose lightness, not thinness</h2>
+<p>A lighter piece does not have to look meagre. Hollow links, a fine chain with a clever clasp, a narrow band with a beautiful profile: good design makes a small amount of gold look generous. What to avoid is a piece so thin that it bends, tangles or snaps within a season. Pick it up. It should feel solid in the hand, even if it is small.</p>
+<h2>The pieces worth one good purchase</h2>
+<ol class="numbered">
+<li><strong>A chain you never take off.</strong> Medium length, sitting just below the collarbone, so it shows over a turtleneck and inside an open shirt.</li>
+<li><strong>A small charm with meaning.</strong> Charms have grown up. One initial, a coin or a tiny medallion on a fine chain is personal without being sweet, and it can be added to over the years.</li>
+<li><strong>A signet or pinky ring.</strong> A clean, slightly weighty ring worn on the little finger is one of the quietest ways to wear gold. It suits both hands, and both jeans and tailoring.</li>
+<li><strong>Small hoops or studs.</strong> Earrings are the piece people see first, and the one you reach for without thinking.</li>
+<li><strong>A ring with colour.</strong> If you want one stone, choose colour rather than size. Pomellato, founded in Milan in 1967, built its Nudo rings around a single coloured gemstone in a gold setting, a good illustration of how colour can carry a piece without any diamonds at all.</li>
+</ol>
+<h2>New, vintage or pre-owned</h2>
+<p>Vintage and pre-owned gold is worth a serious look, especially from France and Italy, where hallmarks make it easier to check what you are buying. A signed piece from a known maison can hold its value better than an unsigned new one. Ask for the hallmarks, the weight in grams and, for anything signed, a receipt or certificate. For a watch, the same logic applies; our guide to <a href="/journal/pre-owned-cartier-watch-guide.html">buying a pre-owned Cartier</a> lists what to check.</p>
+<h2>If it is a gift</h2>
+<ul>
+<li>Look at what the person already wears, and match the colour of the gold rather than guessing.</li>
+<li>Choose earrings or a chain over a ring if you do not know the size.</li>
+<li>Ask about resizing and exchange before you pay, not after.</li>
+<li>Keep the box, the receipt and the hallmark details together. One day they will matter.</li>
+</ul>
+<h2>The quiet arithmetic</h2>
+<p>An expensive piece worn every day for twenty years is, in the end, a modest purchase. A cheap one that sits in a drawer is not. That is the logic of <a href="/journal/cost-per-wear.html">cost per wear</a>, and it applies to gold more than to anything else in a wardrobe. Once you have it, wear it the way we describe in <a href="/journal/everyday-gold-jewelry.html">our guide to everyday gold</a>: with knitwear, with denim, and without a second thought.</p>
+"""
  }
 ]
 
