@@ -1,0 +1,2 @@
+Tenor Sans, Jost and Bodoni Moda are licensed under the SIL Open Font License 1.1
+(https://openfontlicense.org). Files from the Fontsource packages on npm.
