@@ -1,5 +1,5 @@
 """Builds the static site for soie-et-or.com into ./site. Run: python3 build.py"""
-import os, re, shutil
+import html as html_lib, json, os, re, shutil
 from content import SITE, ARTICLES, ABOUT, CONTACT, DISCLOSURE, PRIVACY, TERMS, DISCLOSURE_SHORT, AFFILIATE_DOMAINS
 
 OUT = os.path.join(os.path.dirname(__file__), "site")
@@ -149,7 +149,44 @@ def rel(depth): return "../" * depth
 def fix_links(html, depth):
     return re.sub(r'href="/(?!/)', f'href="{rel(depth)}', html)
 
-def shell(title, desc, body, depth, current="", canonical=""):
+MONTHS = ["January","February","March","April","May","June","July","August","September","October","November","December"]
+
+def iso_date(d):
+    day, month, year = d.split()
+    return f"{year}-{MONTHS.index(month) + 1:02d}-{int(day):02d}"
+
+def social_meta(title, desc, canonical, image=None, article=None):
+    """Open Graph / Twitter tags (link previews in WhatsApp, iMessage, Facebook) and JSON-LD for Google."""
+    url = f"{SITE['url']}/{canonical}"
+    img_file = (image or {}).get("file") or "og-default.jpg"
+    img_url = f"{SITE['url']}/assets/img/{img_file}"
+    alt = html_lib.escape((image or {}).get("alt") or f"{SITE['name']}: {SITE['tagline']}", quote=True)
+    tags = [
+        f'<meta property="og:type" content="{"article" if article else "website"}">',
+        f'<meta property="og:url" content="{url}">',
+        f'<meta property="og:image" content="{img_url}">',
+        f'<meta property="og:image:alt" content="{alt}">',
+        '<meta property="og:locale" content="en_GB">',
+        '<meta name="twitter:card" content="summary_large_image">',
+    ]
+    if article:
+        ld = {"@context": "https://schema.org", "@type": "Article",
+              "headline": article["title"], "description": article["dek"],
+              "image": [img_url], "datePublished": iso_date(article["date"]),
+              "author": {"@type": "Person", "name": "Philippine", "url": f"{SITE['url']}/about.html"},
+              "publisher": {"@type": "Organization", "name": SITE["name"], "url": SITE["url"]},
+              "mainEntityOfPage": url, "articleSection": article["category"]}
+        tags.append(f'<meta property="article:published_time" content="{iso_date(article["date"])}">')
+    elif canonical == "":
+        ld = {"@context": "https://schema.org", "@type": "WebSite", "name": SITE["name"],
+              "url": SITE["url"] + "/", "description": SITE["tagline"]}
+    else:
+        ld = None
+    if ld:
+        tags.append('<script type="application/ld+json">' + json.dumps(ld, ensure_ascii=False).replace("</", "<\\/") + "</script>")
+    return "\n".join(tags)
+
+def shell(title, desc, body, depth, current="", canonical="", image=None, article=None):
     p = rel(depth)
     verify = (f'<meta name="p:domain_verify" content="{SITE["pinterest_verify"]}">' if SITE["pinterest_verify"]
               else '<!-- Pinterest: set pinterest_verify in content.py to add the p:domain_verify tag -->')
@@ -167,6 +204,7 @@ def shell(title, desc, body, depth, current="", canonical=""):
 <meta property="og:title" content="{title}">
 <meta property="og:description" content="{desc}">
 <meta property="og:site_name" content="{SITE['name']}">
+{social_meta(title, desc, canonical, image, article)}
 {verify}
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -325,7 +363,7 @@ def build():
 {shop}</article>
 <section class="wrap sec" style="border-top:1px solid var(--line)"><div class="sec-head"><h2>Keep reading</h2><a href="/journal/index.html">All articles</a></div><div class="grid">{more}</div></section>"""
         body = mark_affiliate_links(body)
-        write(f"journal/{a['slug']}.html", shell(f"{a['title']} · {SITE['name']}", a["dek"], body, 1, g, f"journal/{a['slug']}.html"))
+        write(f"journal/{a['slug']}.html", shell(f"{a['title']} · {SITE['name']}", a["dek"], body, 1, g, f"journal/{a['slug']}.html", image=a.get("image"), article=a))
 
     simple_page("about.html", "About Soie et Or", "About", ABOUT, "about")
     simple_page("contact.html", "Contact", "Contact", CONTACT)

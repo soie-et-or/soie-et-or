@@ -12,6 +12,11 @@ pins.json is a list of objects:
    "sub": "One short line under the gold rule.",
    "pin_title": "...", "description": "...", "link": "https://www.soie-et-or.com/journal/...",
    "board": "Parisian Style Outfits", "topics": ["...", "..."], "when": "Mon 2 Nov, 20:00"}
+
+Photo pins: add "photo": "images/gold-hands-shadow-card.jpg" (path from the repo root or
+from the JSON's folder) and optionally "photo_focus": 0.0-1.0 (vertical focus, default 0.5).
+The photo fills the top 60% and the kicker, title and wordmark sit on the theme panel below;
+"word" and "sub" are not used. Only use photos you have the rights to (own, Unsplash, Pexels).
 """
 import json, os, sys
 from PIL import Image, ImageDraw, ImageFont
@@ -46,7 +51,42 @@ def centred(d, y, text, font, fill):
     b = d.textbbox((0, 0), text, font=font)
     d.text(((W - (b[2] - b[0])) / 2 - b[0], y), text, font=font, fill=fill)
 
+PHOTO_H = 900
+
+def find_photo(path, out_dir):
+    for base in (os.path.dirname(HERE), out_dir):
+        full = os.path.join(base, path)
+        if os.path.exists(full):
+            return full
+    raise SystemExit(f"photo not found: {path}")
+
+def make_photo_pin(p, out_dir):
+    bg, ink, muted = THEMES[p.get("theme", "white")]
+    img = Image.new("RGB", (W, H), bg); d = ImageDraw.Draw(img)
+    ph = Image.open(find_photo(p["photo"], out_dir)).convert("RGB")
+    scale = max(W / ph.width, PHOTO_H / ph.height)
+    ph = ph.resize((round(ph.width * scale), round(ph.height * scale)), Image.LANCZOS)
+    left = (ph.width - W) // 2
+    top = round((ph.height - PHOTO_H) * float(p.get("photo_focus", 0.5)))
+    img.paste(ph.crop((left, top, left + W, top + PHOTO_H)), (0, 0))
+    tracked(d, W / 2, PHOTO_H + 58, p["kicker"].upper(), ImageFont.truetype(JOST, 24), 24 * 0.3, muted)
+    tf = ImageFont.truetype(BOD, 76); y = PHOTO_H + 110
+    for ln in wrap(d, p["title"], tf, 860):
+        centred(d, y, ln, tf, ink); y += 90
+    if p.get("italic"):
+        itf = ImageFont.truetype(BODI, 76)
+        for ln in wrap(d, p["italic"], itf, 880):
+            centred(d, y, ln, itf, ink); y += 90
+    y += 34
+    d.rectangle([W / 2 - 50, y, W / 2 + 50, y + 2], fill=GOLD_ON_INK if p.get("theme") == "ink" else GOLD)
+    tracked(d, W / 2, H - 92, "SOIE ET OR", ImageFont.truetype(TEN, 28), 28 * 0.32, ink)
+    if y >= H - 120:
+        raise SystemExit(f"{p['file']}: title too long for a photo pin, shorten it")
+    img.save(os.path.join(out_dir, p["file"] + ".png"))
+
 def make_pin(p, out_dir):
+    if p.get("photo"):
+        return make_photo_pin(p, out_dir)
     bg, ink, muted = THEMES[p.get("theme", "white")]
     img = Image.new("RGB", (W, H), bg); d = ImageDraw.Draw(img)
     tracked(d, W / 2, 90, "SOIE ET OR", ImageFont.truetype(TEN, 30), 30 * 0.32, ink)
