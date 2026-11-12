@@ -1,0 +1,18 @@
+[
+  {"file": "01-photo-gold", "theme": "white", "photo": "images/gold-hands-shadow-card.jpg", "photo_focus": 0.45,
+   "kicker": "Fine jewelry", "title": "How to Buy Gold", "italic": "When Gold Is Expensive",
+   "pin_title": "How to Buy Gold Jewelry When Gold Prices Are High",
+   "description": "Gold has rarely cost more, so buy one good piece instead of three. What 18k and 9k mean, how to read French hallmarks and which gold pieces are worth it.",
+   "link": "https://www.soie-et-or.com/journal/buying-gold-jewelry-high-prices.html",
+   "board": "Everyday Gold Jewelry",
+   "topics": ["Gold jewelry", "Fine jewelry", "Investment pieces", "Minimalist jewelry", "Quiet luxury"],
+   "when": "Fri 20 Nov, 20:00"},
+  {"file": "02-photo-small-watch", "theme": "ink", "photo": "images/small-watch-wrist-bw-card.jpg", "photo_focus": 0.5,
+   "kicker": "Luxury watches", "title": "The Case for", "italic": "a Small Watch",
+   "pin_title": "Small Watches for Women: Why Petite Is Back",
+   "description": "A small, slim watch is quieter and easier to wear every day. How to choose the case size and bracelet that suit your wrist, the Parisian way.",
+   "link": "https://www.soie-et-or.com/journal/the-case-for-a-small-watch.html",
+   "board": "Luxury Watches for Women",
+   "topics": ["Women's watches", "Luxury watches", "Vintage watches", "Parisian style", "Quiet luxury"],
+   "when": "Sun 22 Nov, 20:00"}
+]
