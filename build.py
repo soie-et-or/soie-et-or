@@ -122,6 +122,30 @@ img{max-width:100%;display:block}
 .product-img .word{font:italic 400 28px/1 var(--display);color:var(--ink)}
 .product-name{font:400 18px/1.3 var(--display)}
 .product-shop{font-size:13px;color:var(--muted)}
+.edits{padding-block:8px 64px}
+.board{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:28px;padding-block:32px;border-top:1px solid var(--line)}
+.board:first-of-type{border-top:0;padding-top:8px}
+.board-head{grid-column:1/-1;display:flex;flex-direction:column;gap:6px;max-width:640px}
+.board-head h3{font:400 26px/1.2 var(--display);margin:0;color:var(--ink)}
+.board-head h3 i{font-style:italic}
+.board-head p{margin:0;color:var(--muted);font-size:15px;line-height:1.6}
+.mood{margin:0;position:relative;aspect-ratio:5/6;background:var(--silk);overflow:hidden}
+.mood img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.mood figcaption{position:absolute;left:12px;bottom:12px;background:rgba(255,255,255,.92);color:var(--muted);font-size:11px;letter-spacing:.14em;text-transform:uppercase;padding:6px 10px}
+.pieces{display:flex;flex-direction:column;align-self:stretch}
+.piece{display:grid;grid-template-columns:150px minmax(0,1fr);gap:20px;align-items:center;padding-block:18px;border-top:1px solid var(--line);min-width:0}
+.piece:first-child{border-top:0;padding-top:0}
+.piece-text{display:flex;flex-direction:column;gap:5px;min-width:0}
+.piece-img{display:block;aspect-ratio:1/1;background:#fff;border:1px solid var(--line);position:relative;overflow:hidden}
+.piece-img img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;padding:8px;box-sizing:border-box}
+.piece-img .word{position:absolute;left:12px;bottom:10px;font:italic 400 20px/1 var(--display);color:var(--ink)}
+.piece .label{font-size:11px}
+.piece-name{font:400 18px/1.3 var(--display);color:var(--ink)}
+.piece-price{font-size:13px;color:var(--muted)}
+.piece-shop{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px}
+.piece-shop a{font-size:12px;letter-spacing:.12em;text-transform:uppercase;text-decoration:none;color:var(--ink);border:1px solid var(--ink);padding:0 12px;min-height:44px;box-sizing:border-box;display:inline-flex;align-items:center}
+.piece-shop a:hover{background:var(--ink);color:#fff}
+@media (max-width:760px){.board{grid-template-columns:1fr}.mood{aspect-ratio:4/3}.piece{grid-template-columns:104px minmax(0,1fr);gap:14px}}
 .product:hover .product-name{text-decoration:underline;text-underline-offset:3px}
 .prose{color:var(--body-ink)}
 .prose h2{font:400 30px/1.2 var(--display);color:var(--ink);margin:46px 0 12px;text-wrap:balance}
@@ -277,6 +301,49 @@ def shop_block(products):
 <div class="shop-head"><h2>Shop the edit</h2><span class="label">Affiliate links &middot; we may earn a small commission</span></div>
 <div class="products">{"".join(items)}</div></section>'''
 
+TYPE_WORD = {"necklace": "Collier", "ring": "Bague", "bracelet": "Bracelet"}
+
+def edit_boards(edits, depth):
+    """Themed edit boards: a mood photo plus three pieces (necklace, ring, bracelet),
+    each with an EU/UK and a US affiliate link. Product images come unaltered from the
+    retailer's catalogue; the mood photo is our own or Pexels/Unsplash and is captioned
+    as a mood image so it is never presented as the products."""
+    if not edits:
+        return ""
+    p = rel(depth)
+    boards = []
+    for e in edits:
+        pieces = []
+        for i, pr in enumerate(e["products"]):
+            alt = html_lib.escape(f'{pr["brand"]} {pr["name"]}', quote=True)
+            img = (f'<img src="{pr["image"]}" alt="{alt}" loading="lazy">' if pr.get("image")
+                   else f'<span class="word">{TYPE_WORD.get(pr.get("type", ""), "Shop")}</span>')
+            first = pr.get("url_eu") or pr.get("url_us") or "#"
+            prices = " &middot; ".join(x for x in (pr.get("price_eu"), pr.get("price_us")) if x)
+            shops = []
+            if pr.get("url_eu"): shops.append(f'<a href="{pr["url_eu"]}" aria-label="Shop {alt} in Europe and the UK">Shop EU / UK</a>')
+            if pr.get("url_us"): shops.append(f'<a href="{pr["url_us"]}" aria-label="Shop {alt} in the US">Shop US</a>')
+            text = f'''<span class="label">{pr["type"].capitalize()} &middot; {pr["brand"]}</span>
+<span class="piece-name">{pr["name"]}</span>
+<span class="piece-price">{prices}{" at " + pr.get("shop", "Mytheresa") if prices else "At " + pr.get("shop", "Mytheresa")}</span>
+<div class="piece-shop">{"".join(shops)}</div>'''
+            pieces.append(f'''<div class="piece">
+<a class="piece-img" href="{first}" tabindex="-1" aria-hidden="true">{img}</a>
+<div class="piece-text">{text}</div>
+</div>''')
+        m = e.get("mood") or {}
+        mood = (f'<figure class="mood"><img src="{p}assets/img/{m["file"]}" alt="{html_lib.escape(m.get("alt", ""), quote=True)}" '
+                f'style="object-position:{m.get("pos", "center")}" loading="lazy"><figcaption>Mood image</figcaption></figure>'
+                if m.get("file") else '<figure class="mood" aria-hidden="true"></figure>')
+        boards.append(f'''<div class="board">
+<div class="board-head"><h3>{e["title"]}</h3><p>{e.get("intro", "")}</p></div>
+{mood}
+<div class="pieces">{"".join(pieces)}</div>
+</div>''')
+    return f'''<section class="edits wrap" aria-label="Shop the edit">
+<div class="shop-head"><h2>Shop the edit</h2><span class="label">Affiliate links &middot; we may earn a small commission</span></div>
+{"".join(boards)}</section>'''
+
 def card(a, depth):
     p = rel(depth)
     return f"""<a class="card" href="{p}journal/{a['slug']}.html">
@@ -350,7 +417,7 @@ def build():
         g = group_of(a)
         others = [o for o in ARTICLES if o["slug"] != a["slug"]][:3]
         more = "\n".join(card(o, 1) for o in others)
-        shop = shop_block(a.get("products"))
+        shop = edit_boards(a.get("edits"), 1) + shop_block(a.get("products"))
         has_aff = bool(shop) or any(is_affiliate(u) for u in re.findall(r'href="([^"]+)"', a["body"]))
         notice = f'<div class="wrap narrow"><p class="disclose">{DISCLOSURE_SHORT}</p></div>' if has_aff else ""
         body = f"""<article>
