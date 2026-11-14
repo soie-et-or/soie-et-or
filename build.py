@@ -140,11 +140,15 @@ img{max-width:100%;display:block}
 .piece-img img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;padding:8px;box-sizing:border-box}
 .piece-img .word{position:absolute;left:12px;bottom:10px;font:italic 400 20px/1 var(--display);color:var(--ink)}
 .piece .label{font-size:11px}
-.piece-name{font:400 18px/1.3 var(--display);color:var(--ink)}
-.piece-price{font-size:13px;color:var(--muted)}
-.piece-shop{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px}
-.piece-shop a{font-size:12px;letter-spacing:.12em;text-transform:uppercase;text-decoration:none;color:var(--ink);border:1px solid var(--ink);padding:0 12px;min-height:44px;box-sizing:border-box;display:inline-flex;align-items:center}
-.piece-shop a:hover{background:var(--ink);color:#fff}
+.piece-name{font:400 18px/1.3 var(--display);color:var(--ink);text-decoration:none}
+.piece-name:hover{text-decoration:underline;text-underline-offset:3px}
+.piece-shop{font-size:13px;color:var(--muted)}
+.piece-regions{font-size:12px;letter-spacing:.08em;color:var(--muted);margin-top:4px}
+.piece-regions a{color:var(--ink);text-decoration:underline;text-underline-offset:3px;text-decoration-color:var(--line);display:inline-block;padding:10px 2px}
+.piece-regions a:hover{text-decoration-color:var(--ink)}
+.piece-img img{transition:transform .4s ease}
+.piece:hover .piece-img img{transform:scale(1.03)}
+@media (prefers-reduced-motion:reduce){.piece-img img{transition:none}.piece:hover .piece-img img{transform:none}}
 @media (max-width:760px){.board{grid-template-columns:1fr}.mood{aspect-ratio:4/3}.piece{grid-template-columns:104px minmax(0,1fr);gap:14px}}
 .product:hover .product-name{text-decoration:underline;text-underline-offset:3px}
 .prose{color:var(--body-ink)}
@@ -303,33 +307,38 @@ def shop_block(products):
 
 TYPE_WORD = {"necklace": "Collier", "ring": "Bague", "bracelet": "Bracelet"}
 
+DEFAULT_REGION = "eu"   # where a click on the photo or name goes: "eu" (EU/UK programme) or "us"
+
 def edit_boards(edits, depth):
-    """Themed edit boards: a mood photo plus three pieces (necklace, ring, bracelet),
-    each with an EU/UK and a US affiliate link. Product images come unaltered from the
-    retailer's catalogue; the mood photo is our own or Pexels/Unsplash and is captioned
-    as a mood image so it is never presented as the products."""
+    """Themed edit boards: a mood photo plus three pieces (necklace, ring, bracelet).
+    No prices (they change; a stale price would misstate the product). The photo and
+    name link to the default region; a small line offers EU / UK and US. Product images
+    come unaltered from the retailer's catalogue; the mood photo is our own or
+    Pexels/Unsplash and is captioned as a mood image, never presented as the products."""
     if not edits:
         return ""
     p = rel(depth)
     boards = []
     for e in edits:
         pieces = []
-        for i, pr in enumerate(e["products"]):
+        for pr in e["products"]:
             alt = html_lib.escape(f'{pr["brand"]} {pr["name"]}', quote=True)
             img = (f'<img src="{pr["image"]}" alt="{alt}" loading="lazy">' if pr.get("image")
                    else f'<span class="word">{TYPE_WORD.get(pr.get("type", ""), "Shop")}</span>')
-            first = pr.get("url_eu") or pr.get("url_us") or "#"
-            prices = " &middot; ".join(x for x in (pr.get("price_eu"), pr.get("price_us")) if x)
-            shops = []
-            if pr.get("url_eu"): shops.append(f'<a href="{pr["url_eu"]}" aria-label="Shop {alt} in Europe and the UK">Shop EU / UK</a>')
-            if pr.get("url_us"): shops.append(f'<a href="{pr["url_us"]}" aria-label="Shop {alt} in the US">Shop US</a>')
-            text = f'''<span class="label">{pr["type"].capitalize()} &middot; {pr["brand"]}</span>
-<span class="piece-name">{pr["name"]}</span>
-<span class="piece-price">{prices}{" at " + pr.get("shop", "Mytheresa") if prices else "At " + pr.get("shop", "Mytheresa")}</span>
-<div class="piece-shop">{"".join(shops)}</div>'''
+            urls = {"eu": pr.get("url_eu"), "us": pr.get("url_us")}
+            main = urls.get(DEFAULT_REGION) or urls["eu"] or urls["us"] or "#"
+            regions = []
+            if urls["eu"]: regions.append(f'<a href="{urls["eu"]}" aria-label="Discover {alt} in Europe and the UK">EU / UK</a>')
+            if urls["us"]: regions.append(f'<a href="{urls["us"]}" aria-label="Discover {alt} in the US">US</a>')
+            shop = pr.get("shop", "Mytheresa")
             pieces.append(f'''<div class="piece">
-<a class="piece-img" href="{first}" tabindex="-1" aria-hidden="true">{img}</a>
-<div class="piece-text">{text}</div>
+<a class="piece-img" href="{main}" tabindex="-1" aria-hidden="true">{img}</a>
+<div class="piece-text">
+<span class="label">{pr["type"].capitalize()} &middot; {pr["brand"]}</span>
+<a class="piece-name" href="{main}">{pr["name"]}</a>
+<span class="piece-shop">at {shop}</span>
+<span class="piece-regions">Discover &mdash; {" &middot; ".join(regions)}</span>
+</div>
 </div>''')
         m = e.get("mood") or {}
         mood = (f'<figure class="mood"><img src="{p}assets/img/{m["file"]}" alt="{html_lib.escape(m.get("alt", ""), quote=True)}" '
@@ -340,8 +349,8 @@ def edit_boards(edits, depth):
 {mood}
 <div class="pieces">{"".join(pieces)}</div>
 </div>''')
-    return f'''<section class="edits wrap" aria-label="Shop the edit">
-<div class="shop-head"><h2>Shop the edit</h2><span class="label">Affiliate links &middot; we may earn a small commission</span></div>
+    return f'''<section class="edits wrap" aria-label="The edit">
+<div class="shop-head"><h2>The Edit</h2><span class="label">Affiliate links &middot; we may earn a small commission</span></div>
 {"".join(boards)}</section>'''
 
 def card(a, depth):
