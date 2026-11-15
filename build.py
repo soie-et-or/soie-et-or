@@ -49,10 +49,22 @@ img{max-width:100%;display:block}
 .nav.right{justify-content:flex-end}
 .nav a{font:500 11px/1 var(--body);letter-spacing:.22em;text-transform:uppercase;text-decoration:none;color:var(--ink);padding-block:6px}
 .nav a[aria-current]{border-bottom:1px solid var(--gold)}
+.nav-item{position:relative}
+.dropdown{position:absolute;top:100%;left:-18px;z-index:20;min-width:280px;max-width:340px;background:var(--white);border:1px solid var(--line);box-shadow:0 12px 32px rgba(14,14,14,.08);padding:14px 18px 16px;opacity:0;visibility:hidden;transform:translateY(4px);transition:opacity .2s ease,transform .2s ease,visibility .2s}
+.nav.right .dropdown{left:auto;right:-18px}
+.nav-item:hover .dropdown,.nav-item:focus-within .dropdown{opacity:1;visibility:visible;transform:none}
+.dropdown ul{list-style:none;margin:0;padding:0}
+.dropdown li{border-bottom:1px solid var(--line)}
+.dropdown li:last-child{border-bottom:0}
+.nav .dropdown a{display:block;font:400 16px/1.3 var(--display);letter-spacing:0;text-transform:none;padding:11px 0;color:var(--ink);border:0}
+.nav .dropdown a:hover{text-decoration:underline;text-underline-offset:3px}
+.nav .dropdown a.dropdown-all{font:500 11px/1 var(--body);letter-spacing:.22em;text-transform:uppercase;padding:14px 0 2px;color:var(--muted)}
+@media (prefers-reduced-motion:reduce){.dropdown{transition:none}}
 @media (max-width:820px){
   .top .wrap{grid-template-columns:1fr;justify-items:center;gap:14px}
   .top .logo{order:-1;font-size:20px}
   .nav,.nav.right{justify-content:center;gap:20px}
+  .dropdown{display:none}
 }
 
 /* tiles stand in for photography until product images arrive from the affiliate feeds */
@@ -248,8 +260,14 @@ def shell(title, desc, body, depth, current="", canonical="", image=None, articl
     verify = (f'<meta name="p:domain_verify" content="{SITE["pinterest_verify"]}">' if SITE["pinterest_verify"]
               else '<!-- Pinterest: set pinterest_verify in content.py to add the p:domain_verify tag -->')
     def a(href, label, key):
+        """Section link with a dropdown of its articles (desktop: on hover or keyboard focus; hidden on phones)."""
         cur = ' aria-current="page"' if key == current else ""
-        return f'<a href="{p}{href}"{cur}>{label}</a>'
+        arts = [x for x in ARTICLES if group_of(x) == key]
+        if not arts:
+            return f'<a href="{p}{href}"{cur}>{label}</a>'
+        links = "".join(f'<li><a href="{p}journal/{x["slug"]}.html">{x["title"]}</a></li>' for x in arts)
+        return (f'<div class="nav-item"><a href="{p}{href}"{cur}>{label}</a>'
+                f'<div class="dropdown"><ul>{links}</ul><a class="dropdown-all" href="{p}{href}">All {label.lower()}</a></div></div>')
     html = f"""<!doctype html>
 <html lang="en">
 <head>
