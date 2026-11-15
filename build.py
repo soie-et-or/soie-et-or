@@ -128,10 +128,17 @@ html{scroll-behavior:smooth}
 .strip-row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
 .home-strip{padding-bottom:64px}
 .home-strip .strip-row{grid-template-columns:repeat(3,minmax(0,240px))}
-.strip-row a{display:flex;flex-direction:column;gap:8px;text-decoration:none;color:var(--ink);font:400 16px/1.25 var(--display)}
-.strip-img{display:block;aspect-ratio:1/1;background:#fff;border:1px solid var(--line);position:relative;overflow:hidden}
-.strip-img img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;padding:6px;box-sizing:border-box}
-.strip-row a:hover span:last-child{text-decoration:underline;text-underline-offset:3px}
+.strip-tile{display:flex;flex-direction:column;gap:8px;min-width:0}
+.strip-title{text-decoration:none;color:var(--ink);font:400 16px/1.25 var(--display);padding-block:4px}
+.strip-title:hover{text-decoration:underline;text-underline-offset:3px}
+.collage{display:grid;aspect-ratio:1/1;gap:2px;background:var(--line);border:1px solid var(--line)}
+.collage a{display:block;background:#fff;position:relative;overflow:hidden;min-height:0}
+.collage img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;padding:6%;box-sizing:border-box;transition:transform .4s ease}
+.collage a:hover img{transform:scale(1.05)}
+.collage.c3{grid-template-columns:2fr 1fr;grid-template-rows:1fr 1fr}
+.collage.c3 a:first-child{grid-row:1/3}
+.collage.c2{grid-template-columns:1fr 1fr}
+@media (prefers-reduced-motion:reduce){.collage img{transition:none}.collage a:hover img{transform:none}}
 .board{background:var(--silk);margin-block:40px;scroll-margin-top:24px}
 .board-in{display:grid;grid-template-columns:minmax(0,4fr) minmax(0,8fr);grid-template-areas:"text rail" "story rail";grid-template-rows:auto 1fr;column-gap:48px;row-gap:18px;padding-block:44px;align-items:start}
 .board-text{grid-area:text;display:flex;flex-direction:column;gap:8px}
@@ -170,7 +177,7 @@ html{scroll-behavior:smooth}
 .board-rail::-webkit-scrollbar{display:none}
 .piece{flex:0 0 68%;scroll-snap-align:start}
 .strip-row{gap:10px}
-.strip-row a{font-size:14px}
+.strip-title{font-size:14px}
 }
 .product:hover .product-name{text-decoration:underline;text-underline-offset:3px}
 .prose{color:var(--body-ink)}
@@ -366,14 +373,21 @@ def edit_board(e, story_href=""):
 </div></section>'''
 
 def edit_strip(edits, heading="The Edit in this story", base="", narrow=True):
-    """'The Edit in this story': small thumbnails near the top that jump to each board."""
+    """Near the top: one tile per edit. Each tile is a small collage of the edit's own product photos,
+    laid out side by side in HTML (the images themselves are not altered or merged). Each photo links
+    to that piece at the retailer; the title jumps to the board."""
     if not edits:
         return ""
     items = []
     for e in edits:
-        first = next((pr for pr in e["products"] if pr.get("image")), None)
-        img = f'<img src="{first["image"]}" alt="" loading="lazy">' if first else ""
-        items.append(f'<a href="{base}#{edit_id(e)}"><span class="strip-img">{img}</span><span>{e["title"]}</span></a>')
+        shots = [pr for pr in e["products"] if pr.get("image")][:3]
+        cells = []
+        for pr in shots:
+            url = pr.get(f"url_{DEFAULT_REGION}") or pr.get("url_eu") or pr.get("url_us")
+            alt = html_lib.escape(f'{pr["brand"]} {pr["name"]}', quote=True)
+            cells.append(f'<a href="{url}" {AFF_ATTRS} title="{alt}"><img src="{pr["image"]}" alt="{alt}" loading="lazy"></a>')
+        items.append(f'''<div class="strip-tile"><div class="collage c{len(cells)}">{"".join(cells)}</div>
+<a class="strip-title" href="{base}#{edit_id(e)}">{e["title"]} <span aria-hidden="true">&darr;</span></a></div>''')
     return f'''<nav class="wrap{" narrow" if narrow else ""} edit-strip" aria-label="{heading}">
 <span class="label">{heading}</span><div class="strip-row">{"".join(items)}</div></nav>'''
 
@@ -438,7 +452,7 @@ def build():
     home_edit = ""
     if all_edits:
         home_edit = (f'''<section class="wrap sec home-edit" style="padding-bottom:0"><div class="sec-head"><h2>The Edit</h2><a href="the-edit.html">See the edit</a></div>
-<p class="dek" style="margin:0 0 22px">Pieces we would choose ourselves, gathered by theme.</p></section>'''
+<p class="dek" style="margin:0 0 10px">Pieces we would choose ourselves, gathered by theme.</p><p class="disclose" style="text-align:left;margin:0 0 22px">{DISCLOSURE_SHORT}</p></section>'''
                      + edit_strip([e for _, e in all_edits], heading="Browse by theme", base="the-edit.html", narrow=False).replace('class="wrap edit-strip"', 'class="wrap edit-strip home-strip"'))
     home = f"""<section class="hero">
 {tile('Soie', img=SITE.get('hero_image'))}
