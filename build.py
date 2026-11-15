@@ -137,14 +137,15 @@ img{max-width:100%;display:block}
 html{scroll-behavior:smooth}
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
 .edit-strip{display:flex;flex-direction:column;gap:12px;padding-block:6px 26px}
-.strip-row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.strip-row{display:flex;gap:16px;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:10px;scrollbar-width:thin;scrollbar-color:var(--line) transparent}
+.strip-row .strip-tile{flex:0 0 230px;scroll-snap-align:start}
 .home-strip{padding-bottom:64px}
-.home-strip .strip-row{grid-template-columns:repeat(3,minmax(0,240px))}
+.home-strip .strip-row .strip-tile{flex-basis:250px}
 .strip-tile{display:flex;flex-direction:column;gap:8px;min-width:0}
 .strip-title{text-decoration:none;color:var(--ink);font:400 16px/1.25 var(--display);padding-block:4px}
 .strip-title:hover{text-decoration:underline;text-underline-offset:3px}
-.collage{display:grid;aspect-ratio:1/1;gap:2px;background:var(--line);border:1px solid var(--line)}
-.collage a{display:block;background:#fff;position:relative;overflow:hidden;min-height:0}
+.collage{display:grid;aspect-ratio:1/1;gap:3px;background:#fff}
+.collage a{display:block;background:#efefef;position:relative;overflow:hidden;min-height:0}
 .collage img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;padding:6%;box-sizing:border-box;transition:transform .4s ease}
 .collage a:hover img{transform:scale(1.05)}
 .collage.c3{grid-template-columns:2fr 1fr;grid-template-rows:1fr 1fr}
@@ -199,7 +200,8 @@ html{scroll-behavior:smooth}
 .board-rail{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;gap:14px;margin-inline:calc(-1 * max(20px,env(safe-area-inset-left,0px)));padding-inline:max(20px,env(safe-area-inset-left,0px));scroll-padding-inline:max(20px,env(safe-area-inset-left,0px));-webkit-overflow-scrolling:touch;scrollbar-width:none}
 .board-rail::-webkit-scrollbar{display:none}
 .piece{flex:0 0 68%;scroll-snap-align:start}
-.strip-row{gap:10px}
+.strip-row{gap:12px}
+.strip-row .strip-tile{flex-basis:62%}
 .strip-title{font-size:14px}
 }
 .product:hover .product-name{text-decoration:underline;text-underline-offset:3px}
