@@ -145,6 +145,9 @@ html{scroll-behavior:smooth}
 .strip-tile{display:flex;flex-direction:column;gap:8px;min-width:0}
 .strip-title{text-decoration:none;color:var(--ink);font:400 16px/1.25 var(--display);padding-block:4px}
 .strip-title:hover{text-decoration:underline;text-underline-offset:3px}
+.strip-title .down{color:var(--gold);margin-left:6px;vertical-align:-1px;transition:transform .25s ease}
+.strip-title:hover .down{transform:translateY(2px)}
+@media (prefers-reduced-motion:reduce){.strip-title .down{transition:none}.strip-title:hover .down{transform:none}}
 .collage{display:grid;aspect-ratio:1/1;gap:3px;background:#fff}
 .collage a{display:block;background:#efefef;position:relative;overflow:hidden;min-height:0}
 .collage img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;padding:6%;box-sizing:border-box;transition:transform .4s ease}
@@ -426,7 +429,7 @@ def edit_strip(edits, heading="The Edit in this story", base="", narrow=True):
             alt = html_lib.escape(f'{pr["brand"]} {pr["name"]}', quote=True)
             cells.append(f'<a href="{url}" {AFF_ATTRS} title="{alt}"><img src="{pr["image"]}" alt="{alt}" loading="lazy"></a>')
         items.append(f'''<div class="strip-tile"><div class="collage c{len(cells)}">{"".join(cells)}</div>
-<a class="strip-title" href="{base}#{edit_id(e)}">{e["title"]}{"" if base else ' <span aria-hidden="true">&darr;</span>'}</a></div>''')
+<a class="strip-title" href="{base}#{edit_id(e)}">{e["title"]}{"" if base else ' <svg class="down" width="9" height="14" viewBox="0 0 9 14" aria-hidden="true"><path d="M4.5 0.5v12.2M0.8 9l3.7 3.7L8.2 9" fill="none" stroke="currentColor" stroke-width="1"/></svg>'}</a></div>''')
     return f'''<nav class="wrap{" narrow" if narrow else ""} edit-strip" aria-label="{heading}">
 <span class="label">{heading}</span><div class="strip-row">{"".join(items)}</div></nav>'''
 
