@@ -116,6 +116,7 @@ html{scroll-behavior:smooth}
 .edit-strip{display:flex;flex-direction:column;gap:12px;padding-block:6px 26px}
 .strip-row{display:flex;gap:16px;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:10px;scrollbar-width:thin;scrollbar-color:var(--line) transparent}
 .strip-row .strip-tile{flex:0 0 230px;scroll-snap-align:start}
+@media (min-width:761px){.edit-strip.narrow .strip-tile{flex-basis:calc((100% - 32px) / 3)}}
 .home-strip{padding-bottom:64px}
 .home-strip .strip-row .strip-tile{flex-basis:250px}
 .strip-tile{display:flex;flex-direction:column;gap:8px;min-width:0}
