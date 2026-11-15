@@ -129,6 +129,7 @@ img{max-width:100%;display:block}
 .board-head h3{font:400 26px/1.2 var(--display);margin:0;color:var(--ink)}
 .board-head h3 i{font-style:italic}
 .board-head p{margin:0;color:var(--muted);font-size:15px;line-height:1.6}
+.board-head .board-story{color:var(--ink);font:italic 400 17px/1.55 var(--display);margin-top:6px}
 .mood{margin:0;position:relative;aspect-ratio:5/6;background:var(--silk);overflow:hidden}
 .mood img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 .mood figcaption{position:absolute;left:12px;bottom:12px;background:rgba(255,255,255,.92);color:var(--muted);font-size:11px;letter-spacing:.14em;text-transform:uppercase;padding:6px 10px}
@@ -307,6 +308,7 @@ def shop_block(products):
 
 TYPE_WORD = {"necklace": "Collier", "ring": "Bague", "bracelet": "Bracelet"}
 
+AFF_ATTRS = 'rel="sponsored nofollow noopener" target="_blank"'
 DEFAULT_REGION = "eu"   # where a click on the photo or name goes: "eu" (EU/UK programme) or "us"
 
 def edit_boards(edits, depth):
@@ -328,14 +330,14 @@ def edit_boards(edits, depth):
             urls = {"eu": pr.get("url_eu"), "us": pr.get("url_us")}
             main = urls.get(DEFAULT_REGION) or urls["eu"] or urls["us"] or "#"
             regions = []
-            if urls["eu"]: regions.append(f'<a href="{urls["eu"]}" aria-label="Discover {alt} in Europe and the UK">EU / UK</a>')
-            if urls["us"]: regions.append(f'<a href="{urls["us"]}" aria-label="Discover {alt} in the US">US</a>')
+            if urls["eu"]: regions.append(f'<a href="{urls["eu"]}" {AFF_ATTRS} aria-label="Discover {alt} in Europe and the UK">EU / UK</a>')
+            if urls["us"]: regions.append(f'<a href="{urls["us"]}" {AFF_ATTRS} aria-label="Discover {alt} in the US">US</a>')
             shop = pr.get("shop", "Mytheresa")
             pieces.append(f'''<div class="piece">
-<a class="piece-img" href="{main}" tabindex="-1" aria-hidden="true">{img}</a>
+<a class="piece-img" href="{main}" {AFF_ATTRS} tabindex="-1" aria-hidden="true">{img}</a>
 <div class="piece-text">
 <span class="label">{pr["type"].capitalize()} &middot; {pr["brand"]}</span>
-<a class="piece-name" href="{main}">{pr["name"]}</a>
+<a class="piece-name" href="{main}" {AFF_ATTRS}>{pr["name"]}</a>
 <span class="piece-shop">at {shop}</span>
 <span class="piece-regions">Discover &mdash; {" &middot; ".join(regions)}</span>
 </div>
@@ -345,7 +347,7 @@ def edit_boards(edits, depth):
                 f'style="object-position:{m.get("pos", "center")}" loading="lazy"><figcaption>Mood image</figcaption></figure>'
                 if m.get("file") else '<figure class="mood" aria-hidden="true"></figure>')
         boards.append(f'''<div class="board">
-<div class="board-head"><h3>{e["title"]}</h3><p>{e.get("intro", "")}</p></div>
+<div class="board-head"><h3>{e["title"]}</h3><p>{e.get("intro", "")}</p>{"<p class=\"board-story\">" + e["story"] + "</p>" if e.get("story") else ""}</div>
 {mood}
 <div class="pieces">{"".join(pieces)}</div>
 </div>''')
