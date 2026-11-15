@@ -139,6 +139,14 @@ html{scroll-behavior:smooth}
 .board-story{grid-area:story;margin:0;color:var(--muted);font:italic 400 16px/1.6 var(--display)}
 .board-rail{grid-area:rail;display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:28px 20px}
 .piece{display:flex;flex-direction:column;gap:5px;min-width:0}
+@media (min-width:761px){
+.board-rail.n3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.board-rail.n4{grid-template-columns:repeat(4,minmax(0,1fr))}
+.board-rail.n5{grid-template-columns:repeat(6,minmax(0,1fr))}
+.board-rail.n5 .piece{grid-column:span 2}
+.board-rail.n5 .piece:nth-child(4){grid-column:2/4}
+.board-rail.n5 .piece:nth-child(5){grid-column:4/6}
+}
 .piece-img{display:block;aspect-ratio:1/1;background:#fff;position:relative;overflow:hidden;margin-bottom:8px}
 .piece-img img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;padding:10px;box-sizing:border-box;transition:transform .4s ease}
 .piece:hover .piece-img img{transform:scale(1.03)}
@@ -350,7 +358,7 @@ def edit_board(e):
     return f'''<section class="board" id="{edit_id(e)}" aria-label="{html_lib.escape(e["title"], quote=True)}">
 <div class="wrap board-in">
 <div class="board-text"><span class="label">The Edit &middot; affiliate links</span><h2>{e["title"]}</h2><p class="board-intro">{e.get("intro", "")}</p></div>
-<div class="board-rail" role="list" aria-label="{n} pieces">{"".join(cards)}</div>
+<div class="board-rail n{n}" role="list" aria-label="{n} pieces">{"".join(cards)}</div>
 {story}
 </div></section>'''
 
