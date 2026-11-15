@@ -126,6 +126,8 @@ html{scroll-behavior:smooth}
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
 .edit-strip{display:flex;flex-direction:column;gap:12px;padding-block:6px 26px}
 .strip-row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.home-strip{padding-bottom:64px}
+.home-strip .strip-row{grid-template-columns:repeat(3,minmax(0,240px))}
 .strip-row a{display:flex;flex-direction:column;gap:8px;text-decoration:none;color:var(--ink);font:400 16px/1.25 var(--display)}
 .strip-img{display:block;aspect-ratio:1/1;background:#fff;border:1px solid var(--line);position:relative;overflow:hidden}
 .strip-img img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;padding:6px;box-sizing:border-box}
@@ -135,6 +137,7 @@ html{scroll-behavior:smooth}
 .board-text{grid-area:text;display:flex;flex-direction:column;gap:8px}
 .board-text .label{font-size:11px}
 .board-text h2{font:400 32px/1.15 var(--display);margin:0;color:var(--ink)}
+.board-more{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink);text-underline-offset:4px;margin-top:6px;padding-block:8px}
 .board-intro{margin:0;color:var(--body-ink);font-size:16px;line-height:1.6}
 .board-story{grid-area:story;margin:0;color:var(--muted);font:italic 400 16px/1.6 var(--display)}
 .board-rail{grid-area:rail;display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:28px 20px}
@@ -269,7 +272,7 @@ def shell(title, desc, body, depth, current="", canonical="", image=None, articl
 </main>
 <footer><div class="wrap">
 <div class="foot-row"><a class="logo" href="{p}index.html">SOIE ET OR</a>
-<nav class="nav" aria-label="Footer"><a href="{p}journal/index.html">Journal</a><a href="{p}about.html">About</a><a href="{p}affiliate-disclosure.html">Affiliate disclosure</a><a href="{p}privacy.html">Privacy</a><a href="{p}terms.html">Terms</a><a href="{p}contact.html">Contact</a><a href="{SITE['pinterest']}" rel="noopener">Pinterest</a></nav></div>
+<nav class="nav" aria-label="Footer"><a href="{p}the-edit.html">The Edit</a><a href="{p}journal/index.html">Journal</a><a href="{p}about.html">About</a><a href="{p}affiliate-disclosure.html">Affiliate disclosure</a><a href="{p}privacy.html">Privacy</a><a href="{p}terms.html">Terms</a><a href="{p}contact.html">Contact</a><a href="{SITE['pinterest']}" rel="noopener">Pinterest</a></nav></div>
 <hr class="gold-rule">
 <p class="foot-note">Soie et Or is an independent editorial site. Some links are affiliate links: we may earn a commission when you buy, at no extra cost to you. Brand names belong to their owners; we are not affiliated with or endorsed by the brands we write about.</p>
 <p class="foot-note">&copy; 2026 Soie et Or &middot; {SITE['domain']}</p>
@@ -332,7 +335,7 @@ DEFAULT_REGION = "eu"   # where a click on the photo or name goes: "eu" (EU/UK p
 def edit_id(e):
     return "edit-" + re.sub(r"[^a-z0-9]+", "-", e["title"].lower()).strip("-")
 
-def edit_board(e):
+def edit_board(e, story_href=""):
     """One themed board, full width between the article's paragraphs: text on the left,
     the pieces on the right (desktop) or as a swipeable row (phone). No prices (they change);
     product images come unaltered from the retailer's catalogue."""
@@ -357,12 +360,12 @@ def edit_board(e):
     n = len(e["products"])
     return f'''<section class="board" id="{edit_id(e)}" aria-label="{html_lib.escape(e["title"], quote=True)}">
 <div class="wrap board-in">
-<div class="board-text"><span class="label">The Edit &middot; affiliate links</span><h2>{e["title"]}</h2><p class="board-intro">{e.get("intro", "")}</p></div>
+<div class="board-text"><span class="label">The Edit &middot; affiliate links</span><h2>{e["title"]}</h2><p class="board-intro">{e.get("intro", "")}</p>{f'<a class="board-more" href="{story_href}">Read the story &rarr;</a>' if story_href else ""}</div>
 <div class="board-rail n{n}" role="list" aria-label="{n} pieces">{"".join(cards)}</div>
 {story}
 </div></section>'''
 
-def edit_strip(edits):
+def edit_strip(edits, heading="The Edit in this story", base="", narrow=True):
     """'The Edit in this story': small thumbnails near the top that jump to each board."""
     if not edits:
         return ""
@@ -370,9 +373,9 @@ def edit_strip(edits):
     for e in edits:
         first = next((pr for pr in e["products"] if pr.get("image")), None)
         img = f'<img src="{first["image"]}" alt="" loading="lazy">' if first else ""
-        items.append(f'<a href="#{edit_id(e)}"><span class="strip-img">{img}</span><span>{e["title"]}</span></a>')
-    return f'''<nav class="wrap narrow edit-strip" aria-label="The Edit in this story">
-<span class="label">The Edit in this story</span><div class="strip-row">{"".join(items)}</div></nav>'''
+        items.append(f'<a href="{base}#{edit_id(e)}"><span class="strip-img">{img}</span><span>{e["title"]}</span></a>')
+    return f'''<nav class="wrap{" narrow" if narrow else ""} edit-strip" aria-label="{heading}">
+<span class="label">{heading}</span><div class="strip-row">{"".join(items)}</div></nav>'''
 
 def body_with_edits(body, edits):
     """Place each board right after the section whose <h2> matches its "after" (else at the end)."""
@@ -431,6 +434,12 @@ def build():
 
     lead, rest = ARTICLES[0], ARTICLES[1:]
     row = "\n".join(card(a, 0) for a in rest[:4])
+    all_edits = [(a, e) for a in ARTICLES for e in (a.get("edits") or [])]
+    home_edit = ""
+    if all_edits:
+        home_edit = (f'''<section class="wrap sec home-edit" style="padding-bottom:0"><div class="sec-head"><h2>The Edit</h2><a href="the-edit.html">See the edit</a></div>
+<p class="dek" style="margin:0 0 22px">Pieces we would choose ourselves, gathered by theme.</p></section>'''
+                     + edit_strip([e for _, e in all_edits], heading="Browse by theme", base="the-edit.html", narrow=False).replace('class="wrap edit-strip"', 'class="wrap edit-strip home-strip"'))
     home = f"""<section class="hero">
 {tile('Soie', img=SITE.get('hero_image'))}
 <div class="copy">
@@ -452,6 +461,7 @@ def build():
 <a class="pillar" href="boots.html"><span class="label">Bottes</span><h3>Boots</h3><p>Ankle, riding and heeled boots that see you through every winter.</p></a>
 <a class="pillar" href="travel.html"><span class="label">Voyage</span><h3>Chic travel</h3><p>One good bag, a few pieces that all combine, sunglasses and a cap.</p></a>
 </section>
+{home_edit}
 """
     write("index.html", shell(f"{SITE['name']} · Quiet Parisian style, in silk and gold",
         "An edit of quiet Parisian luxury: ready-to-wear, fine jewelry and watches worth keeping.", home, 0, "", ""))
@@ -485,6 +495,13 @@ def build():
         body = mark_affiliate_links(body)
         write(f"journal/{a['slug']}.html", shell(f"{a['title']} · {SITE['name']}", a["dek"], body, 1, g, f"journal/{a['slug']}.html", image=a.get("image"), article=a))
 
+    if all_edits:
+        boards = "\n".join(edit_board(e, f"journal/{a['slug']}.html") for a, e in all_edits)
+        eb = (head_block("The Edit", "The Edit", "Pieces we would choose ourselves. Each edit belongs to a story; read it there, or browse them all here.")
+              + f'<div class="wrap narrow"><p class="disclose">{DISCLOSURE_SHORT}</p></div>'
+              + edit_strip([e for _, e in all_edits], heading="The edits") + boards)
+        write("the-edit.html", shell(f"The Edit · {SITE['name']}", "Fine jewelry and pieces worth keeping, gathered by theme by the editor of Soie et Or.", mark_affiliate_links(eb), 0, "", "the-edit.html"))
+
     simple_page("about.html", "About Soie et Or", "About", ABOUT, "about")
     simple_page("contact.html", "Contact", "Contact", CONTACT)
     simple_page("affiliate-disclosure.html", "Affiliate disclosure", "Transparency", DISCLOSURE)
@@ -495,7 +512,7 @@ def build():
     write("404.html", shell(f"Page not found · {SITE['name']}", "Page not found", nf, 0, "", "404.html"))
 
     urls = ["", "clothing.html", "lingerie.html", "boots.html", "jewelry.html", "watches.html", "travel.html", "journal/", "about.html", "contact.html",
-            "affiliate-disclosure.html", "privacy.html", "terms.html"] + [f"journal/{a['slug']}.html" for a in ARTICLES]
+            "affiliate-disclosure.html", "privacy.html", "terms.html", "the-edit.html"] + [f"journal/{a['slug']}.html" for a in ARTICLES]
     sm = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + \
          "\n".join(f"  <url><loc>{SITE['url']}/{u}</loc></url>" for u in urls) + "\n</urlset>\n"
     write("sitemap.xml", sm)
