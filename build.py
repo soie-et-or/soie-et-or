@@ -172,6 +172,7 @@ html{scroll-behavior:smooth}
 .board-rail.n3{grid-template-columns:repeat(3,minmax(0,1fr))}
 .board-rail.n4{grid-template-columns:repeat(4,minmax(0,1fr))}
 .board-rail.n5{grid-template-columns:repeat(6,minmax(0,1fr))}
+.board-rail.n6{grid-template-columns:repeat(3,minmax(0,1fr))}
 .board-rail.n5 .piece{grid-column:span 2}
 .board-rail.n5 .piece:nth-child(4){grid-column:2/4}
 .board-rail.n5 .piece:nth-child(5){grid-column:4/6}
@@ -185,8 +186,8 @@ html{scroll-behavior:smooth}
 .piece-name{font:400 17px/1.3 var(--display);color:var(--ink);text-decoration:none}
 .piece-name:hover{text-decoration:underline;text-underline-offset:3px}
 .piece-shop{font-size:13px;color:var(--muted)}
-.gift-note{display:grid;grid-template-columns:auto 1fr;gap:4px 10px;margin:8px 0 2px;font-size:13px;line-height:1.45}
-.gift-note dt{font:500 10px/1.9 var(--body);letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}
+.gift-note{display:flex;flex-direction:column;gap:2px;margin:10px 0 2px;font-size:13.5px;line-height:1.45;border-top:1px solid var(--line);padding-top:10px}
+.gift-note dt{margin-top:6px;font:500 10px/1.6 var(--body);letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}
 .gift-note dd{margin:0;color:var(--body-ink)}
 .piece-regions{font-size:12px;letter-spacing:.08em;color:var(--muted)}
 .piece-regions a{color:var(--ink);text-decoration:underline;text-underline-offset:3px;text-decoration-color:#bdb7b0;display:inline-block;padding:10px 2px}
