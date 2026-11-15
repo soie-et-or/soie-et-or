@@ -88,6 +88,7 @@ ARTICLES = [
 <h2>Start with one signature piece</h2>
 <p>Rather than collecting many small trinkets, choose one piece that you will wear daily and that feels like yours. A sculptural ring, a chain with some weight, or a watch you love. Over time it becomes part of how people recognise you.</p>
 <p>Pomellato, founded in Milan in 1967, built its reputation on this idea: fine jewelry meant to be worn, not kept in a safe. Its Nudo ring, a coloured gemstone held in a clean gold setting, is a good example of a piece that works with a T-shirt as easily as with a dress.</p>
+<p>Buying that first piece while gold is this expensive? <a href="/journal/buying-gold-jewelry-high-prices.html">One Good Piece</a> explains what to look for.</p>
 <h2>Gold and knitwear</h2>
 <p>Gold looks warmest against texture. A chain over a fine turtleneck, rings against a chunky cream cable knit, a gold watch peeking out of a cashmere cuff. Keep the knit in a quiet colour so the metal does the talking: ecru, camel, grey, navy or black.</p>
 <h2>Gold and denim</h2>

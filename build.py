@@ -151,6 +151,13 @@ html{scroll-behavior:smooth}
 .collage.c3 a:first-child{grid-row:1/3}
 .collage.c2{grid-template-columns:1fr 1fr}
 @media (prefers-reduced-motion:reduce){.collage img{transition:none}.collage a:hover img{transform:none}}
+.rail-sec{border-top:1px solid var(--line);padding-block:44px 52px;margin-top:40px}
+.rail-sec .sec-head{margin-bottom:4px}
+.rail-note{margin:0 0 22px;color:var(--muted);font-size:13px}
+.rail{display:flex;gap:20px;overflow-x:auto;scroll-snap-type:x mandatory;padding-inline:max(20px,calc((100vw - 1280px)/2 + 20px));scroll-padding-inline:max(20px,calc((100vw - 1280px)/2 + 20px));padding-bottom:12px;scrollbar-width:thin;scrollbar-color:var(--line) transparent}
+.rail .piece{flex:0 0 210px;scroll-snap-align:start}
+.rail .piece-img{background:var(--silk)}
+@media (max-width:760px){.rail{gap:14px}.rail .piece{flex-basis:62%}}
 .board{background:var(--silk);margin-block:40px;scroll-margin-top:24px}
 .board-in{display:grid;grid-template-columns:minmax(0,4fr) minmax(0,8fr);grid-template-areas:"text rail" "story rail";grid-template-rows:auto 1fr;column-gap:48px;row-gap:18px;padding-block:44px;align-items:start}
 .board-text{grid-area:text;display:flex;flex-direction:column;gap:8px}
@@ -409,6 +416,28 @@ def edit_strip(edits, heading="The Edit in this story", base="", narrow=True):
     return f'''<nav class="wrap{" narrow" if narrow else ""} edit-strip" aria-label="{heading}">
 <span class="label">{heading}</span><div class="strip-row">{"".join(items)}</div></nav>'''
 
+def edit_rail(current_slug, limit=10):
+    """'From The Edit' at the foot of an article: a swipeable row of pieces from the edits of *other*
+    articles, so every story ends with a few of the editor's picks."""
+    picks = [pr for a in ARTICLES if a["slug"] != current_slug for e in (a.get("edits") or [])
+             for pr in e["products"] if pr.get("image")][:limit]
+    if not picks:
+        return ""
+    cards = []
+    for pr in picks:
+        alt = html_lib.escape(f'{pr["brand"]} {pr["name"]}', quote=True)
+        url = pr.get(f"url_{DEFAULT_REGION}") or pr.get("url_eu") or pr.get("url_us")
+        cards.append(f'''<div class="piece" role="listitem">
+<a class="piece-img" href="{url}" {AFF_ATTRS} tabindex="-1" aria-hidden="true"><img src="{pr["image"]}" alt="{alt}" loading="lazy"></a>
+<span class="label">{pr["brand"]}</span>
+<a class="piece-name" href="{url}" {AFF_ATTRS}>{pr["name"]}</a>
+<span class="piece-shop">at {pr.get("shop", "Mytheresa")}</span>
+</div>''')
+    return f'''<section class="rail-sec" aria-label="From The Edit"><div class="wrap">
+<div class="sec-head"><h2>From The Edit</h2><a href="/the-edit.html">See all</a></div>
+<p class="rail-note">Other pieces we would choose ourselves &middot; affiliate links</p></div>
+<div class="rail" role="list">{"".join(cards)}</div></section>'''
+
 def body_with_edits(body, edits):
     """Place each board right after the section whose <h2> matches its "after" (else at the end)."""
     if not edits:
@@ -514,7 +543,8 @@ def build():
         others = [o for o in ARTICLES if o["slug"] != a["slug"]][:3]
         more = "\n".join(card(o, 1) for o in others)
         shop = shop_block(a.get("products"))
-        has_aff = bool(shop) or bool(a.get("edits")) or any(is_affiliate(u) for u in re.findall(r'href="([^"]+)"', a["body"]))
+        rail = edit_rail(a["slug"])
+        has_aff = bool(shop) or bool(rail) or bool(a.get("edits")) or any(is_affiliate(u) for u in re.findall(r'href="([^"]+)"', a["body"]))
         notice = f'<div class="wrap narrow"><p class="disclose">{DISCLOSURE_SHORT}</p></div>' if has_aff else ""
         body = f"""<article>
 {head_block(a['category'], a['title'], a['dek'], f"{a['date']} &middot; {a['read']} read", f"/{g}.html")}
@@ -522,7 +552,7 @@ def build():
 {edit_strip(a.get("edits"))}
 <div class="wrap">{tile(a['category'], 'hero-tile', img=a.get('image'), depth=1)}</div>
 {body_with_edits(a['body'], a.get("edits"))}
-{shop}</article>
+{shop}{rail}</article>
 <section class="wrap sec" style="border-top:1px solid var(--line)"><div class="sec-head"><h2>Keep reading</h2><a href="/journal/index.html">All articles</a></div><div class="grid">{more}</div></section>"""
         body = mark_affiliate_links(body)
         write(f"journal/{a['slug']}.html", shell(f"{a['title']} · {SITE['name']}", a["dek"], body, 1, g, f"journal/{a['slug']}.html", image=a.get("image"), article=a))
