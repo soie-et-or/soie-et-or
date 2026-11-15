@@ -122,39 +122,45 @@ img{max-width:100%;display:block}
 .product-img .word{font:italic 400 28px/1 var(--display);color:var(--ink)}
 .product-name{font:400 18px/1.3 var(--display)}
 .product-shop{font-size:13px;color:var(--muted)}
-.edits{padding-block:8px 64px}
-.board{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:28px;padding-block:32px;border-top:1px solid var(--line)}
-.board.no-mood{grid-template-columns:1fr}
-.board.no-mood .pieces{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));column-gap:32px}
-.board.no-mood .piece:nth-child(2){border-top:0;padding-top:0}
-@media (max-width:760px){.board.no-mood .pieces{display:flex}.board.no-mood .piece:nth-child(2){border-top:1px solid var(--line);padding-top:18px}}
-.board:first-of-type{border-top:0;padding-top:8px}
-.board-head{grid-column:1/-1;display:flex;flex-direction:column;gap:6px;max-width:640px}
-.board-head h3{font:400 26px/1.2 var(--display);margin:0;color:var(--ink)}
-.board-head h3 i{font-style:italic}
-.board-head p{margin:0;color:var(--muted);font-size:15px;line-height:1.6}
-.board-head .board-story{color:var(--ink);font:italic 400 17px/1.55 var(--display);margin-top:6px}
-.mood{margin:0;position:relative;aspect-ratio:5/6;background:var(--silk);overflow:hidden}
-.mood img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
-.mood figcaption{position:absolute;left:12px;bottom:12px;background:rgba(255,255,255,.92);color:var(--muted);font-size:11px;letter-spacing:.14em;text-transform:uppercase;padding:6px 10px}
-.pieces{display:flex;flex-direction:column;align-self:stretch}
-.piece{display:grid;grid-template-columns:150px minmax(0,1fr);gap:20px;align-items:center;padding-block:18px;border-top:1px solid var(--line);min-width:0}
-.piece:first-child{border-top:0;padding-top:0}
-.piece-text{display:flex;flex-direction:column;gap:5px;min-width:0}
-.piece-img{display:block;aspect-ratio:1/1;background:#fff;border:1px solid var(--line);position:relative;overflow:hidden}
-.piece-img img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;padding:8px;box-sizing:border-box}
-.piece-img .word{position:absolute;left:12px;bottom:10px;font:italic 400 20px/1 var(--display);color:var(--ink)}
-.piece .label{font-size:11px}
-.piece-name{font:400 18px/1.3 var(--display);color:var(--ink);text-decoration:none}
-.piece-name:hover{text-decoration:underline;text-underline-offset:3px}
-.piece-shop{font-size:13px;color:var(--muted)}
-.piece-regions{font-size:12px;letter-spacing:.08em;color:var(--muted);margin-top:4px}
-.piece-regions a{color:var(--ink);text-decoration:underline;text-underline-offset:3px;text-decoration-color:var(--line);display:inline-block;padding:10px 2px}
-.piece-regions a:hover{text-decoration-color:var(--ink)}
-.piece-img img{transition:transform .4s ease}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+.edit-strip{display:flex;flex-direction:column;gap:12px;padding-block:6px 26px}
+.strip-row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.strip-row a{display:flex;flex-direction:column;gap:8px;text-decoration:none;color:var(--ink);font:400 16px/1.25 var(--display)}
+.strip-img{display:block;aspect-ratio:1/1;background:#fff;border:1px solid var(--line);position:relative;overflow:hidden}
+.strip-img img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;padding:6px;box-sizing:border-box}
+.strip-row a:hover span:last-child{text-decoration:underline;text-underline-offset:3px}
+.board{background:var(--silk);margin-block:40px;scroll-margin-top:24px}
+.board-in{display:grid;grid-template-columns:minmax(0,4fr) minmax(0,8fr);grid-template-areas:"text rail" "story rail";grid-template-rows:auto 1fr;column-gap:48px;row-gap:18px;padding-block:44px;align-items:start}
+.board-text{grid-area:text;display:flex;flex-direction:column;gap:8px}
+.board-text .label{font-size:11px}
+.board-text h2{font:400 32px/1.15 var(--display);margin:0;color:var(--ink)}
+.board-intro{margin:0;color:var(--body-ink);font-size:16px;line-height:1.6}
+.board-story{grid-area:story;margin:0;color:var(--muted);font:italic 400 16px/1.6 var(--display)}
+.board-rail{grid-area:rail;display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:28px 20px}
+.piece{display:flex;flex-direction:column;gap:5px;min-width:0}
+.piece-img{display:block;aspect-ratio:1/1;background:#fff;position:relative;overflow:hidden;margin-bottom:8px}
+.piece-img img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;padding:10px;box-sizing:border-box;transition:transform .4s ease}
 .piece:hover .piece-img img{transform:scale(1.03)}
 @media (prefers-reduced-motion:reduce){.piece-img img{transition:none}.piece:hover .piece-img img{transform:none}}
-@media (max-width:760px){.board{grid-template-columns:1fr}.mood{aspect-ratio:4/3}.piece{grid-template-columns:104px minmax(0,1fr);gap:14px}}
+.piece-img .word{position:absolute;left:12px;bottom:10px;font:italic 400 20px/1 var(--display);color:var(--ink)}
+.piece .label{font-size:11px}
+.piece-name{font:400 17px/1.3 var(--display);color:var(--ink);text-decoration:none}
+.piece-name:hover{text-decoration:underline;text-underline-offset:3px}
+.piece-shop{font-size:13px;color:var(--muted)}
+.piece-regions{font-size:12px;letter-spacing:.08em;color:var(--muted)}
+.piece-regions a{color:var(--ink);text-decoration:underline;text-underline-offset:3px;text-decoration-color:#bdb7b0;display:inline-block;padding:10px 2px}
+.piece-regions a:hover{text-decoration-color:var(--ink)}
+@media (max-width:760px){
+.board{margin-block:32px}
+.board-in{grid-template-columns:1fr;grid-template-rows:auto;grid-template-areas:"text" "rail" "story";padding-block:32px;row-gap:20px}
+.board-text h2{font-size:28px}
+.board-rail{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;gap:14px;margin-inline:calc(-1 * max(20px,env(safe-area-inset-left,0px)));padding-inline:max(20px,env(safe-area-inset-left,0px));scroll-padding-inline:max(20px,env(safe-area-inset-left,0px));-webkit-overflow-scrolling:touch;scrollbar-width:none}
+.board-rail::-webkit-scrollbar{display:none}
+.piece{flex:0 0 68%;scroll-snap-align:start}
+.strip-row{gap:10px}
+.strip-row a{font-size:14px}
+}
 .product:hover .product-name{text-decoration:underline;text-underline-offset:3px}
 .prose{color:var(--body-ink)}
 .prose h2{font:400 30px/1.2 var(--display);color:var(--ink);margin:46px 0 12px;text-wrap:balance}
@@ -315,49 +321,74 @@ TYPE_WORD = {"necklace": "Collier", "ring": "Bague", "bracelet": "Bracelet"}
 AFF_ATTRS = 'rel="sponsored nofollow noopener" target="_blank"'
 DEFAULT_REGION = "eu"   # where a click on the photo or name goes: "eu" (EU/UK programme) or "us"
 
-def edit_boards(edits, depth):
-    """Themed edit boards: a mood photo plus three pieces (necklace, ring, bracelet).
-    No prices (they change; a stale price would misstate the product). The photo and
-    name link to the default region; a small line offers EU / UK and US. Product images
-    come unaltered from the retailer's catalogue; the mood photo is our own or
-    Pexels/Unsplash and is captioned as a mood image, never presented as the products."""
-    if not edits:
-        return ""
-    p = rel(depth)
-    boards = []
-    for e in edits:
-        pieces = []
-        for pr in e["products"]:
-            alt = html_lib.escape(f'{pr["brand"]} {pr["name"]}', quote=True)
-            img = (f'<img src="{pr["image"]}" alt="{alt}" loading="lazy">' if pr.get("image")
-                   else f'<span class="word">{TYPE_WORD.get(pr.get("type", ""), "Shop")}</span>')
-            urls = {"eu": pr.get("url_eu"), "us": pr.get("url_us")}
-            main = urls.get(DEFAULT_REGION) or urls["eu"] or urls["us"] or "#"
-            regions = []
-            if urls["eu"]: regions.append(f'<a href="{urls["eu"]}" {AFF_ATTRS} aria-label="Discover {alt} in Europe and the UK">EU / UK</a>')
-            if urls["us"]: regions.append(f'<a href="{urls["us"]}" {AFF_ATTRS} aria-label="Discover {alt} in the US">US</a>')
-            shop = pr.get("shop", "Mytheresa")
-            pieces.append(f'''<div class="piece">
+def edit_id(e):
+    return "edit-" + re.sub(r"[^a-z0-9]+", "-", e["title"].lower()).strip("-")
+
+def edit_board(e):
+    """One themed board, full width between the article's paragraphs: text on the left,
+    the pieces on the right (desktop) or as a swipeable row (phone). No prices (they change);
+    product images come unaltered from the retailer's catalogue."""
+    cards = []
+    for pr in e["products"]:
+        alt = html_lib.escape(f'{pr["brand"]} {pr["name"]}', quote=True)
+        img = (f'<img src="{pr["image"]}" alt="{alt}" loading="lazy">' if pr.get("image")
+               else f'<span class="word">{TYPE_WORD.get(pr.get("type", ""), "Shop")}</span>')
+        urls = {"eu": pr.get("url_eu"), "us": pr.get("url_us")}
+        main = urls.get(DEFAULT_REGION) or urls["eu"] or urls["us"] or "#"
+        regions = []
+        if urls["eu"]: regions.append(f'<a href="{urls["eu"]}" {AFF_ATTRS} aria-label="Discover {alt} in Europe and the UK">EU / UK</a>')
+        if urls["us"]: regions.append(f'<a href="{urls["us"]}" {AFF_ATTRS} aria-label="Discover {alt} in the US">US</a>')
+        cards.append(f'''<div class="piece" role="listitem">
 <a class="piece-img" href="{main}" {AFF_ATTRS} tabindex="-1" aria-hidden="true">{img}</a>
-<div class="piece-text">
 <span class="label">{pr["type"].capitalize()} &middot; {pr["brand"]}</span>
 <a class="piece-name" href="{main}" {AFF_ATTRS}>{pr["name"]}</a>
-<span class="piece-shop">at {shop}</span>
+<span class="piece-shop">at {pr.get("shop", "Mytheresa")}</span>
 <span class="piece-regions">Discover &mdash; {" &middot; ".join(regions)}</span>
-</div>
 </div>''')
-        m = e.get("mood") or {}
-        mood = (f'<figure class="mood"><img src="{p}assets/img/{m["file"]}" alt="{html_lib.escape(m.get("alt", ""), quote=True)}" '
-                f'style="object-position:{m.get("pos", "center")}" loading="lazy"><figcaption>Mood image</figcaption></figure>'
-                if m.get("file") else "")
-        boards.append(f'''<div class="board{"" if mood else " no-mood"}">
-<div class="board-head"><h3>{e["title"]}</h3><p>{e.get("intro", "")}</p>{"<p class=\"board-story\">" + e["story"] + "</p>" if e.get("story") else ""}</div>
-{mood}
-<div class="pieces">{"".join(pieces)}</div>
-</div>''')
-    return f'''<section class="edits wrap" aria-label="The edit">
-<div class="shop-head"><h2>The Edit</h2><span class="label">Affiliate links &middot; we may earn a small commission</span></div>
-{"".join(boards)}</section>'''
+    story = f'<p class="board-story">{e["story"]}</p>' if e.get("story") else ""
+    n = len(e["products"])
+    return f'''<section class="board" id="{edit_id(e)}" aria-label="{html_lib.escape(e["title"], quote=True)}">
+<div class="wrap board-in">
+<div class="board-text"><span class="label">The Edit &middot; affiliate links</span><h2>{e["title"]}</h2><p class="board-intro">{e.get("intro", "")}</p></div>
+<div class="board-rail" role="list" aria-label="{n} pieces">{"".join(cards)}</div>
+{story}
+</div></section>'''
+
+def edit_strip(edits):
+    """'The Edit in this story': small thumbnails near the top that jump to each board."""
+    if not edits:
+        return ""
+    items = []
+    for e in edits:
+        first = next((pr for pr in e["products"] if pr.get("image")), None)
+        img = f'<img src="{first["image"]}" alt="" loading="lazy">' if first else ""
+        items.append(f'<a href="#{edit_id(e)}"><span class="strip-img">{img}</span><span>{e["title"]}</span></a>')
+    return f'''<nav class="wrap narrow edit-strip" aria-label="The Edit in this story">
+<span class="label">The Edit in this story</span><div class="strip-row">{"".join(items)}</div></nav>'''
+
+def body_with_edits(body, edits):
+    """Place each board right after the section whose <h2> matches its "after" (else at the end)."""
+    if not edits:
+        return f'<div class="wrap narrow page-body prose">\n{body}\n</div>'
+    heads = [(m.start(), re.sub("<[^>]+>", "", m.group(1)).strip()) for m in re.finditer(r"<h2>(.*?)</h2>", body)]
+    cuts = {}
+    for e in edits:
+        pos = len(body)
+        for k, (start, text) in enumerate(heads):
+            if text.lower() == e.get("after", "").lower():
+                pos = heads[k + 1][0] if k + 1 < len(heads) else len(body)
+        cuts.setdefault(pos, []).append(edit_board(e))
+    out, last = [], 0
+    for pos in sorted(cuts):
+        chunk = body[last:pos].strip()
+        if chunk:
+            out.append(f'<div class="wrap narrow page-body prose">\n{chunk}\n</div>')
+        out.extend(cuts[pos])
+        last = pos
+    tail = body[last:].strip()
+    if tail:
+        out.append(f'<div class="wrap narrow page-body prose">\n{tail}\n</div>')
+    return "\n".join(out)
 
 def card(a, depth):
     p = rel(depth)
@@ -432,16 +463,15 @@ def build():
         g = group_of(a)
         others = [o for o in ARTICLES if o["slug"] != a["slug"]][:3]
         more = "\n".join(card(o, 1) for o in others)
-        shop = edit_boards(a.get("edits"), 1) + shop_block(a.get("products"))
-        has_aff = bool(shop) or any(is_affiliate(u) for u in re.findall(r'href="([^"]+)"', a["body"]))
+        shop = shop_block(a.get("products"))
+        has_aff = bool(shop) or bool(a.get("edits")) or any(is_affiliate(u) for u in re.findall(r'href="([^"]+)"', a["body"]))
         notice = f'<div class="wrap narrow"><p class="disclose">{DISCLOSURE_SHORT}</p></div>' if has_aff else ""
         body = f"""<article>
 {head_block(a['category'], a['title'], a['dek'], f"{a['date']} &middot; {a['read']} read", f"/{g}.html")}
 {notice}
+{edit_strip(a.get("edits"))}
 <div class="wrap">{tile(a['category'], 'hero-tile', img=a.get('image'), depth=1)}</div>
-<div class="wrap narrow page-body prose">
-{a['body']}
-</div>
+{body_with_edits(a['body'], a.get("edits"))}
 {shop}</article>
 <section class="wrap sec" style="border-top:1px solid var(--line)"><div class="sec-head"><h2>Keep reading</h2><a href="/journal/index.html">All articles</a></div><div class="grid">{more}</div></section>"""
         body = mark_affiliate_links(body)
