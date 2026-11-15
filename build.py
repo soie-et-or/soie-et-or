@@ -426,7 +426,7 @@ def edit_strip(edits, heading="The Edit in this story", base="", narrow=True):
             alt = html_lib.escape(f'{pr["brand"]} {pr["name"]}', quote=True)
             cells.append(f'<a href="{url}" {AFF_ATTRS} title="{alt}"><img src="{pr["image"]}" alt="{alt}" loading="lazy"></a>')
         items.append(f'''<div class="strip-tile"><div class="collage c{len(cells)}">{"".join(cells)}</div>
-<a class="strip-title" href="{base}#{edit_id(e)}">{e["title"]} <span aria-hidden="true">&darr;</span></a></div>''')
+<a class="strip-title" href="{base}#{edit_id(e)}">{e["title"]}{"" if base else ' <span aria-hidden="true">&darr;</span>'}</a></div>''')
     return f'''<nav class="wrap{" narrow" if narrow else ""} edit-strip" aria-label="{heading}">
 <span class="label">{heading}</span><div class="strip-row">{"".join(items)}</div></nav>'''
 
