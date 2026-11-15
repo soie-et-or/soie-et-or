@@ -124,6 +124,10 @@ img{max-width:100%;display:block}
 .product-shop{font-size:13px;color:var(--muted)}
 .edits{padding-block:8px 64px}
 .board{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:28px;padding-block:32px;border-top:1px solid var(--line)}
+.board.no-mood{grid-template-columns:1fr}
+.board.no-mood .pieces{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));column-gap:32px}
+.board.no-mood .piece:nth-child(2){border-top:0;padding-top:0}
+@media (max-width:760px){.board.no-mood .pieces{display:flex}.board.no-mood .piece:nth-child(2){border-top:1px solid var(--line);padding-top:18px}}
 .board:first-of-type{border-top:0;padding-top:8px}
 .board-head{grid-column:1/-1;display:flex;flex-direction:column;gap:6px;max-width:640px}
 .board-head h3{font:400 26px/1.2 var(--display);margin:0;color:var(--ink)}
@@ -345,8 +349,8 @@ def edit_boards(edits, depth):
         m = e.get("mood") or {}
         mood = (f'<figure class="mood"><img src="{p}assets/img/{m["file"]}" alt="{html_lib.escape(m.get("alt", ""), quote=True)}" '
                 f'style="object-position:{m.get("pos", "center")}" loading="lazy"><figcaption>Mood image</figcaption></figure>'
-                if m.get("file") else '<figure class="mood" aria-hidden="true"></figure>')
-        boards.append(f'''<div class="board">
+                if m.get("file") else "")
+        boards.append(f'''<div class="board{"" if mood else " no-mood"}">
 <div class="board-head"><h3>{e["title"]}</h3><p>{e.get("intro", "")}</p>{"<p class=\"board-story\">" + e["story"] + "</p>" if e.get("story") else ""}</div>
 {mood}
 <div class="pieces">{"".join(pieces)}</div>
