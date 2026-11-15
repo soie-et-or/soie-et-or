@@ -185,6 +185,9 @@ html{scroll-behavior:smooth}
 .piece-name{font:400 17px/1.3 var(--display);color:var(--ink);text-decoration:none}
 .piece-name:hover{text-decoration:underline;text-underline-offset:3px}
 .piece-shop{font-size:13px;color:var(--muted)}
+.gift-note{display:grid;grid-template-columns:auto 1fr;gap:4px 10px;margin:8px 0 2px;font-size:13px;line-height:1.45}
+.gift-note dt{font:500 10px/1.9 var(--body);letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}
+.gift-note dd{margin:0;color:var(--body-ink)}
 .piece-regions{font-size:12px;letter-spacing:.08em;color:var(--muted)}
 .piece-regions a{color:var(--ink);text-decoration:underline;text-underline-offset:3px;text-decoration-color:#bdb7b0;display:inline-block;padding:10px 2px}
 .piece-regions a:hover{text-decoration-color:var(--ink)}
@@ -367,6 +370,13 @@ DEFAULT_REGION = "eu"   # where a click on the photo or name goes: "eu" (EU/UK p
 def edit_id(e):
     return "edit-" + re.sub(r"[^a-z0-9]+", "-", e["title"].lower()).strip("-")
 
+def gift_note(pr):
+    g = pr.get("gift")
+    if not g:
+        return ""
+    return (f'<dl class="gift-note"><dt>Why</dt><dd>{g["why"]}</dd><dt>What</dt><dd>{g["what"]}</dd>'
+            f'<dt>Stands for</dt><dd>{g["means"]}</dd></dl>')
+
 def edit_board(e, story_href=""):
     """One themed board, full width between the article's paragraphs: text on the left,
     the pieces on the right (desktop) or as a swipeable row (phone). No prices (they change);
@@ -386,7 +396,7 @@ def edit_board(e, story_href=""):
 <span class="label">{pr["type"].capitalize()} &middot; {pr["brand"]}</span>
 <a class="piece-name" href="{main}" {AFF_ATTRS}>{pr["name"]}</a>
 <span class="piece-shop">at {pr.get("shop", "Mytheresa")}</span>
-<span class="piece-regions">Discover &mdash; {" &middot; ".join(regions)}</span>
+{gift_note(pr)}<span class="piece-regions">Discover &mdash; {" &middot; ".join(regions)}</span>
 </div>''')
     story = f'<p class="board-story">{e["story"]}</p>' if e.get("story") else ""
     n = len(e["products"])
@@ -496,6 +506,7 @@ def build():
     lead, rest = ARTICLES[0], ARTICLES[1:]
     row = "\n".join(card(a, 0) for a in rest[:4])
     all_edits = [(a, e) for a in ARTICLES for e in (a.get("edits") or [])]
+    all_edits.sort(key=lambda ae: not ae[1].get("first"))
     home_edit = ""
     if all_edits:
         home_edit = (f'''<section class="wrap sec home-edit" style="padding-bottom:0"><div class="sec-head"><h2>The Edit</h2><a href="the-edit.html">See the edit</a></div>
