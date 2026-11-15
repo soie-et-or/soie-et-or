@@ -49,10 +49,22 @@ img{max-width:100%;display:block}
 .nav.right{justify-content:flex-end}
 .nav a{font:500 11px/1 var(--body);letter-spacing:.22em;text-transform:uppercase;text-decoration:none;color:var(--ink);padding-block:6px}
 .nav a[aria-current]{border-bottom:1px solid var(--gold)}
+.nav-item{position:relative}
+.dropdown{position:absolute;top:100%;left:-18px;z-index:20;min-width:280px;max-width:340px;background:var(--white);border:1px solid var(--line);box-shadow:0 12px 32px rgba(14,14,14,.08);padding:14px 18px 16px;opacity:0;visibility:hidden;transform:translateY(4px);transition:opacity .2s ease,transform .2s ease,visibility .2s}
+.nav.right .dropdown{left:auto;right:-18px}
+.nav-item:hover .dropdown,.nav-item:focus-within .dropdown{opacity:1;visibility:visible;transform:none}
+.dropdown ul{list-style:none;margin:0;padding:0}
+.dropdown li{border-bottom:1px solid var(--line)}
+.dropdown li:last-child{border-bottom:0}
+.nav .dropdown a{display:block;font:400 16px/1.3 var(--display);letter-spacing:0;text-transform:none;padding:11px 0;color:var(--ink);border:0}
+.nav .dropdown a:hover{text-decoration:underline;text-underline-offset:3px}
+.nav .dropdown a.dropdown-all{font:500 11px/1 var(--body);letter-spacing:.22em;text-transform:uppercase;padding:14px 0 2px;color:var(--muted)}
+@media (prefers-reduced-motion:reduce){.dropdown{transition:none}}
 @media (max-width:820px){
   .top .wrap{grid-template-columns:1fr;justify-items:center;gap:14px}
   .top .logo{order:-1;font-size:20px}
   .nav,.nav.right{justify-content:center;gap:20px}
+  .dropdown{display:none}
 }
 
 /* tiles stand in for photography until product images arrive from the affiliate feeds */
@@ -122,6 +134,80 @@ img{max-width:100%;display:block}
 .product-img .word{font:italic 400 28px/1 var(--display);color:var(--ink)}
 .product-name{font:400 18px/1.3 var(--display)}
 .product-shop{font-size:13px;color:var(--muted)}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+.edit-strip{display:flex;flex-direction:column;gap:12px;padding-block:6px 26px}
+.strip-row{display:flex;gap:16px;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:10px;scrollbar-width:thin;scrollbar-color:var(--line) transparent}
+.strip-row .strip-tile{flex:0 0 230px;scroll-snap-align:start}
+@media (min-width:761px){.edit-strip.narrow .strip-tile{flex-basis:calc((100% - 32px) / 3)}}
+.home-strip{padding-bottom:64px}
+.home-strip .strip-row .strip-tile{flex-basis:250px}
+.strip-tile{display:flex;flex-direction:column;gap:8px;min-width:0}
+.strip-title{text-decoration:none;color:var(--ink);font:400 16px/1.25 var(--display);padding-block:4px}
+.strip-title:hover{text-decoration:underline;text-underline-offset:3px}
+.strip-title .down{color:var(--gold);margin-left:6px;vertical-align:-1px;transition:transform .25s ease}
+.strip-title:hover .down{transform:translateY(2px)}
+@media (prefers-reduced-motion:reduce){.strip-title .down{transition:none}.strip-title:hover .down{transform:none}}
+.collage{display:grid;aspect-ratio:1/1;gap:3px;background:#fff}
+.collage a{display:block;background:#efefef;position:relative;overflow:hidden;min-height:0}
+.collage img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;padding:6%;box-sizing:border-box;transition:transform .4s ease}
+.collage a:hover img{transform:scale(1.05)}
+.collage.c3{grid-template-columns:2fr 1fr;grid-template-rows:1fr 1fr}
+.collage.c3 a:first-child{grid-row:1/3}
+.collage.c2{grid-template-columns:1fr 1fr}
+@media (prefers-reduced-motion:reduce){.collage img{transition:none}.collage a:hover img{transform:none}}
+.rail-sec{border-top:1px solid var(--line);padding-block:44px 52px;margin-top:40px}
+.rail-sec .sec-head{margin-bottom:4px}
+.rail-note{margin:0 0 22px;color:var(--muted);font-size:13px}
+.rail{display:flex;gap:20px;overflow-x:auto;scroll-snap-type:x mandatory;padding-inline:max(20px,calc((100vw - 1280px)/2 + 20px));scroll-padding-inline:max(20px,calc((100vw - 1280px)/2 + 20px));padding-bottom:12px;scrollbar-width:thin;scrollbar-color:var(--line) transparent}
+.rail .piece{flex:0 0 210px;scroll-snap-align:start}
+.rail .piece-img{background:var(--silk)}
+@media (max-width:760px){.rail{gap:14px}.rail .piece{flex-basis:62%}}
+.board{background:var(--silk);margin-block:40px;scroll-margin-top:24px}
+.board-in{display:grid;grid-template-columns:minmax(0,4fr) minmax(0,8fr);grid-template-areas:"text rail" "story rail";grid-template-rows:auto 1fr;column-gap:48px;row-gap:18px;padding-block:44px;align-items:start}
+.board-text{grid-area:text;display:flex;flex-direction:column;gap:8px}
+.board-text .label{font-size:11px}
+.board-text h2{font:400 32px/1.15 var(--display);margin:0;color:var(--ink)}
+.board-more{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink);text-underline-offset:4px;margin-top:6px;padding-block:8px}
+.board-intro{margin:0;color:var(--body-ink);font-size:16px;line-height:1.6}
+.board-story{grid-area:story;margin:0;color:var(--muted);font:italic 400 16px/1.6 var(--display)}
+.board-rail{grid-area:rail;display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:28px 20px}
+.piece{display:flex;flex-direction:column;gap:5px;min-width:0}
+@media (min-width:761px){
+.board-rail.n3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.board-rail.n4{grid-template-columns:repeat(4,minmax(0,1fr))}
+.board-rail.n5{grid-template-columns:repeat(6,minmax(0,1fr))}
+.board-rail.n6{grid-template-columns:repeat(3,minmax(0,1fr))}
+.board-rail.n5 .piece{grid-column:span 2}
+.board-rail.n5 .piece:nth-child(4){grid-column:2/4}
+.board-rail.n5 .piece:nth-child(5){grid-column:4/6}
+}
+.piece-img{display:block;aspect-ratio:1/1;background:#fff;position:relative;overflow:hidden;margin-bottom:8px}
+.piece-img img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;padding:10px;box-sizing:border-box;transition:transform .4s ease}
+.piece:hover .piece-img img{transform:scale(1.03)}
+@media (prefers-reduced-motion:reduce){.piece-img img{transition:none}.piece:hover .piece-img img{transform:none}}
+.piece-img .word{position:absolute;left:12px;bottom:10px;font:italic 400 20px/1 var(--display);color:var(--ink)}
+.piece .label{font-size:11px}
+.piece-name{font:400 17px/1.3 var(--display);color:var(--ink);text-decoration:none}
+.piece-name:hover{text-decoration:underline;text-underline-offset:3px}
+.piece-shop{font-size:13px;color:var(--muted)}
+.gift-note{display:flex;flex-direction:column;gap:2px;margin:10px 0 2px;font-size:13.5px;line-height:1.45;border-top:1px solid var(--line);padding-top:10px}
+.gift-note dt{margin-top:6px;font:500 10px/1.6 var(--body);letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}
+.gift-note dd{margin:0;color:var(--body-ink)}
+.piece-regions{font-size:12px;letter-spacing:.08em;color:var(--muted)}
+.piece-regions a{color:var(--ink);text-decoration:underline;text-underline-offset:3px;text-decoration-color:#bdb7b0;display:inline-block;padding:10px 2px}
+.piece-regions a:hover{text-decoration-color:var(--ink)}
+@media (max-width:760px){
+.board{margin-block:32px}
+.board-in{grid-template-columns:1fr;grid-template-rows:auto;grid-template-areas:"text" "rail" "story";padding-block:32px;row-gap:20px}
+.board-text h2{font-size:28px}
+.board-rail{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;gap:14px;margin-inline:calc(-1 * max(20px,env(safe-area-inset-left,0px)));padding-inline:max(20px,env(safe-area-inset-left,0px));scroll-padding-inline:max(20px,env(safe-area-inset-left,0px));-webkit-overflow-scrolling:touch;scrollbar-width:none}
+.board-rail::-webkit-scrollbar{display:none}
+.piece{flex:0 0 68%;scroll-snap-align:start}
+.strip-row{gap:12px}
+.strip-row .strip-tile{flex-basis:62%}
+.strip-title{font-size:14px}
+}
 .product:hover .product-name{text-decoration:underline;text-underline-offset:3px}
 .prose{color:var(--body-ink)}
 .prose h2{font:400 30px/1.2 var(--display);color:var(--ink);margin:46px 0 12px;text-wrap:balance}
@@ -191,8 +277,14 @@ def shell(title, desc, body, depth, current="", canonical="", image=None, articl
     verify = (f'<meta name="p:domain_verify" content="{SITE["pinterest_verify"]}">' if SITE["pinterest_verify"]
               else '<!-- Pinterest: set pinterest_verify in content.py to add the p:domain_verify tag -->')
     def a(href, label, key):
+        """Section link with a dropdown of its articles (desktop: on hover or keyboard focus; hidden on phones)."""
         cur = ' aria-current="page"' if key == current else ""
-        return f'<a href="{p}{href}"{cur}>{label}</a>'
+        arts = [x for x in ARTICLES if group_of(x) == key]
+        if not arts:
+            return f'<a href="{p}{href}"{cur}>{label}</a>'
+        links = "".join(f'<li><a href="{p}journal/{x["slug"]}.html">{x["title"]}</a></li>' for x in arts)
+        return (f'<div class="nav-item"><a href="{p}{href}"{cur}>{label}</a>'
+                f'<div class="dropdown"><ul>{links}</ul><a class="dropdown-all" href="{p}{href}">All {label.lower()}</a></div></div>')
     html = f"""<!doctype html>
 <html lang="en">
 <head>
@@ -222,7 +314,7 @@ def shell(title, desc, body, depth, current="", canonical="", image=None, articl
 </main>
 <footer><div class="wrap">
 <div class="foot-row"><a class="logo" href="{p}index.html">SOIE ET OR</a>
-<nav class="nav" aria-label="Footer"><a href="{p}journal/index.html">Journal</a><a href="{p}about.html">About</a><a href="{p}affiliate-disclosure.html">Affiliate disclosure</a><a href="{p}privacy.html">Privacy</a><a href="{p}terms.html">Terms</a><a href="{p}contact.html">Contact</a><a href="{SITE['pinterest']}" rel="noopener">Pinterest</a></nav></div>
+<nav class="nav" aria-label="Footer"><a href="{p}the-edit.html">The Edit</a><a href="{p}journal/index.html">Journal</a><a href="{p}about.html">About</a><a href="{p}affiliate-disclosure.html">Affiliate disclosure</a><a href="{p}privacy.html">Privacy</a><a href="{p}terms.html">Terms</a><a href="{p}contact.html">Contact</a><a href="{SITE['pinterest']}" rel="noopener">Pinterest</a></nav></div>
 <hr class="gold-rule">
 <p class="foot-note">Soie et Or is an independent editorial site. Some links are affiliate links: we may earn a commission when you buy, at no extra cost to you. Brand names belong to their owners; we are not affiliated with or endorsed by the brands we write about.</p>
 <p class="foot-note">&copy; 2026 Soie et Or &middot; {SITE['domain']}</p>
@@ -277,6 +369,116 @@ def shop_block(products):
 <div class="shop-head"><h2>Shop the edit</h2><span class="label">Affiliate links &middot; we may earn a small commission</span></div>
 <div class="products">{"".join(items)}</div></section>'''
 
+TYPE_WORD = {"necklace": "Collier", "ring": "Bague", "bracelet": "Bracelet", "earrings": "Boucles"}
+
+AFF_ATTRS = 'rel="sponsored nofollow noopener" target="_blank"'
+DEFAULT_REGION = "eu"   # where a click on the photo or name goes: "eu" (EU/UK programme) or "us"
+
+def edit_id(e):
+    return "edit-" + re.sub(r"[^a-z0-9]+", "-", e["title"].lower()).strip("-")
+
+def gift_note(pr):
+    g = pr.get("gift")
+    if not g:
+        return ""
+    return (f'<dl class="gift-note"><dt>Why</dt><dd>{g["why"]}</dd><dt>What</dt><dd>{g["what"]}</dd>'
+            f'<dt>Stands for</dt><dd>{g["means"]}</dd></dl>')
+
+def edit_board(e, story_href=""):
+    """One themed board, full width between the article's paragraphs: text on the left,
+    the pieces on the right (desktop) or as a swipeable row (phone). No prices (they change);
+    product images come unaltered from the retailer's catalogue."""
+    cards = []
+    for pr in e["products"]:
+        alt = html_lib.escape(f'{pr["brand"]} {pr["name"]}', quote=True)
+        img = (f'<img src="{pr["image"]}" alt="{alt}" loading="lazy">' if pr.get("image")
+               else f'<span class="word">{TYPE_WORD.get(pr.get("type", ""), "Shop")}</span>')
+        urls = {"eu": pr.get("url_eu"), "us": pr.get("url_us")}
+        main = urls.get(DEFAULT_REGION) or urls["eu"] or urls["us"] or "#"
+        regions = []
+        if urls["eu"]: regions.append(f'<a href="{urls["eu"]}" {AFF_ATTRS} aria-label="Discover {alt} in Europe and the UK">EU / UK</a>')
+        if urls["us"]: regions.append(f'<a href="{urls["us"]}" {AFF_ATTRS} aria-label="Discover {alt} in the US">US</a>')
+        cards.append(f'''<div class="piece" role="listitem">
+<a class="piece-img" href="{main}" {AFF_ATTRS} tabindex="-1" aria-hidden="true">{img}</a>
+<span class="label">{pr["type"].capitalize()} &middot; {pr["brand"]}</span>
+<a class="piece-name" href="{main}" {AFF_ATTRS}>{pr["name"]}</a>
+<span class="piece-shop">at {pr.get("shop", "Mytheresa")}</span>
+{gift_note(pr)}<span class="piece-regions">Discover &mdash; {" &middot; ".join(regions)}</span>
+</div>''')
+    story = f'<p class="board-story">{e["story"]}</p>' if e.get("story") else ""
+    n = len(e["products"])
+    return f'''<section class="board" id="{edit_id(e)}" aria-label="{html_lib.escape(e["title"], quote=True)}">
+<div class="wrap board-in">
+<div class="board-text"><span class="label">The Edit &middot; affiliate links</span><h2>{e["title"]}</h2><p class="board-intro">{e.get("intro", "")}</p>{f'<a class="board-more" href="{story_href}">Read the story &rarr;</a>' if story_href else ""}</div>
+<div class="board-rail n{n}" role="list" aria-label="{n} pieces">{"".join(cards)}</div>
+{story}
+</div></section>'''
+
+def edit_strip(edits, heading="The Edit in this story", base="", narrow=True):
+    """Near the top: one tile per edit. Each tile is a small collage of the edit's own product photos,
+    laid out side by side in HTML (the images themselves are not altered or merged). Each photo links
+    to that piece at the retailer; the title jumps to the board."""
+    if not edits:
+        return ""
+    items = []
+    for e in edits:
+        shots = [pr for pr in e["products"] if pr.get("image")][:3]
+        cells = []
+        for pr in shots:
+            url = pr.get(f"url_{DEFAULT_REGION}") or pr.get("url_eu") or pr.get("url_us")
+            alt = html_lib.escape(f'{pr["brand"]} {pr["name"]}', quote=True)
+            cells.append(f'<a href="{url}" {AFF_ATTRS} title="{alt}"><img src="{pr["image"]}" alt="{alt}" loading="lazy"></a>')
+        items.append(f'''<div class="strip-tile"><div class="collage c{len(cells)}">{"".join(cells)}</div>
+<a class="strip-title" href="{base}#{edit_id(e)}">{e["title"]}{"" if base else ' <svg class="down" width="9" height="14" viewBox="0 0 9 14" aria-hidden="true"><path d="M4.5 0.5v12.2M0.8 9l3.7 3.7L8.2 9" fill="none" stroke="currentColor" stroke-width="1"/></svg>'}</a></div>''')
+    return f'''<nav class="wrap{" narrow" if narrow else ""} edit-strip" aria-label="{heading}">
+<span class="label">{heading}</span><div class="strip-row">{"".join(items)}</div></nav>'''
+
+def edit_rail(current_slug, limit=10):
+    """'From The Edit' at the foot of an article: a swipeable row of pieces from the edits of *other*
+    articles, so every story ends with a few of the editor's picks."""
+    picks = [pr for a in ARTICLES if a["slug"] != current_slug for e in (a.get("edits") or [])
+             for pr in e["products"] if pr.get("image")][:limit]
+    if not picks:
+        return ""
+    cards = []
+    for pr in picks:
+        alt = html_lib.escape(f'{pr["brand"]} {pr["name"]}', quote=True)
+        url = pr.get(f"url_{DEFAULT_REGION}") or pr.get("url_eu") or pr.get("url_us")
+        cards.append(f'''<div class="piece" role="listitem">
+<a class="piece-img" href="{url}" {AFF_ATTRS} tabindex="-1" aria-hidden="true"><img src="{pr["image"]}" alt="{alt}" loading="lazy"></a>
+<span class="label">{pr["brand"]}</span>
+<a class="piece-name" href="{url}" {AFF_ATTRS}>{pr["name"]}</a>
+<span class="piece-shop">at {pr.get("shop", "Mytheresa")}</span>
+</div>''')
+    return f'''<section class="rail-sec" aria-label="From The Edit"><div class="wrap">
+<div class="sec-head"><h2>From The Edit</h2><a href="/the-edit.html">See all</a></div>
+<p class="rail-note">Other pieces we would choose ourselves &middot; affiliate links</p></div>
+<div class="rail" role="list">{"".join(cards)}</div></section>'''
+
+def body_with_edits(body, edits):
+    """Place each board right after the section whose <h2> matches its "after" (else at the end)."""
+    if not edits:
+        return f'<div class="wrap narrow page-body prose">\n{body}\n</div>'
+    heads = [(m.start(), re.sub("<[^>]+>", "", m.group(1)).strip()) for m in re.finditer(r"<h2>(.*?)</h2>", body)]
+    cuts = {}
+    for e in edits:
+        pos = len(body)
+        for k, (start, text) in enumerate(heads):
+            if text.lower() == e.get("after", "").lower():
+                pos = heads[k + 1][0] if k + 1 < len(heads) else len(body)
+        cuts.setdefault(pos, []).append(edit_board(e))
+    out, last = [], 0
+    for pos in sorted(cuts):
+        chunk = body[last:pos].strip()
+        if chunk:
+            out.append(f'<div class="wrap narrow page-body prose">\n{chunk}\n</div>')
+        out.extend(cuts[pos])
+        last = pos
+    tail = body[last:].strip()
+    if tail:
+        out.append(f'<div class="wrap narrow page-body prose">\n{tail}\n</div>')
+    return "\n".join(out)
+
 def card(a, depth):
     p = rel(depth)
     return f"""<a class="card" href="{p}journal/{a['slug']}.html">
@@ -310,6 +512,13 @@ def build():
 
     lead, rest = ARTICLES[0], ARTICLES[1:]
     row = "\n".join(card(a, 0) for a in rest[:4])
+    all_edits = [(a, e) for a in ARTICLES for e in (a.get("edits") or [])]
+    all_edits.sort(key=lambda ae: not ae[1].get("first"))
+    home_edit = ""
+    if all_edits:
+        home_edit = (f'''<section class="wrap sec home-edit" style="padding-bottom:0"><div class="sec-head"><h2>The Edit</h2><a href="the-edit.html">See the edit</a></div>
+<p class="dek" style="margin:0 0 10px">Pieces we would choose ourselves, gathered by theme.</p><p class="disclose" style="text-align:left;margin:0 0 22px">{DISCLOSURE_SHORT}</p></section>'''
+                     + edit_strip([e for _, e in all_edits], heading="Browse by theme", base="the-edit.html", narrow=False).replace('class="wrap edit-strip"', 'class="wrap edit-strip home-strip"'))
     home = f"""<section class="hero">
 {tile('Soie', img=SITE.get('hero_image'))}
 <div class="copy">
@@ -331,6 +540,7 @@ def build():
 <a class="pillar" href="boots.html"><span class="label">Bottes</span><h3>Boots</h3><p>Ankle, riding and heeled boots that see you through every winter.</p></a>
 <a class="pillar" href="travel.html"><span class="label">Voyage</span><h3>Chic travel</h3><p>One good bag, a few pieces that all combine, sunglasses and a cap.</p></a>
 </section>
+{home_edit}
 """
     write("index.html", shell(f"{SITE['name']} · Quiet Parisian style, in silk and gold",
         "An edit of quiet Parisian luxury: ready-to-wear, fine jewelry and watches worth keeping.", home, 0, "", ""))
@@ -351,19 +561,26 @@ def build():
         others = [o for o in ARTICLES if o["slug"] != a["slug"]][:3]
         more = "\n".join(card(o, 1) for o in others)
         shop = shop_block(a.get("products"))
-        has_aff = bool(shop) or any(is_affiliate(u) for u in re.findall(r'href="([^"]+)"', a["body"]))
+        rail = edit_rail(a["slug"])
+        has_aff = bool(shop) or bool(rail) or bool(a.get("edits")) or any(is_affiliate(u) for u in re.findall(r'href="([^"]+)"', a["body"]))
         notice = f'<div class="wrap narrow"><p class="disclose">{DISCLOSURE_SHORT}</p></div>' if has_aff else ""
         body = f"""<article>
 {head_block(a['category'], a['title'], a['dek'], f"{a['date']} &middot; {a['read']} read", f"/{g}.html")}
 {notice}
+{edit_strip(a.get("edits"))}
 <div class="wrap">{tile(a['category'], 'hero-tile', img=a.get('image'), depth=1)}</div>
-<div class="wrap narrow page-body prose">
-{a['body']}
-</div>
-{shop}</article>
+{body_with_edits(a['body'], a.get("edits"))}
+{shop}{rail}</article>
 <section class="wrap sec" style="border-top:1px solid var(--line)"><div class="sec-head"><h2>Keep reading</h2><a href="/journal/index.html">All articles</a></div><div class="grid">{more}</div></section>"""
         body = mark_affiliate_links(body)
         write(f"journal/{a['slug']}.html", shell(f"{a['title']} · {SITE['name']}", a["dek"], body, 1, g, f"journal/{a['slug']}.html", image=a.get("image"), article=a))
+
+    if all_edits:
+        boards = "\n".join(edit_board(e, f"journal/{a['slug']}.html") for a, e in all_edits)
+        eb = (head_block("The Edit", "The Edit", "Pieces we would choose ourselves. Each edit belongs to a story; read it there, or browse them all here.")
+              + f'<div class="wrap narrow"><p class="disclose">{DISCLOSURE_SHORT}</p></div>'
+              + edit_strip([e for _, e in all_edits], heading="The edits") + boards)
+        write("the-edit.html", shell(f"The Edit · {SITE['name']}", "Fine jewelry and pieces worth keeping, gathered by theme by the editor of Soie et Or.", mark_affiliate_links(eb), 0, "", "the-edit.html"))
 
     simple_page("about.html", "About Soie et Or", "About", ABOUT, "about")
     simple_page("contact.html", "Contact", "Contact", CONTACT)
@@ -375,7 +592,7 @@ def build():
     write("404.html", shell(f"Page not found · {SITE['name']}", "Page not found", nf, 0, "", "404.html"))
 
     urls = ["", "clothing.html", "lingerie.html", "boots.html", "jewelry.html", "watches.html", "travel.html", "journal/", "about.html", "contact.html",
-            "affiliate-disclosure.html", "privacy.html", "terms.html"] + [f"journal/{a['slug']}.html" for a in ARTICLES]
+            "affiliate-disclosure.html", "privacy.html", "terms.html", "the-edit.html"] + [f"journal/{a['slug']}.html" for a in ARTICLES]
     sm = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + \
          "\n".join(f"  <url><loc>{SITE['url']}/{u}</loc></url>" for u in urls) + "\n</urlset>\n"
     write("sitemap.xml", sm)
