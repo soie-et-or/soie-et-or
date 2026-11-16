@@ -166,7 +166,7 @@ html{scroll-behavior:smooth}
 .board{background:var(--silk);margin-block:40px;scroll-margin-top:24px}
 .board-in{display:grid;grid-template-columns:minmax(0,4fr) minmax(0,8fr);grid-template-areas:"text rail" "story rail";grid-template-rows:auto 1fr;column-gap:48px;row-gap:18px;padding-block:44px;align-items:start}
 .board-text{grid-area:text;display:flex;flex-direction:column;gap:8px}
-.board-text .label{font-size:11px}
+.board-text .label{font-size:11px;white-space:nowrap}
 .board-text h2{font:400 32px/1.15 var(--display);margin:0;color:var(--ink)}
 .board-more{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink);text-underline-offset:4px;margin-top:6px;padding-block:8px}
 .board-intro{margin:0;color:var(--body-ink);font-size:16px;line-height:1.6}
@@ -417,7 +417,7 @@ def edit_board(e, story_href=""):
     n = len(e["products"])
     return f'''<section class="board" id="{edit_id(e)}" aria-label="{html_lib.escape(e["title"], quote=True)}">
 <div class="wrap board-in">
-<div class="board-text"><span class="label">The Edit &middot; affiliate links{f" &middot; all pieces at {one_shop}" if one_shop else ""}</span><h2>{e["title"]}</h2><p class="board-intro">{e.get("intro", "")}</p>{f'<a class="board-more" href="{story_href}">Read the story &rarr;</a>' if story_href else ""}</div>
+<div class="board-text"><span class="label">The Edit{f" &middot; {one_shop}" if one_shop else ""} &middot; affiliate links</span><h2>{e["title"]}</h2><p class="board-intro">{e.get("intro", "")}</p>{f'<a class="board-more" href="{story_href}">Read the story &rarr;</a>' if story_href else ""}</div>
 <div class="board-rail n{n}{" scroll" if e.get("scroll") else ""}" role="list" aria-label="{n} pieces">{"".join(cards)}</div>
 {story}
 </div></section>'''
