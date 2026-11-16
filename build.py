@@ -73,6 +73,8 @@ img{max-width:100%;display:block}
 .tile .rule{position:absolute;left:24px;top:24px;width:56px;height:1px;background:var(--gold)}
 
 /* hero */
+.only-mob{display:none}
+@media (max-width:760px){.only-mob{display:block}.only-desk{display:none}}
 .hero{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));border-bottom:1px solid var(--line)}
 .hero .tile{min-height:520px;border-right:1px solid var(--line)}
 .hero .copy{display:flex;flex-direction:column;justify-content:center;gap:22px;padding:56px clamp(24px,5vw,72px);min-width:0}
@@ -166,7 +168,7 @@ html{scroll-behavior:smooth}
 .board{background:var(--silk);margin-block:40px;scroll-margin-top:24px}
 .board-in{display:grid;grid-template-columns:minmax(0,4fr) minmax(0,8fr);grid-template-areas:"text rail" "story rail";grid-template-rows:auto 1fr;column-gap:48px;row-gap:18px;padding-block:44px;align-items:start}
 .board-text{grid-area:text;display:flex;flex-direction:column;gap:8px}
-.board-text .label{font-size:11px}
+.board-text .label{font-size:11px;white-space:nowrap}
 .board-text h2{font:400 32px/1.15 var(--display);margin:0;color:var(--ink)}
 .board-more{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink);text-underline-offset:4px;margin-top:6px;padding-block:8px}
 .board-intro{margin:0;color:var(--body-ink);font-size:16px;line-height:1.6}
@@ -178,9 +180,12 @@ html{scroll-behavior:smooth}
 .board-rail.n4{grid-template-columns:repeat(4,minmax(0,1fr))}
 .board-rail.n5{grid-template-columns:repeat(6,minmax(0,1fr))}
 .board-rail.n6{grid-template-columns:repeat(3,minmax(0,1fr))}
+.board-rail.n7,.board-rail.n8{grid-template-columns:repeat(4,minmax(0,1fr))}
 .board-rail.n5 .piece{grid-column:span 2}
 .board-rail.n5 .piece:nth-child(4){grid-column:2/4}
 .board-rail.n5 .piece:nth-child(5){grid-column:4/6}
+.board-rail.scroll{display:flex;gap:20px;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:12px;scrollbar-width:thin;scrollbar-color:var(--line) transparent}
+.board-rail.scroll .piece{flex:0 0 calc((100% - 60px) / 3.4);scroll-snap-align:start}
 }
 .piece-img{display:block;aspect-ratio:1/1;background:#fff;position:relative;overflow:hidden;margin-bottom:8px}
 .piece-img img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;padding:10px;box-sizing:border-box;transition:transform .4s ease}
@@ -212,6 +217,9 @@ html{scroll-behavior:smooth}
 .prose{color:var(--body-ink)}
 .prose h2{font:400 30px/1.2 var(--display);color:var(--ink);margin:46px 0 12px;text-wrap:balance}
 .prose p{margin:0 0 18px}
+.prose .story-nav{font-size:13px;letter-spacing:.06em;line-height:2;color:var(--muted);border-block:1px solid var(--line);padding-block:10px;margin-bottom:26px}
+.story-nav span{font-size:11px;font-weight:500;letter-spacing:.18em;text-transform:uppercase;margin-right:8px}
+.story-nav a{white-space:nowrap;color:var(--ink);text-underline-offset:3px;text-decoration-color:#bdb7b0}
 .prose ul,.prose ol{margin:0 0 20px;padding-left:22px}
 .prose li{margin-bottom:10px}
 .prose ol.numbered li::marker{font-family:var(--display);color:var(--gold)}
@@ -241,6 +249,24 @@ def iso_date(d):
     day, month, year = d.split()
     return f"{year}-{MONTHS.index(month) + 1:02d}-{int(day):02d}"
 
+def jpeg_size(path):
+    """(width, height) of a JPEG without third-party libraries; None if unknown."""
+    try:
+        with open(path, "rb") as f:
+            data = f.read()
+        i = 2
+        while i < len(data):
+            if data[i] != 0xFF:
+                return None
+            marker = data[i + 1]
+            length = int.from_bytes(data[i + 2:i + 4], "big")
+            if marker in (0xC0, 0xC1, 0xC2):
+                return int.from_bytes(data[i + 7:i + 9], "big"), int.from_bytes(data[i + 5:i + 7], "big")
+            i += 2 + length
+    except OSError:
+        return None
+    return None
+
 def social_meta(title, desc, canonical, image=None, article=None):
     """Open Graph / Twitter tags (link previews in WhatsApp, iMessage, Facebook) and JSON-LD for Google."""
     url = f"{SITE['url']}/{canonical}"
@@ -252,6 +278,8 @@ def social_meta(title, desc, canonical, image=None, article=None):
         f'<meta property="og:url" content="{url}">',
         f'<meta property="og:image" content="{img_url}">',
         f'<meta property="og:image:alt" content="{alt}">',
+        *([f'<meta property="og:image:width" content="{size[0]}">', f'<meta property="og:image:height" content="{size[1]}">']
+          if (size := jpeg_size(os.path.join(os.path.dirname(os.path.abspath(__file__)), "images", img_file))) else []),
         '<meta property="og:locale" content="en_GB">',
         '<meta name="twitter:card" content="summary_large_image">',
     ]
@@ -369,7 +397,7 @@ def shop_block(products):
 <div class="shop-head"><h2>Shop the edit</h2><span class="label">Affiliate links &middot; we may earn a small commission</span></div>
 <div class="products">{"".join(items)}</div></section>'''
 
-TYPE_WORD = {"necklace": "Collier", "ring": "Bague", "bracelet": "Bracelet", "earrings": "Boucles"}
+TYPE_WORD = {"necklace": "Collier", "ring": "Bague", "bracelet": "Bracelet", "earrings": "Boucles", "watch": "Montre", "boot": "Bottes"}
 
 AFF_ATTRS = 'rel="sponsored nofollow noopener" target="_blank"'
 DEFAULT_REGION = "eu"   # where a click on the photo or name goes: "eu" (EU/UK programme) or "us"
@@ -388,6 +416,8 @@ def edit_board(e, story_href=""):
     """One themed board, full width between the article's paragraphs: text on the left,
     the pieces on the right (desktop) or as a swipeable row (phone). No prices (they change);
     product images come unaltered from the retailer's catalogue."""
+    shops = {pr.get("shop", "Mytheresa") for pr in e["products"]}
+    one_shop = shops.pop() if len(shops) == 1 else ""   # name the shop once on the board, not on every card
     cards = []
     for pr in e["products"]:
         alt = html_lib.escape(f'{pr["brand"]} {pr["name"]}', quote=True)
@@ -402,15 +432,15 @@ def edit_board(e, story_href=""):
 <a class="piece-img" href="{main}" {AFF_ATTRS} tabindex="-1" aria-hidden="true">{img}</a>
 <span class="label">{pr["type"].capitalize()} &middot; {pr["brand"]}</span>
 <a class="piece-name" href="{main}" {AFF_ATTRS}>{pr["name"]}</a>
-<span class="piece-shop">at {pr.get("shop", "Mytheresa")}</span>
+{"" if one_shop else f'<span class="piece-shop">at {pr.get("shop", "Mytheresa")}</span>'}
 {gift_note(pr)}<span class="piece-regions">Discover &mdash; {" &middot; ".join(regions)}</span>
 </div>''')
     story = f'<p class="board-story">{e["story"]}</p>' if e.get("story") else ""
     n = len(e["products"])
     return f'''<section class="board" id="{edit_id(e)}" aria-label="{html_lib.escape(e["title"], quote=True)}">
 <div class="wrap board-in">
-<div class="board-text"><span class="label">The Edit &middot; affiliate links</span><h2>{e["title"]}</h2><p class="board-intro">{e.get("intro", "")}</p>{f'<a class="board-more" href="{story_href}">Read the story &rarr;</a>' if story_href else ""}</div>
-<div class="board-rail n{n}" role="list" aria-label="{n} pieces">{"".join(cards)}</div>
+<div class="board-text"><span class="label">The Edit{f" &middot; {one_shop}" if one_shop else ""} &middot; affiliate links</span><h2>{e["title"]}</h2><p class="board-intro">{e.get("intro", "")}</p>{f'<a class="board-more" href="{story_href}">Read the story &rarr;</a>' if story_href else ""}</div>
+<div class="board-rail n{n}{" scroll" if e.get("scroll") else ""}" role="list" aria-label="{n} pieces">{"".join(cards)}</div>
 {story}
 </div></section>'''
 
@@ -448,11 +478,12 @@ def edit_rail(current_slug, limit=10):
 <a class="piece-img" href="{url}" {AFF_ATTRS} tabindex="-1" aria-hidden="true"><img src="{pr["image"]}" alt="{alt}" loading="lazy"></a>
 <span class="label">{pr["brand"]}</span>
 <a class="piece-name" href="{url}" {AFF_ATTRS}>{pr["name"]}</a>
-<span class="piece-shop">at {pr.get("shop", "Mytheresa")}</span>
 </div>''')
+    shops = {pr.get("shop", "Mytheresa") for pr in picks}
+    where = f" &middot; all at {shops.pop()}" if len(shops) == 1 else ""
     return f'''<section class="rail-sec" aria-label="From The Edit"><div class="wrap">
 <div class="sec-head"><h2>From The Edit</h2><a href="/the-edit.html">See all</a></div>
-<p class="rail-note">Other pieces we would choose ourselves &middot; affiliate links</p></div>
+<p class="rail-note">Other pieces we would choose ourselves &middot; affiliate links{where}</p></div>
 <div class="rail" role="list">{"".join(cards)}</div></section>'''
 
 def body_with_edits(body, edits):
@@ -528,7 +559,9 @@ def build():
 <a class="btn" href="journal/{lead['slug']}.html">Read the edit</a>
 </div>
 </section>
+<div class="only-mob">{home_edit}</div>
 <section class="row" aria-label="Latest articles">{row}</section>
+<div class="only-desk">{home_edit}</div>
 <section class="wrap sec">
 <div class="sec-head"><h2>Quiet Parisian style, in silk and gold</h2><a href="journal/index.html">All articles</a></div><p class="dek" style="margin:0">An edit of Parisian ready-to-wear, fine jewelry and watches worth keeping.</p>
 </section>
@@ -540,7 +573,6 @@ def build():
 <a class="pillar" href="boots.html"><span class="label">Bottes</span><h3>Boots</h3><p>Ankle, riding and heeled boots that see you through every winter.</p></a>
 <a class="pillar" href="travel.html"><span class="label">Voyage</span><h3>Chic travel</h3><p>One good bag, a few pieces that all combine, sunglasses and a cap.</p></a>
 </section>
-{home_edit}
 """
     write("index.html", shell(f"{SITE['name']} · Quiet Parisian style, in silk and gold",
         "An edit of quiet Parisian luxury: ready-to-wear, fine jewelry and watches worth keeping.", home, 0, "", ""))
