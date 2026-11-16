@@ -308,6 +308,8 @@ ARTICLES = [
 <p>Knee-high with a flat sole, in smooth leather that fits the calf well. Worn with a knee-length skirt or a sweater dress, it is the most elegant winter outfit there is. With tucked-in jeans it turns casual and very French.</p>
 <h2>3. The boot with a heel</h2>
 <p>An ankle boot or a knee-high with a block or slim heel, for evenings, offices and anything slightly dressed up. A pointed or almond toe looks sharpest, under trousers or a long skirt.</p>
+<p><strong>The heeled ankle boot</strong> works best almost hidden. Let straight or wide trousers fall over it so only the pointed toe shows, and the heel quietly lengthens the leg. With a midi skirt, add sheer black tights so the line runs unbroken from hem to toe. Keep the heel mid-height: high enough to change the way you stand, low enough for cobblestones and the metro.</p>
+<p><strong>The heeled knee-high</strong> wants a skirt or a dress that meets it, or nearly: a midi skirt, a slip dress, a long knit, with no more than a hand&rsquo;s width of tights between hem and boot. Sleek leather looks sharp under a long coat; slouchy suede can be pushed down a little and feels softer, even with straight jeans tucked in. Keep everything above it simple, a roll-neck or a plain knit, and let the boot do the talking.</p>
 <h2>And for something tougher</h2>
 <p>A lace-up combat boot adds edge to a feminine outfit: a silk skirt, a soft knit, chunky boots. Miu Miu and Acne Studios both do versions that balance tough and refined.</p>
 <h2>Making them last</h2>
