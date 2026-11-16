@@ -249,6 +249,24 @@ def iso_date(d):
     day, month, year = d.split()
     return f"{year}-{MONTHS.index(month) + 1:02d}-{int(day):02d}"
 
+def jpeg_size(path):
+    """(width, height) of a JPEG without third-party libraries; None if unknown."""
+    try:
+        with open(path, "rb") as f:
+            data = f.read()
+        i = 2
+        while i < len(data):
+            if data[i] != 0xFF:
+                return None
+            marker = data[i + 1]
+            length = int.from_bytes(data[i + 2:i + 4], "big")
+            if marker in (0xC0, 0xC1, 0xC2):
+                return int.from_bytes(data[i + 7:i + 9], "big"), int.from_bytes(data[i + 5:i + 7], "big")
+            i += 2 + length
+    except OSError:
+        return None
+    return None
+
 def social_meta(title, desc, canonical, image=None, article=None):
     """Open Graph / Twitter tags (link previews in WhatsApp, iMessage, Facebook) and JSON-LD for Google."""
     url = f"{SITE['url']}/{canonical}"
@@ -260,6 +278,8 @@ def social_meta(title, desc, canonical, image=None, article=None):
         f'<meta property="og:url" content="{url}">',
         f'<meta property="og:image" content="{img_url}">',
         f'<meta property="og:image:alt" content="{alt}">',
+        *([f'<meta property="og:image:width" content="{size[0]}">', f'<meta property="og:image:height" content="{size[1]}">']
+          if (size := jpeg_size(os.path.join(os.path.dirname(os.path.abspath(__file__)), "images", img_file))) else []),
         '<meta property="og:locale" content="en_GB">',
         '<meta name="twitter:card" content="summary_large_image">',
     ]
