@@ -394,6 +394,8 @@ def edit_board(e, story_href=""):
     """One themed board, full width between the article's paragraphs: text on the left,
     the pieces on the right (desktop) or as a swipeable row (phone). No prices (they change);
     product images come unaltered from the retailer's catalogue."""
+    shops = {pr.get("shop", "Mytheresa") for pr in e["products"]}
+    one_shop = shops.pop() if len(shops) == 1 else ""   # name the shop once on the board, not on every card
     cards = []
     for pr in e["products"]:
         alt = html_lib.escape(f'{pr["brand"]} {pr["name"]}', quote=True)
@@ -408,14 +410,14 @@ def edit_board(e, story_href=""):
 <a class="piece-img" href="{main}" {AFF_ATTRS} tabindex="-1" aria-hidden="true">{img}</a>
 <span class="label">{pr["type"].capitalize()} &middot; {pr["brand"]}</span>
 <a class="piece-name" href="{main}" {AFF_ATTRS}>{pr["name"]}</a>
-<span class="piece-shop">at {pr.get("shop", "Mytheresa")}</span>
+{"" if one_shop else f'<span class="piece-shop">at {pr.get("shop", "Mytheresa")}</span>'}
 {gift_note(pr)}<span class="piece-regions">Discover &mdash; {" &middot; ".join(regions)}</span>
 </div>''')
     story = f'<p class="board-story">{e["story"]}</p>' if e.get("story") else ""
     n = len(e["products"])
     return f'''<section class="board" id="{edit_id(e)}" aria-label="{html_lib.escape(e["title"], quote=True)}">
 <div class="wrap board-in">
-<div class="board-text"><span class="label">The Edit &middot; affiliate links</span><h2>{e["title"]}</h2><p class="board-intro">{e.get("intro", "")}</p>{f'<a class="board-more" href="{story_href}">Read the story &rarr;</a>' if story_href else ""}</div>
+<div class="board-text"><span class="label">The Edit &middot; affiliate links{f" &middot; all pieces at {one_shop}" if one_shop else ""}</span><h2>{e["title"]}</h2><p class="board-intro">{e.get("intro", "")}</p>{f'<a class="board-more" href="{story_href}">Read the story &rarr;</a>' if story_href else ""}</div>
 <div class="board-rail n{n}{" scroll" if e.get("scroll") else ""}" role="list" aria-label="{n} pieces">{"".join(cards)}</div>
 {story}
 </div></section>'''
@@ -454,11 +456,12 @@ def edit_rail(current_slug, limit=10):
 <a class="piece-img" href="{url}" {AFF_ATTRS} tabindex="-1" aria-hidden="true"><img src="{pr["image"]}" alt="{alt}" loading="lazy"></a>
 <span class="label">{pr["brand"]}</span>
 <a class="piece-name" href="{url}" {AFF_ATTRS}>{pr["name"]}</a>
-<span class="piece-shop">at {pr.get("shop", "Mytheresa")}</span>
 </div>''')
+    shops = {pr.get("shop", "Mytheresa") for pr in picks}
+    where = f" &middot; all at {shops.pop()}" if len(shops) == 1 else ""
     return f'''<section class="rail-sec" aria-label="From The Edit"><div class="wrap">
 <div class="sec-head"><h2>From The Edit</h2><a href="/the-edit.html">See all</a></div>
-<p class="rail-note">Other pieces we would choose ourselves &middot; affiliate links</p></div>
+<p class="rail-note">Other pieces we would choose ourselves &middot; affiliate links{where}</p></div>
 <div class="rail" role="list">{"".join(cards)}</div></section>'''
 
 def body_with_edits(body, edits):
