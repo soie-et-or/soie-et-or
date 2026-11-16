@@ -537,6 +537,7 @@ def build():
 <a class="btn" href="journal/{lead['slug']}.html">Read the edit</a>
 </div>
 </section>
+{home_edit}
 <section class="row" aria-label="Latest articles">{row}</section>
 <section class="wrap sec">
 <div class="sec-head"><h2>Quiet Parisian style, in silk and gold</h2><a href="journal/index.html">All articles</a></div><p class="dek" style="margin:0">An edit of Parisian ready-to-wear, fine jewelry and watches worth keeping.</p>
@@ -549,7 +550,6 @@ def build():
 <a class="pillar" href="boots.html"><span class="label">Bottes</span><h3>Boots</h3><p>Ankle, riding and heeled boots that see you through every winter.</p></a>
 <a class="pillar" href="travel.html"><span class="label">Voyage</span><h3>Chic travel</h3><p>One good bag, a few pieces that all combine, sunglasses and a cap.</p></a>
 </section>
-{home_edit}
 """
     write("index.html", shell(f"{SITE['name']} · Quiet Parisian style, in silk and gold",
         "An edit of quiet Parisian luxury: ready-to-wear, fine jewelry and watches worth keeping.", home, 0, "", ""))
