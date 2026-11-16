@@ -182,6 +182,8 @@ html{scroll-behavior:smooth}
 .board-rail.n5 .piece{grid-column:span 2}
 .board-rail.n5 .piece:nth-child(4){grid-column:2/4}
 .board-rail.n5 .piece:nth-child(5){grid-column:4/6}
+.board-rail.scroll{display:flex;gap:20px;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:12px;scrollbar-width:thin;scrollbar-color:var(--line) transparent}
+.board-rail.scroll .piece{flex:0 0 calc((100% - 60px) / 3.4);scroll-snap-align:start}
 }
 .piece-img{display:block;aspect-ratio:1/1;background:#fff;position:relative;overflow:hidden;margin-bottom:8px}
 .piece-img img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;padding:10px;box-sizing:border-box;transition:transform .4s ease}
@@ -411,7 +413,7 @@ def edit_board(e, story_href=""):
     return f'''<section class="board" id="{edit_id(e)}" aria-label="{html_lib.escape(e["title"], quote=True)}">
 <div class="wrap board-in">
 <div class="board-text"><span class="label">The Edit &middot; affiliate links</span><h2>{e["title"]}</h2><p class="board-intro">{e.get("intro", "")}</p>{f'<a class="board-more" href="{story_href}">Read the story &rarr;</a>' if story_href else ""}</div>
-<div class="board-rail n{n}" role="list" aria-label="{n} pieces">{"".join(cards)}</div>
+<div class="board-rail n{n}{" scroll" if e.get("scroll") else ""}" role="list" aria-label="{n} pieces">{"".join(cards)}</div>
 {story}
 </div></section>'''
 
