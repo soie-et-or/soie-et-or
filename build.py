@@ -73,6 +73,8 @@ img{max-width:100%;display:block}
 .tile .rule{position:absolute;left:24px;top:24px;width:56px;height:1px;background:var(--gold)}
 
 /* hero */
+.only-mob{display:none}
+@media (max-width:760px){.only-mob{display:block}.only-desk{display:none}}
 .hero{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));border-bottom:1px solid var(--line)}
 .hero .tile{min-height:520px;border-right:1px solid var(--line)}
 .hero .copy{display:flex;flex-direction:column;justify-content:center;gap:22px;padding:56px clamp(24px,5vw,72px);min-width:0}
@@ -537,8 +539,9 @@ def build():
 <a class="btn" href="journal/{lead['slug']}.html">Read the edit</a>
 </div>
 </section>
-{home_edit}
+<div class="only-mob">{home_edit}</div>
 <section class="row" aria-label="Latest articles">{row}</section>
+<div class="only-desk">{home_edit}</div>
 <section class="wrap sec">
 <div class="sec-head"><h2>Quiet Parisian style, in silk and gold</h2><a href="journal/index.html">All articles</a></div><p class="dek" style="margin:0">An edit of Parisian ready-to-wear, fine jewelry and watches worth keeping.</p>
 </section>
