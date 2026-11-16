@@ -412,7 +412,19 @@ def gift_note(pr):
     return (f'<dl class="gift-note"><dt>Why</dt><dd>{g["why"]}</dd><dt>What</dt><dd>{g["what"]}</dd>'
             f'<dt>Stands for</dt><dd>{g["means"]}</dd></dl>')
 
-def edit_board(e, story_href=""):
+def board_key(e):
+    """Short name of a board for tracking, e.g. 'The Heeled Knee-High Edit' -> 'heeled-knee-high'."""
+    k = re.sub(r"[^a-z0-9]+", "-", e["title"].lower()).strip("-")
+    return re.sub(r"^the-|-edit$", "", k)
+
+def tag(url, label):
+    """Add a Rakuten subID (u1) so reports show which board and which spot on the site a sale came from.
+    Only the board and the spot go in, never anything about the reader."""
+    if url and "linksynergy.com" in url and "u1=" not in url:
+        return f"{url}&u1={label[:72]}"
+    return url
+
+def edit_board(e, story_href="", place="art"):
     """One themed board, full width between the article's paragraphs: text on the left,
     the pieces on the right (desktop) or as a swipeable row (phone). No prices (they change);
     product images come unaltered from the retailer's catalogue."""
@@ -423,7 +435,8 @@ def edit_board(e, story_href=""):
         alt = html_lib.escape(f'{pr["brand"]} {pr["name"]}', quote=True)
         img = (f'<img src="{pr["image"]}" alt="{alt}" loading="lazy">' if pr.get("image")
                else f'<span class="word">{TYPE_WORD.get(pr.get("type", ""), "Shop")}</span>')
-        urls = {"eu": pr.get("url_eu"), "us": pr.get("url_us")}
+        label = f"{place}-{board_key(e)}"
+        urls = {"eu": tag(pr.get("url_eu"), label), "us": tag(pr.get("url_us"), label)}
         main = urls.get(DEFAULT_REGION) or urls["eu"] or urls["us"] or "#"
         regions = []
         if urls["eu"]: regions.append(f'<a href="{urls["eu"]}" {AFF_ATTRS} aria-label="Discover {alt} in Europe and the UK">EU / UK</a>')
@@ -444,7 +457,7 @@ def edit_board(e, story_href=""):
 {story}
 </div></section>'''
 
-def edit_strip(edits, heading="The Edit in this story", base="", narrow=True):
+def edit_strip(edits, heading="The Edit in this story", base="", narrow=True, place="strip"):
     """Near the top: one tile per edit. Each tile is a small collage of the edit's own product photos,
     laid out side by side in HTML (the images themselves are not altered or merged). Each photo links
     to that piece at the retailer; the title jumps to the board."""
@@ -455,7 +468,7 @@ def edit_strip(edits, heading="The Edit in this story", base="", narrow=True):
         shots = [pr for pr in e["products"] if pr.get("image")][:3]
         cells = []
         for pr in shots:
-            url = pr.get(f"url_{DEFAULT_REGION}") or pr.get("url_eu") or pr.get("url_us")
+            url = tag(pr.get(f"url_{DEFAULT_REGION}") or pr.get("url_eu") or pr.get("url_us"), f"{place}-{board_key(e)}")
             alt = html_lib.escape(f'{pr["brand"]} {pr["name"]}', quote=True)
             cells.append(f'<a href="{url}" {AFF_ATTRS} title="{alt}"><img src="{pr["image"]}" alt="{alt}" loading="lazy"></a>')
         items.append(f'''<div class="strip-tile"><div class="collage c{len(cells)}">{"".join(cells)}</div>
@@ -466,20 +479,20 @@ def edit_strip(edits, heading="The Edit in this story", base="", narrow=True):
 def edit_rail(current_slug, limit=10):
     """'From The Edit' at the foot of an article: a swipeable row of pieces from the edits of *other*
     articles, so every story ends with a few of the editor's picks."""
-    picks = [pr for a in ARTICLES if a["slug"] != current_slug for e in (a.get("edits") or [])
+    picks = [(pr, e) for a in ARTICLES if a["slug"] != current_slug for e in (a.get("edits") or [])
              for pr in e["products"] if pr.get("image")][:limit]
     if not picks:
         return ""
     cards = []
-    for pr in picks:
+    for pr, e in picks:
         alt = html_lib.escape(f'{pr["brand"]} {pr["name"]}', quote=True)
-        url = pr.get(f"url_{DEFAULT_REGION}") or pr.get("url_eu") or pr.get("url_us")
+        url = tag(pr.get(f"url_{DEFAULT_REGION}") or pr.get("url_eu") or pr.get("url_us"), f"rail-{board_key(e)}")
         cards.append(f'''<div class="piece" role="listitem">
 <a class="piece-img" href="{url}" {AFF_ATTRS} tabindex="-1" aria-hidden="true"><img src="{pr["image"]}" alt="{alt}" loading="lazy"></a>
 <span class="label">{pr["brand"]}</span>
 <a class="piece-name" href="{url}" {AFF_ATTRS}>{pr["name"]}</a>
 </div>''')
-    shops = {pr.get("shop", "Mytheresa") for pr in picks}
+    shops = {pr.get("shop", "Mytheresa") for pr, _ in picks}
     where = f" &middot; all at {shops.pop()}" if len(shops) == 1 else ""
     return f'''<section class="rail-sec" aria-label="From The Edit"><div class="wrap">
 <div class="sec-head"><h2>From The Edit</h2><a href="/the-edit.html">See all</a></div>
@@ -549,7 +562,7 @@ def build():
     if all_edits:
         home_edit = (f'''<section class="wrap sec home-edit" style="padding-bottom:0"><div class="sec-head"><h2>The Edit</h2><a href="the-edit.html">See the edit</a></div>
 <p class="dek" style="margin:0 0 10px">Pieces we would choose ourselves, gathered by theme.</p><p class="disclose" style="text-align:left;margin:0 0 22px">{DISCLOSURE_SHORT}</p></section>'''
-                     + edit_strip([e for _, e in all_edits], heading="Browse by theme", base="the-edit.html", narrow=False).replace('class="wrap edit-strip"', 'class="wrap edit-strip home-strip"'))
+                     + edit_strip([e for _, e in all_edits], heading="Browse by theme", base="the-edit.html", narrow=False, place="home").replace('class="wrap edit-strip"', 'class="wrap edit-strip home-strip"'))
     home = f"""<section class="hero">
 {tile('Soie', img=SITE.get('hero_image'))}
 <div class="copy">
@@ -608,10 +621,10 @@ def build():
         write(f"journal/{a['slug']}.html", shell(f"{a['title']} · {SITE['name']}", a["dek"], body, 1, g, f"journal/{a['slug']}.html", image=a.get("image"), article=a))
 
     if all_edits:
-        boards = "\n".join(edit_board(e, f"journal/{a['slug']}.html") for a, e in all_edits)
+        boards = "\n".join(edit_board(e, f"journal/{a['slug']}.html", place="page") for a, e in all_edits)
         eb = (head_block("The Edit", "The Edit", "Pieces we would choose ourselves. Each edit belongs to a story; read it there, or browse them all here.")
               + f'<div class="wrap narrow"><p class="disclose">{DISCLOSURE_SHORT}</p></div>'
-              + edit_strip([e for _, e in all_edits], heading="The edits") + boards)
+              + edit_strip([e for _, e in all_edits], heading="The edits", place="pstrip") + boards)
         write("the-edit.html", shell(f"The Edit · {SITE['name']}", "Fine jewelry and pieces worth keeping, gathered by theme by the editor of Soie et Or.", mark_affiliate_links(eb), 0, "", "the-edit.html"))
 
     simple_page("about.html", "About Soie et Or", "About", ABOUT, "about")
