@@ -178,6 +178,7 @@ html{scroll-behavior:smooth}
 .board-rail.n4{grid-template-columns:repeat(4,minmax(0,1fr))}
 .board-rail.n5{grid-template-columns:repeat(6,minmax(0,1fr))}
 .board-rail.n6{grid-template-columns:repeat(3,minmax(0,1fr))}
+.board-rail.n7,.board-rail.n8{grid-template-columns:repeat(4,minmax(0,1fr))}
 .board-rail.n5 .piece{grid-column:span 2}
 .board-rail.n5 .piece:nth-child(4){grid-column:2/4}
 .board-rail.n5 .piece:nth-child(5){grid-column:4/6}
