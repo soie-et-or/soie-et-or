@@ -301,7 +301,8 @@ ARTICLES = [
             "card_pos": "center 70%",
             "alt": "Black and white photo of black leather knee-high boots and grey socks on a city pavement"},
   "body": """
-<p>Paris is a walking city, and from October to March its women walk in boots. Not dozens of pairs, just three good ones that together cover every occasion.</p>
+<p>Paris is a walking city, and from October to March its women walk in boots. Not dozens of pairs, just three good ones that together cover every occasion, and one editorial bonus at the end.</p>
+<p class="story-nav"><span>In this story</span> <a href="#edit-the-ankle-boot-edit">The flat ankle boot</a> &middot; <a href="#edit-the-riding-boot-edit">The riding boot</a> &middot; <a href="#edit-the-heeled-ankle-boot-edit">The boot with a heel</a> &middot; <a href="#edit-the-western-edit">Bonus: the Western boot</a></p>
 <h2>1. The flat ankle boot</h2>
 <p>A Chelsea or a simple zip ankle boot in black leather or dark brown suede. It is the boot you wear four days a week: with straight jeans, wide trousers, a midi skirt. Choose a slim sole and a clean toe so it looks as good at a dinner as on the street.</p>
 <h2>2. The knee-high riding boot</h2>
