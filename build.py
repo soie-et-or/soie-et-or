@@ -459,8 +459,7 @@ def edit_rail(current_slug, limit=10):
 <div class="rail" role="list">{"".join(cards)}</div></section>'''
 
 def body_with_edits(body, edits):
-    """Place each board right after the section whose <h2> matches its "after" (else at the end),
-    or just before the text in "before" when that is given."""
+    """Place each board right after the section whose <h2> matches its "after" (else at the end)."""
     if not edits:
         return f'<div class="wrap narrow page-body prose">\n{body}\n</div>'
     heads = [(m.start(), re.sub("<[^>]+>", "", m.group(1)).strip()) for m in re.finditer(r"<h2>(.*?)</h2>", body)]
@@ -470,8 +469,6 @@ def body_with_edits(body, edits):
         for k, (start, text) in enumerate(heads):
             if text.lower() == e.get("after", "").lower():
                 pos = heads[k + 1][0] if k + 1 < len(heads) else len(body)
-        if e.get("before") and e["before"] in body:   # place the board just before this snippet instead
-            pos = body.index(e["before"])
         cuts.setdefault(pos, []).append(edit_board(e))
     out, last = [], 0
     for pos in sorted(cuts):
