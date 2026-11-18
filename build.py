@@ -319,6 +319,9 @@ def shell(title, desc, body, depth, current="", canonical="", image=None, articl
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>{title}</title>
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <meta name="description" content="{desc}">
 <link rel="canonical" href="{SITE['url']}/{canonical}">
 <meta property="og:title" content="{title}">
@@ -553,6 +556,10 @@ def build():
     imgsrc = os.path.join(os.path.dirname(os.path.abspath(__file__)), "images")
     if os.path.isdir(imgsrc):
         shutil.copytree(imgsrc, os.path.join(OUT, "assets", "img"))
+    iconsrc = os.path.join(os.path.dirname(os.path.abspath(__file__)), "icons")   # tab and home-screen icons, served from the root
+    if os.path.isdir(iconsrc):
+        for name in os.listdir(iconsrc):
+            shutil.copy(os.path.join(iconsrc, name), os.path.join(OUT, name))
 
     lead, rest = ARTICLES[0], ARTICLES[1:]
     row = "\n".join(card(a, 0) for a in rest[:4])
