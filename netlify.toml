@@ -2,6 +2,12 @@
   command = "python3 build.py"
   publish = "site"
 
+# Production deploys cost credits. Skip the live deploy when a merge changes nothing that
+# ends up on the website (e.g. only pins/ or tools/). Exit 0 = skip, anything else = build.
+# When there is no previous build to compare with, or git cannot compare, it always builds.
+[context.production]
+  ignore = 'if [ -z "$CACHED_COMMIT_REF" ] || [ "$CACHED_COMMIT_REF" = "$COMMIT_REF" ]; then exit 1; fi; git diff --quiet "$CACHED_COMMIT_REF" "$COMMIT_REF" -- build.py content.py images icons netlify.toml'
+
 # Security headers for every page.
 # The site loads only its own files plus Google Fonts. If we later embed
 # Pinterest widgets or affiliate scripts, add their domains to the policy below.
