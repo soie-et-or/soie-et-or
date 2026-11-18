@@ -276,8 +276,6 @@ ARTICLES = [
 <li><strong>Fine lace.</strong> Look for lace that lies flat and does not show through clothes.</li>
 <li><strong>Cotton and modal.</strong> For everyday comfort, in good quality, they are just as chic.</li>
 </ul>
-<h2>Colours that work under everything</h2>
-<p>Build the basics in shades close to your skin tone, plus black and ivory. Then add one or two sets in a colour you love simply because it makes you feel good.</p>
 <h2>Pieces that go beyond underwear</h2>
 <p>A silk slip dress, a lace-trimmed camisole or a fine bodysuit can be worn as part of an outfit. Under an oversized blazer, or with a lace hem peeking out beneath a knit, they add softness to tailoring. It is a very Parisian contrast.</p>
 <h2>Silk for nights in</h2>
