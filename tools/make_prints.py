@@ -24,7 +24,7 @@ def soft_print(path, W=1000, k=12, light=0.18, lines=0.7):
     _,lab,cen=cv2.kmeans(Z,k,None,(cv2.TERM_CRITERIA_EPS+cv2.TERM_CRITERIA_MAX_ITER,20,1.0),3,cv2.KMEANS_PP_CENTERS)
     post=cen.astype(np.uint8)[lab.flatten()].reshape(sty.shape)
     post=cv2.addWeighted(post,.6,sty,.4,0)
-    paper=np.full_like(post,(234,243,248))  # BGR warm paper
+    paper=np.full_like(post,(247,247,247))  # neutral light paper
     post=cv2.addWeighted(post,1-light,paper,light,0)
     g=cv2.cvtColor(img,cv2.COLOR_BGR2GRAY); g=cv2.medianBlur(g,5)
     edges=cv2.adaptiveThreshold(g,255,cv2.ADAPTIVE_THRESH_MEAN_C,cv2.THRESH_BINARY,13,7)
@@ -81,7 +81,7 @@ BODI_S=ImageFont.truetype(F+'bodoni-moda-latin-400-italic.woff',38)
 JOST=ImageFont.truetype(F+'jost-latin-500-normal.woff',24); JOST_S=ImageFont.truetype(F+'jost-latin-500-normal.woff',21)
 TEN=ImageFont.truetype(F+'tenor-sans-latin-400-normal.woff',28)
 W,H,PH=1000,1500,1080
-INK=(30,26,24); PAPER=(246,241,233); GOLD=(194,154,82); MUTED=(107,102,96)
+INK=(30,26,24); PAPER=(255,255,255); GOLD=(194,154,82); MUTED=(107,102,96)
 IMG=''
 def tracked(d,cx,y,text,font,track,fill):
     ws=[d.textlength(c,font=font) for c in text]; x=cx-(sum(ws)+track*(len(text)-1))/2
@@ -90,9 +90,9 @@ def ctext(d,y,t,f,fill): w=d.textlength(t,font=f); d.text(((W-w)/2,y),t,font=f,f
 def make_base(src,mode,light=.14):
     b=soft_print(IMG+src,W=1300,light=light,lines=.7)
     if mode=='sepia':
-        g=b.convert('L'); lut=[tuple(int(INK[c]+(PAPER[c]-INK[c])*(i/255)**0.9) for c in range(3)) for i in range(256)]
+        g=b.convert('L'); lut=[tuple(int(INK[c]+((250,250,249)[c]-INK[c])*(i/255)**0.9) for c in range(3)) for i in range(256)]
         return Image.merge('RGB',[g.point([l[c] for l in lut]) for c in range(3)])
-    return Image.blend(b.convert('RGB'),Image.new('RGB',b.size,(255,236,210)),0.08)
+    return b.convert('RGB')
 class Snow:
     def __init__(s,n=230,seed=4): r=random.Random(seed); s.f=[[r.uniform(0,W),r.uniform(0,PH),r.uniform(1.5,5),r.uniform(2,6),r.uniform(0,6.3)] for _ in range(n)]
     def draw(s,lay,t):
