@@ -274,7 +274,6 @@ ARTICLES = [
 <ul>
 <li><strong>Silk.</strong> Soft, breathable and quietly luxurious. A silk camisole works under a blazer as well as on its own.</li>
 <li><strong>Fine lace.</strong> Look for lace that lies flat and does not show through clothes.</li>
-<li><strong>Cotton and modal.</strong> For everyday comfort, in good quality, they are just as chic.</li>
 </ul>
 <h2>Pieces that go beyond underwear</h2>
 <p>A silk slip dress, a lace-trimmed camisole or a fine bodysuit can be worn as part of an outfit. Under an oversized blazer, or with a lace hem peeking out beneath a knit, they add softness to tailoring. It is a very Parisian contrast.</p>
