@@ -402,7 +402,7 @@ def shop_block(products):
 
 TYPE_WORD = {"necklace": "Collier", "ring": "Bague", "bracelet": "Bracelet", "earrings": "Boucles", "watch": "Montre", "boot": "Bottes",
              "camisole": "Caraco", "bra": "Soutien-gorge", "bralette": "Bralette", "bodysuit": "Body", "corset": "Corset", "top": "Haut",
-             "slip dress": "Nuisette", "gown": "Robe", "dress": "Robe", "coat": "Manteau", "cardigan": "Gilet", "knit jacket": "Gilet", "sweater": "Pull", "jeans": "Jean", "belt": "Ceinture", "tights": "Collant", "skirt": "Jupe", "shorts": "Short", "pyjama trousers": "Pyjama", "pyjama top": "Pyjama", "headband": "Bandeau"}
+             "slip dress": "Nuisette", "gown": "Robe", "dress": "Robe", "coat": "Manteau", "cardigan": "Gilet", "knit jacket": "Gilet", "sweater": "Pull", "jeans": "Jean", "trousers": "Pantalon", "belt": "Ceinture", "tights": "Collant", "skirt": "Jupe", "shorts": "Short", "pyjama trousers": "Pyjama", "pyjama top": "Pyjama", "headband": "Bandeau"}
 
 AFF_ATTRS = 'rel="sponsored nofollow noopener" target="_blank"'
 DEFAULT_REGION = "eu"   # where a click on the photo or name goes: "eu" (EU/UK programme) or "us"
