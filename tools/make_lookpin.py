@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
-"""Format D: product-layout pin. Mytheresa product images are placed side by side,
+"""Format D: product-layout pin. Video: overview page, then one page per look, back to overview.
+ Mytheresa product images are placed side by side,
 only resized, never cropped, cut out or recoloured.
 
 Usage: python3 tools/make_lookpin.py spec.json
@@ -74,19 +75,76 @@ def render(s, n_visible=None):
     tracked(d, W / 2, H - 70, s['cta'].upper(), JOST_S, 4, INK)
     return im
 
+def render_look(s, row, n, total):
+    """One look per page: 2x2 grid of large product images."""
+    im = Image.new('RGB', (W, H), PAPER); d = ImageDraw.Draw(im)
+    tracked(d, W / 2, 64, 'SOIE ET OR', TEN, 9, INK)
+    d.line((W / 2 - 22, 108, W / 2 + 22, 108), fill=GOLD, width=2)
+    tracked(d, W / 2, 140, f'LOOK {n} OF {total}', JOST, 5, GOLD)
+    words = row['label'].rsplit(' ', 1)
+    a, b = words[0] + ' ', (words[1] if len(words) > 1 else '')
+    wa, wb = d.textlength(a, font=BOD), d.textlength(b, font=BODI)
+    x = (W - wa - wb) / 2; d.text((x, 172), a, font=BOD, fill=INK); d.text((x + wa, 172), b, font=BODI, fill=INK)
+    wear = row.get('wear') or row.get('desc') or ''
+    WF = font('jost-latin-500-normal.woff', 21)
+    lines, cur = [], ''
+    for w_ in wear.split():
+        t = (cur + ' ' + w_).strip()
+        if d.textlength(t, font=WF) > 820 and cur: lines.append(cur); cur = w_
+        else: cur = t
+    if cur: lines.append(cur)
+    for i, ln in enumerate(lines[:3]): ctext(d, 262 + i * 31, ln, WF, MUTED)
+    top_y = 262 + 31 * len(lines[:3]) + 22
+    rows = row.get('outfit') or [row['items'][:2], row['items'][2:4]]
+    gap, maxw, top, bottom = 10, 920, top_y, H - 150
+    avail = bottom - top - gap * (len(rows) - 1)
+    hs = []
+    for r in rows:   # height per row so the widest row fits, capped so all rows fit
+        n = len(r); tw = min((maxw - gap * (n - 1)) / n, 300 * 885 / 1000)
+        hs.append(tw * 1000 / 885)
+    scale = min(1, avail / sum(hs)); y = top + (avail - sum(hs) * scale) / 2
+    allb = []
+    for r, h in zip(rows, hs):
+        th = int(h * scale); tw = int(th * 885 / 1000); n = len(r)
+        x = (W - (n * tw + (n - 1) * gap)) // 2
+        for pnum, kind, brand in r:
+            allb.append(brand)
+            p = os.path.join(s.get('img_dir') or '', pnum + '.jpg')
+            if os.path.exists(p):
+                t = Image.open(p).convert('RGB').resize((tw, th), Image.LANCZOS)   # resize only
+            else:
+                t = Image.new('RGB', (tw, th), TILE); td = ImageDraw.Draw(t)
+                for txt, f, yy, col in ((kind.upper(), JOST_S, th / 2 - 22, MUTED), (brand, JOST_S, th / 2 + 4, INK)):
+                    td.text(((tw - td.textlength(txt, font=f)) / 2, yy), txt, font=f, fill=col)
+            im.paste(t, (x, int(y))); x += tw + gap
+        y += th + gap
+    brands = ' · '.join(dict.fromkeys(allb))
+    bf = BODI_S
+    for sz in range(30, 16, -1):
+        bf = font('bodoni-moda-latin-400-italic.woff', sz)
+        if d.textlength(brands, font=bf) < W - 60: break
+    ctext(d, H - 128, brands, bf, MUTED)
+    tracked(d, W / 2, H - 70, s['cta'].upper(), JOST_S, 4, INK)
+    return im
+
+def video(s, out, fps=30, hold=75, fade=12):
+    import subprocess, tempfile
+    pages = [render(s)] + [render_look(s, r, i + 1, len(s['rows'])) for i, r in enumerate(s['rows'])] + [render(s)]
+    tmp = tempfile.mkdtemp(); idx = 0
+    def save(fr):
+        nonlocal idx; fr.save(f'{tmp}/{idx:05d}.png'); idx += 1
+    for i, pg in enumerate(pages):
+        for _ in range(hold if i < len(pages) - 1 else 45): save(pg)
+        if i < len(pages) - 1:
+            for f in range(1, fade + 1): save(Image.blend(pg, pages[i + 1], f / (fade + 1)))
+    subprocess.run(['ffmpeg', '-y', '-loglevel', 'error', '-framerate', str(fps), '-i', f'{tmp}/%05d.png',
+                    '-c:v', 'libx264', '-pix_fmt', 'yuv420p', '-crf', '20', out + '.mp4'], check=True)
+
 if __name__ == '__main__':
     s = json.load(open(sys.argv[1]))
     out = s['file']
     render(s).save(out + '.png')
-    if s.get('video'):
-        import subprocess, tempfile
-        tmp = tempfile.mkdtemp(); n = sum(len(r['items'][:4]) for r in s['rows'])
-        fps, per, hold = 30, 12, 90   # one product every 0.4 s, then hold 3 s
-        frames = [render(s, i) for i in range(n + 1)]
-        idx = 0
-        for i in range(n + 1):
-            for _ in range(per if i < n else hold):
-                frames[i].save(f'{tmp}/{idx:05d}.png'); idx += 1
-        subprocess.run(['ffmpeg', '-y', '-loglevel', 'error', '-framerate', str(fps), '-i', f'{tmp}/%05d.png',
-                        '-c:v', 'libx264', '-pix_fmt', 'yuv420p', '-crf', '20', out + '.mp4'], check=True)
+    for i, r in enumerate(s['rows']):
+        render_look(s, r, i + 1, len(s['rows'])).save(f'{out}-look{i + 1}.png')
+    if s.get('video'): video(s, out)
     print('wrote', out)
