@@ -33,20 +33,19 @@ def tracked(d, cx, y, text, f, track, fill, left=None):
 def ctext(d, y, t, f, fill):
     d.text(((W - d.textlength(t, font=f)) / 2, y), t, font=f, fill=fill)
 
-def tile(img_dir, pnum, kind, brand, size):
+TW, TH = 220, 249   # Mytheresa product images are 885x1000
+
+def tile(img_dir, pnum, kind, brand, size=TW):
     p = os.path.join(img_dir or '', pnum + '.jpg')
     if img_dir and os.path.exists(p):
         im = Image.open(p).convert('RGB')
-        im.thumbnail((size, size), Image.LANCZOS)          # resize only
-        canvas = Image.new('RGB', (size, size), PAPER)
-        canvas.paste(im, ((size - im.width) // 2, (size - im.height) // 2))
-        return canvas
-    t = Image.new('RGB', (size, size), TILE); d = ImageDraw.Draw(t)
+        return im.resize((TW, TH), Image.LANCZOS)          # resize only, same aspect
+    t = Image.new('RGB', (TW, TH), TILE); d = ImageDraw.Draw(t)
     bf = BODI_S
     for sz in range(30, 14, -2):
         bf = font('bodoni-moda-latin-400-italic.woff', sz)
         if d.textlength(brand, font=bf) < size - 24: break
-    for txt, f, y, col in ((kind.upper(), JOST_S, size / 2 - 24, MUTED), (brand, bf, size / 2 + 2, INK)):
+    for txt, f, y, col in ((kind.upper(), JOST_S, TH / 2 - 24, MUTED), (brand, bf, TH / 2 + 2, INK)):
         d.text(((size - d.textlength(txt, font=f)) / 2, y), txt, font=f, fill=col)
     return t
 
@@ -58,7 +57,7 @@ def render(s, n_visible=None):
     ctext(d, 172, s['title'], BOD, INK)
     ctext(d, 246, s['italic'], BODI, INK)
     ctext(d, 340, s['sub'], JOST, MUTED)
-    size, gap = 228, 12; x0 = (W - (4 * size + 3 * gap)) // 2
+    size, gap = TW, 14; x0 = (W - (4 * size + 3 * gap)) // 2
     y = 410; k = 0
     for row in s['rows']:
         tracked(d, 0, y, row['label'].upper(), JOST, 4, GOLD, left=x0)
@@ -70,7 +69,7 @@ def render(s, n_visible=None):
             if n_visible is None or k < n_visible:
                 im.paste(tile(s.get('img_dir'), pnum, kind, brand, size), (x0 + i * (size + gap), y))
             k += 1
-        y += size + 30
+        y += TH + 26
     ctext(d, H - 128, s['brands'], BODI_S, MUTED)
     tracked(d, W / 2, H - 70, s['cta'].upper(), JOST_S, 4, INK)
     return im
