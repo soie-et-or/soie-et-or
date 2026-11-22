@@ -62,6 +62,9 @@ def render(s, n_visible=None):
     y = 410; k = 0
     for row in s['rows']:
         tracked(d, 0, y, row['label'].upper(), JOST, 4, GOLD, left=x0)
+        if row.get('desc'):
+            df = font('bodoni-moda-latin-400-italic.woff', 25)
+            d.text((W - x0 - d.textlength(row['desc'], font=df), y - 6), row['desc'], font=df, fill=MUTED)
         y += 34
         for i, (pnum, kind, brand) in enumerate(row['items'][:4]):
             if n_visible is None or k < n_visible:
