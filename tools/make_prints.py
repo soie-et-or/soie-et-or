@@ -169,6 +169,32 @@ class Sun:
         r=s.r*(1+.04*math.sin(t*1.2)); g=Image.new('RGBA',lay.size,(0,0,0,0)); d=ImageDraw.Draw(g)
         d.ellipse([s.x-r*2.2,s.y-r*2.2,s.x+r*2.2,s.y+r*2.2],fill=(255,214,140,80)); d.ellipse([s.x-r,s.y-r,s.x+r,s.y+r],fill=(250,200,110,170))
         lay.alpha_composite(g.filter(ImageFilter.GaussianBlur(r*.35)))
+class Sheen:
+    """A soft band of light that glides diagonally across the photo, like light moving over silk."""
+    def __init__(s,period=4.0,width=230,strength=70):
+        s.p,s.w,s.k=period,width,strength
+        L=int((W+PH)*1.6); band=Image.new('L',(L,s.w*3),0); d=ImageDraw.Draw(band)
+        for i in range(s.w*3):
+            v=math.exp(-((i-s.w*1.5)/(s.w*.45))**2); d.line([(0,i),(L,i)],fill=int(255*v))
+        s.band=band.rotate(-32,expand=True,resample=Image.BICUBIC)
+    def draw(s,lay,t):
+        # dim the photo slightly everywhere and let a band of light travel across it
+        f=(t%s.p)/s.p; x=int(-s.band.width*.75+f*(W+s.band.width*.6)); y=int((PH-s.band.height)/2)
+        band=Image.new('L',lay.size,0); band.paste(s.band,(x,y))
+        dark=band.point(lambda v:int(s.k*(1-v/255)))
+        sh=Image.new('RGBA',lay.size,(20,16,12,0)); sh.putalpha(dark); lay.alpha_composite(sh)
+        hi=Image.new('RGBA',lay.size,(255,250,240,0)); hi.putalpha(band.point(lambda v:int(v*.22))); lay.alpha_composite(hi)
+class Bokeh:
+    """Soft, warm out-of-focus lights drifting slowly upwards."""
+    def __init__(s,n=26,seed=21):
+        r=random.Random(seed); s.b=[(r.uniform(0,W),r.uniform(0,PH),r.uniform(10,34),r.uniform(6,16),r.uniform(0,6.3),r.uniform(.6,1.4)) for _ in range(n)]
+    def draw(s,lay,t):
+        g=Image.new('RGBA',lay.size,(0,0,0,0)); d=ImageDraw.Draw(g)
+        for x0,y0,rad,v,ph,tw in s.b:
+            x=x0+math.sin(t*.5+ph)*10; y=(y0-t*v)%(PH+80)-40
+            a=.45+.35*math.sin(t*tw+ph)
+            d.ellipse([x-rad,y-rad,x+rad,y+rad],fill=(255,236,205,int(120*a)),outline=(255,248,235,int(150*a)),width=2)
+        lay.alpha_composite(g.filter(ImageFilter.GaussianBlur(3)))
 def render(name,src,mode,effects,kicker,title,italic,brands=None,cta="DISCOVER THE EDIT · SOIE-ET-OR.COM",focus=.5,zoom=.08,secs=8,light=.14,out_dir='.',theme='white'):
     BG,TX,MU,GD=((14,14,14),(255,255,255),(190,184,176),(212,176,108)) if theme=='ink' else (PAPER,INK,MUTED,GOLD)
     base=make_base(src,mode,light)
@@ -198,7 +224,7 @@ def render(name,src,mode,effects,kicker,title,italic,brands=None,cta="DISCOVER T
     shutil.rmtree(fr)
 
 
-EFFECTS={'snow':lambda: Snow(200,4),'sparkle':lambda: Sparkle(24,3),'leaves':lambda: Leaves(34,6),
+EFFECTS={'sheen':lambda: Sheen(),'bokeh':lambda: Bokeh(),'snow':lambda: Snow(200,4),'sparkle':lambda: Sparkle(24,3),'leaves':lambda: Leaves(34,6),
          'lights':lambda: Lights(18),'diamonds':lambda: Diamonds(46,12),'sun':lambda: Sun(790,230,70)}
 
 def main(spec):
