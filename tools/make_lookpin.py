@@ -58,7 +58,9 @@ def render(s, n_visible=None):
     ctext(d, 172, s['title'], BOD, INK)
     ctext(d, 246, s['italic'], BODI, INK)
     ctext(d, 340, s['sub'], JOST, MUTED)
-    size, gap = TW, 14; x0 = (W - (4 * size + 3 * gap)) // 2
+    nr = len(s['rows'])
+    th = int(min(TH, (H - 180 - 410) / nr - 34 - 16)); size = int(th * 885 / 1000)
+    gap = 14; x0 = (W - (4 * size + 3 * gap)) // 2
     y = 410; k = 0
     for row in s['rows']:
         tracked(d, 0, y, row['label'].upper(), JOST, 4, GOLD, left=x0)
@@ -68,9 +70,11 @@ def render(s, n_visible=None):
         y += 34
         for i, (pnum, kind, brand) in enumerate(row['items'][:4]):
             if n_visible is None or k < n_visible:
-                im.paste(tile(s.get('img_dir'), pnum, kind, brand, size), (x0 + i * (size + gap), y))
+                t_ = tile(s.get('img_dir'), pnum, kind, brand)
+                if t_.size != (size, th): t_ = t_.resize((size, th), Image.LANCZOS)
+                im.paste(t_, (x0 + i * (size + gap), y))
             k += 1
-        y += TH + 26
+        y += th + 16
     ctext(d, H - 128, s['brands'], BODI_S, MUTED)
     tracked(d, W / 2, H - 70, s['cta'].upper(), JOST_S, 4, INK)
     return im
@@ -80,7 +84,7 @@ def render_look(s, row, n, total):
     im = Image.new('RGB', (W, H), PAPER); d = ImageDraw.Draw(im)
     tracked(d, W / 2, 64, 'SOIE ET OR', TEN, 9, INK)
     d.line((W / 2 - 22, 108, W / 2 + 22, 108), fill=GOLD, width=2)
-    tracked(d, W / 2, 140, f'LOOK {n} OF {total}', JOST, 5, GOLD)
+    tracked(d, W / 2, 140, f"{s.get('page_label', 'Look').upper()} {n} OF {total}", JOST, 5, GOLD)
     words = row['label'].rsplit(' ', 1)
     a, b = words[0] + ' ', (words[1] if len(words) > 1 else '')
     wa, wb = d.textlength(a, font=BOD), d.textlength(b, font=BODI)
