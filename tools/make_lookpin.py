@@ -99,7 +99,8 @@ def render_look(s, row, n, total):
     if cur: lines.append(cur)
     for i, ln in enumerate(lines[:3]): ctext(d, 262 + i * 31, ln, WF, MUTED)
     top_y = 262 + 31 * len(lines[:3]) + 22
-    rows = row.get('outfit') or [row['items'][:2], row['items'][2:4]]
+    its = row['items']
+    rows = row.get('outfit') or [its[i:i + 3] for i in range(0, len(its), 3)]   # default: grid of three per row
     gap, maxw, top, bottom = 10, 920, top_y, H - 150
     avail = bottom - top - gap * (len(rows) - 1)
     hs = []
