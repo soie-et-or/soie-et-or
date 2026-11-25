@@ -13,6 +13,9 @@ SITE = {
     # Homepage hero photo (file lives in images/)
     "hero_image": {"file": "portrait-black-blazer.jpg", "pos": "center 30%",
                    "alt": "Woman in a black tailored blazer, leather gloves, statement rings and a steel watch"},
+    # Article shown large at the top of the home page, and the text on its button
+    "lead": "what-is-quiet-luxury",
+    "lead_cta": "See the three looks",
     "pinterest_verify": "befd5a5bd7eca69fc2921fe79cef2cc9",
 }
 

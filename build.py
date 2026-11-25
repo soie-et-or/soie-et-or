@@ -582,7 +582,8 @@ def build():
         for name in os.listdir(iconsrc):
             shutil.copy(os.path.join(iconsrc, name), os.path.join(OUT, name))
 
-    lead, rest = ARTICLES[0], ARTICLES[1:]
+    lead = next((a for a in ARTICLES if a["slug"] == SITE.get("lead")), ARTICLES[0])
+    rest = [a for a in ARTICLES if a is not lead]
     row = "\n".join(card(a, 0) for a in rest[:4])
     all_edits = [(a, e) for a in ARTICLES for e in (a.get("edits") or [])]
     all_edits.sort(key=lambda ae: not ae[1].get("first"))
@@ -598,7 +599,7 @@ def build():
 <span class="kicker">The edit &middot; {lead['category']}</span>
 <h1>{lead['title']}</h1>
 <p>{lead['dek']}</p>
-<div class="btns"><a class="btn" href="journal/{lead['slug']}.html">Read the article</a><a class="btn btn-solid" href="the-edit.html">Shop the edits</a></div>
+<div class="btns"><a class="btn" href="journal/{lead['slug']}.html">{SITE.get('lead_cta', 'Read the article')}</a><a class="btn btn-solid" href="the-edit.html">Shop the edits</a></div>
 </div>
 </section>
 {home_edit}
