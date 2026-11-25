@@ -88,6 +88,7 @@ img{max-width:100%;display:block}
 .hero p{margin:0;font-size:17px;color:var(--muted);max-width:44ch}
 .btn{align-self:flex-start;display:inline-block;border:1px solid var(--ink);padding:15px 30px;font:500 11px/1 var(--body);letter-spacing:.24em;text-transform:uppercase;text-decoration:none;color:var(--ink)}
 .btn:hover{background:var(--ink);color:var(--white)}
+.btns{display:flex;flex-wrap:wrap;gap:12px}.btn-solid{background:var(--ink);color:var(--white)}.btn-solid:hover{background:transparent;color:var(--ink)}
 @media (max-width:820px){.hero{grid-template-columns:1fr}.hero .tile{min-height:300px;border-right:0;border-bottom:1px solid var(--line)}}
 
 /* edit row + grids */
@@ -595,7 +596,7 @@ def build():
 <span class="kicker">The edit &middot; {lead['category']}</span>
 <h1>{lead['title']}</h1>
 <p>{lead['dek']}</p>
-<a class="btn" href="journal/{lead['slug']}.html">Read the edit</a>
+<div class="btns"><a class="btn" href="journal/{lead['slug']}.html">Read the article</a><a class="btn btn-solid" href="the-edit.html">Shop the edits</a></div>
 </div>
 </section>
 <section class="wrap sec">
