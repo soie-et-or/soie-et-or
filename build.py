@@ -88,15 +88,15 @@ img{max-width:100%;display:block}
 .hero p{margin:0;font-size:17px;color:var(--muted);max-width:44ch}
 .btn{align-self:flex-start;display:inline-block;border:1px solid var(--ink);padding:15px 30px;font:500 11px/1 var(--body);letter-spacing:.24em;text-transform:uppercase;text-decoration:none;color:var(--ink)}
 .btn:hover{background:var(--ink);color:var(--white)}
-.btns{display:flex;flex-wrap:wrap;gap:12px}.btn-solid{background:var(--ink);color:var(--white)}.btn-solid:hover{background:transparent;color:var(--ink)}
-@media (max-width:820px){.hero{grid-template-columns:1fr}.hero .tile{min-height:300px;border-right:0;border-bottom:1px solid var(--line)}}
+.btns{display:inline-grid;grid-template-columns:1fr 1fr;gap:12px}.btns .btn{text-align:center;align-self:stretch}@media (max-width:520px){.btns{display:grid;grid-template-columns:1fr}}.btn-solid{background:var(--ink);color:var(--white)}.btn-solid:hover{background:transparent;color:var(--ink)}
+@media (max-width:820px){.hero{grid-template-columns:1fr}.hero .tile{min-height:0;height:56vw;max-height:300px;border-right:0;border-bottom:1px solid var(--line)}.hero .copy{padding:26px 18px 30px;gap:16px}}
 
 /* edit row + grids */
 .row{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-bottom:1px solid var(--line)}
 .row .card{border-right:1px solid var(--line);padding:22px 24px 28px}
 .row .card:last-child{border-right:0}
 @media (max-width:980px){.row{grid-template-columns:repeat(2,minmax(0,1fr))}.row .card:nth-child(2n){border-right:0}.row .card{border-bottom:1px solid var(--line)}}
-@media (max-width:520px){.row{grid-template-columns:1fr}.row .card{border-right:0}}
+@media (max-width:520px){.row{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch}.row .card{flex:0 0 62%;scroll-snap-align:start;border-right:1px solid var(--line);border-bottom:0;padding:16px 16px 20px}.row .card p{display:none}.row .card h3{font-size:17px}}
 .card{display:flex;flex-direction:column;gap:14px;text-decoration:none;color:var(--ink);min-width:0}
 .card .tile{aspect-ratio:4/5;max-width:100%;padding:18px}
 .card .tile .word{font-size:clamp(30px,3vw,42px)}
@@ -140,7 +140,7 @@ img{max-width:100%;display:block}
 .tile.photo{padding:0}
 .tile.photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 .hero .tile.photo{min-height:640px}
-@media (max-width:820px){.hero .tile.photo{min-height:420px}.hero-tile.photo{aspect-ratio:4/3}}
+@media (max-width:820px){.hero .tile.photo{min-height:0;height:72vw;max-height:320px}.hero-tile.photo{aspect-ratio:4/3}}
 .disclose{font-size:12.5px;line-height:1.5;color:var(--muted);text-align:center;margin:-18px auto 28px;max-width:60ch}
 .disclose a{color:var(--muted)}
 .shop{padding-block:8px 64px}
@@ -589,7 +589,7 @@ def build():
     home_edit = ""
     if all_edits:
         home_edit = (f'''<section class="wrap sec home-edit" style="padding-bottom:0"><div class="sec-head"><h2>The Edit</h2><a href="the-edit.html">See the edit</a></div>
-<p class="dek" style="margin:0 0 10px">Pieces we would choose ourselves, gathered by theme.</p><p class="disclose" style="text-align:left;margin:0 0 22px">{DISCLOSURE_SHORT}</p></section>'''
+<p class="dek only-desk" style="margin:0 0 10px">Pieces we would choose ourselves, gathered by theme.</p><p class="disclose" style="text-align:left;margin:0 0 22px">{DISCLOSURE_SHORT}</p></section>'''
                      + edit_strip([e for _, e in all_edits], heading="Browse by theme", base="the-edit.html", narrow=False, place="home").replace('class="wrap edit-strip"', 'class="wrap edit-strip home-strip"'))
     home = f"""<p class="promise">Parisian styling advice, one look at a time.</p>
 <section class="hero">
@@ -601,10 +601,9 @@ def build():
 <div class="btns"><a class="btn" href="journal/{lead['slug']}.html">Read the article</a><a class="btn btn-solid" href="the-edit.html">Shop the edits</a></div>
 </div>
 </section>
+{home_edit}
 <ol class="rules"><li class="rules-title"><span class="rule">Five rules<i>for 2026</i></span><a href="journal/index.html">All articles</a></li><li><a href="journal/everyday-gold-jewelry.html"><span class="label">Fine jewelry</span><span class="rule">One good piece,<i>worn every day</i></span></a></li><li><a href="journal/what-is-quiet-luxury.html"><span class="label">Quiet luxury</span><span class="rule">Fabric over logos,<i>colour when chosen</i></span></a></li><li><a href="journal/three-boots-parisian-wardrobe.html"><span class="label">Boots</span><span class="rule">Three pairs<i>for every winter day</i></span></a></li><li><a href="journal/french-lingerie-guide.html"><span class="label">Lingerie</span><span class="rule">Silk underneath,<i>lace that lies flat</i></span></a></li><li><a href="journal/the-case-for-a-small-watch.html"><span class="label">Watches</span><span class="rule">A small watch<i>says enough</i></span></a></li></ol>
-<div class="only-mob">{home_edit}</div>
 <section class="row" aria-label="Latest articles">{row}</section>
-<div class="only-desk">{home_edit}</div>
 <section class="wrap sec" style="padding-bottom:0"><div class="sec-head"><h2>Quiet Parisian style, in silk and gold</h2></div></section>
 <section class="pillars wrap" style="padding-left:0;padding-right:0">
 <a class="pillar" href="clothing.html"><span class="label">Soie</span><h3>Clothing</h3><p>Parisian ready-to-wear from Sandro, IRO, Acne Studios, Marni and Miu Miu. Capsule wardrobes built to last.</p></a>
