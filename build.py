@@ -8,12 +8,18 @@ FMT = dict(SITE)
 # Which nav section each article category belongs to
 GROUPS = {
     "clothing": {"label": "Clothing", "title": "Clothing", "dek": "Parisian ready-to-wear and wardrobes built to last.",
+                 "seo_title": 'Parisian Capsule Wardrobe & Outfit Advice', "seo_desc": 'Parisian styling advice for clothing: capsule wardrobes, quiet luxury outfits and ready-to-wear pieces built to last.',
                  "cats": ["Wardrobe", "Brands", "Style notes"]},
-    "jewelry": {"label": "Jewelry", "title": "Jewelry", "dek": "Fine jewelry to wear every day.", "cats": ["Jewelry"]},
-    "watches": {"label": "Watches", "title": "Watches", "dek": "Watches, new and pre-owned, and how to buy them well.", "cats": ["Watches"]},
-    "lingerie": {"label": "Lingerie", "title": "Lingerie", "dek": "French lingerie: silk, fine lace and the right fit.", "cats": ["Lingerie"]},
-    "boots": {"label": "Boots", "title": "Boots", "dek": "The boots a Parisian wardrobe needs, and how to make them last.", "cats": ["Boots"]},
-    "travel": {"label": "Travel", "title": "Chic travel", "dek": "Bags, outfits, sunglasses and caps for travelling light and well.", "cats": ["Travel"]},
+    "jewelry": {"label": "Jewelry", "title": "Jewelry", "dek": "Fine jewelry to wear every day.", "seo_title": 'Fine Gold Jewelry Guides & Gift Ideas', "seo_desc": 'How to choose and wear fine gold jewelry the Parisian way: everyday pieces, gift ideas and buying well when gold is expensive.',
+                 "cats": ["Jewelry"]},
+    "watches": {"label": "Watches", "title": "Watches", "dek": "Watches, new and pre-owned, and how to buy them well.", "seo_title": "Small Women's Watches & Pre-Owned Watch Guides", "seo_desc": "Small, elegant women's watches and how to buy them well, new or pre-owned, with honest advice on what to check.",
+                 "cats": ["Watches"]},
+    "lingerie": {"label": "Lingerie", "title": "Lingerie", "dek": "French lingerie: silk, fine lace and the right fit.", "seo_title": 'French Lingerie: Silk & Lace, the Parisian Way', "seo_desc": 'French lingerie the Parisian way: silk camisoles, fine lace, slip dresses and what to wear under a blazer or a knit.',
+                 "cats": ["Lingerie"]},
+    "boots": {"label": "Boots", "title": "Boots", "dek": "The boots a Parisian wardrobe needs, and how to make them last.", "seo_title": "Women's Winter Boots: Ankle, Riding & Heeled", "seo_desc": 'The boots a Parisian winter wardrobe needs: flat ankle boots, riding boots and heeled boots, and how to wear each one.',
+                 "cats": ["Boots"]},
+    "travel": {"label": "Travel", "title": "Chic travel", "dek": "Bags, outfits, sunglasses and caps for travelling light and well.", "seo_title": 'Paris Travel Outfits & Chic Packing', "seo_desc": 'Chic travel outfits for a weekend in Paris: the carry-on, the bag and what to wear on the train or plane.',
+                 "cats": ["Travel"]},
 }
 def group_of(a):
     for k, g in GROUPS.items():
@@ -327,14 +333,14 @@ def shell(title, desc, body, depth, current="", canonical="", image=None, articl
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>{title}</title>
+<title>{html_lib.escape(title, quote=False)}</title>
 <link rel="icon" href="/favicon.ico" sizes="any">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
-<meta name="description" content="{desc}">
+<meta name="description" content="{html_lib.escape(desc, quote=True)}">
 <link rel="canonical" href="{SITE['url']}/{canonical}">
-<meta property="og:title" content="{title}">
-<meta property="og:description" content="{desc}">
+<meta property="og:title" content="{html_lib.escape(title, quote=True)}">
+<meta property="og:description" content="{html_lib.escape(desc, quote=True)}">
 <meta property="og:site_name" content="{SITE['name']}">
 {social_meta(title, desc, canonical, image, article)}
 {verify}
@@ -609,14 +615,14 @@ def build():
 <a class="pillar" href="travel.html"><span class="label">Voyage</span><h3>Chic travel</h3><p>Three travel outfits for a weekend in Paris: the case, the bag and what to wear on the way.</p></a>
 </section>
 """
-    write("index.html", shell(f"{SITE['name']} · Quiet Parisian style, in silk and gold",
+    write("index.html", shell(f"{SITE['name']} · Parisian Styling Advice, Quiet Luxury & Fine Jewelry",
         "Parisian styling advice, one look at a time: complete outfits, capsule wardrobes, fine jewelry and watches worth keeping.", home, 0, "", ""))
 
     for key, g in GROUPS.items():
         items = [a for a in ARTICLES if group_of(a) == key]
         cards = "\n".join(card(a, 0) for a in items)
         b = head_block("Section", g["title"], g["dek"]) + f'<section class="wrap sec" style="padding-top:0"><div class="grid">{cards}</div></section>'
-        write(f"{key}.html", shell(f"{g['title']} · {SITE['name']}", g["dek"], b, 0, key, f"{key}.html"))
+        write(f"{key}.html", shell(f"{g.get('seo_title', g['title'])} · {SITE['name']}", g.get("seo_desc", g["dek"]), b, 0, key, f"{key}.html"))
 
     jcards = "\n".join(card(a, 1) for a in ARTICLES)
     jbody = head_block("Journal", "The journal", "Wardrobe notes, jewelry guides and honest advice on buying luxury well.") + \
@@ -640,7 +646,7 @@ def build():
 {shop}{rail}</article>
 <section class="wrap sec" style="border-top:1px solid var(--line)"><div class="sec-head"><h2>Keep reading</h2><a href="/journal/index.html">All articles</a></div><div class="grid">{more}</div></section>"""
         body = mark_affiliate_links(body)
-        write(f"journal/{a['slug']}.html", shell(f"{a['title']} · {SITE['name']}", a["dek"], body, 1, g, f"journal/{a['slug']}.html", image=a.get("image"), article=a))
+        write(f"journal/{a['slug']}.html", shell(f"{a.get('seo_title', a['title'])} · {SITE['name']}", a.get("seo_desc", a["dek"]), body, 1, g, f"journal/{a['slug']}.html", image=a.get("image"), article=a))
 
     if all_edits:
         boards = "\n".join(edit_board(e, f"journal/{a['slug']}.html", place="page") for a, e in all_edits)
@@ -660,8 +666,9 @@ def build():
 
     urls = ["", "clothing.html", "lingerie.html", "boots.html", "jewelry.html", "watches.html", "travel.html", "journal/", "about.html", "contact.html",
             "affiliate-disclosure.html", "privacy.html", "terms.html", "the-edit.html"] + [f"journal/{a['slug']}.html" for a in ARTICLES]
+    lastmod = {f"journal/{a['slug']}.html": f"<lastmod>{iso_date(a.get('updated', a['date']))[:10]}</lastmod>" for a in ARTICLES}
     sm = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + \
-         "\n".join(f"  <url><loc>{SITE['url']}/{u}</loc></url>" for u in urls) + "\n</urlset>\n"
+         "\n".join(f"  <url><loc>{SITE['url']}/{u}</loc>{lastmod.get(u, '')}</url>" for u in urls) + "\n</urlset>\n"
     write("sitemap.xml", sm)
     write("robots.txt", f"User-agent: *\nAllow: /\nSitemap: {SITE['url']}/sitemap.xml\n")
     print("built", sum(len(f) for _, _, f in os.walk(OUT)), "files")
