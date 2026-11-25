@@ -596,7 +596,7 @@ def build():
 <section class="hero">
 {tile('Soie', img=SITE.get('hero_image'))}
 <div class="copy">
-<span class="kicker">The edit &middot; {lead['category']}</span>
+<span class="kicker">{SITE.get('lead_kicker', 'The edit &middot; ' + lead['category'])}</span>
 <h1>{lead['title']}</h1>
 <p>{lead['dek']}</p>
 <div class="btns"><a class="btn" href="journal/{lead['slug']}.html">{SITE.get('lead_cta', 'Read the article')}</a><a class="btn btn-solid" href="the-edit.html">Shop the edits</a></div>

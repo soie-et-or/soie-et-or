@@ -16,6 +16,7 @@ SITE = {
     # Article shown large at the top of the home page, and the text on its button
     "lead": "what-is-quiet-luxury",
     "lead_cta": "See the three looks",
+    "lead_kicker": "Our stylists' advice for the winter",
     "pinterest_verify": "befd5a5bd7eca69fc2921fe79cef2cc9",
 }
 
