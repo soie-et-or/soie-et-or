@@ -621,7 +621,11 @@ def build():
     for key, g in GROUPS.items():
         items = [a for a in ARTICLES if group_of(a) == key]
         cards = "\n".join(card(a, 0) for a in items)
-        b = head_block("Section", g["title"], g["dek"]) + f'<section class="wrap sec" style="padding-top:0"><div class="grid">{cards}</div></section>'
+        g_edits = [e for a in items for e in (a.get("edits") or [])]
+        peek = (edit_strip(g_edits, heading=f"From the edit &middot; {g['title'].lower()}", base="the-edit.html", narrow=False, place="cat")
+                .replace('class="wrap edit-strip"', 'class="wrap edit-strip home-strip"')
+                + f'<p class="disclose wrap" style="text-align:left;max-width:none;margin:-14px auto 28px">{DISCLOSURE_SHORT}</p>') if g_edits else ""
+        b = head_block("Section", g["title"], g["dek"]) + peek + f'<section class="wrap sec" style="padding-top:0"><div class="grid">{cards}</div></section>'
         write(f"{key}.html", shell(f"{g.get('seo_title', g['title'])} · {SITE['name']}", g.get("seo_desc", g["dek"]), b, 0, key, f"{key}.html"))
 
     jcards = "\n".join(card(a, 1) for a in ARTICLES)
