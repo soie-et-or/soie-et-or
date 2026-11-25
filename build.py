@@ -592,13 +592,13 @@ def build():
 <a class="btn" href="journal/{lead['slug']}.html">Read the edit</a>
 </div>
 </section>
-<div class="only-mob">{home_edit}</div>
-<section class="row" aria-label="Latest articles">{row}</section>
-<div class="only-desk">{home_edit}</div>
 <section class="wrap sec">
 <div class="sec-head"><h2>Five rules for 2026</h2><a href="journal/index.html">All articles</a></div><p class="dek" style="margin:0 0 22px">Parisian styling advice, one look at a time. Start with the rule that speaks to you.</p>
 </section>
 <ol class="rules wrap" style="padding-left:0;padding-right:0"><li><a href="journal/everyday-gold-jewelry.html"><span class="label">Fine jewelry</span><span class="rule">One good piece,<i>worn every day</i></span></a></li><li><a href="journal/what-is-quiet-luxury.html"><span class="label">Quiet luxury</span><span class="rule">Fabric over logos,<i>colour when chosen</i></span></a></li><li><a href="journal/three-boots-parisian-wardrobe.html"><span class="label">Boots</span><span class="rule">Three pairs<i>for every winter day</i></span></a></li><li><a href="journal/french-lingerie-guide.html"><span class="label">Lingerie</span><span class="rule">Silk underneath,<i>lace that lies flat</i></span></a></li><li><a href="journal/the-case-for-a-small-watch.html"><span class="label">Watches</span><span class="rule">A small watch<i>says enough</i></span></a></li></ol>
+<div class="only-mob">{home_edit}</div>
+<section class="row" aria-label="Latest articles">{row}</section>
+<div class="only-desk">{home_edit}</div>
 <section class="wrap sec" style="padding-bottom:0"><div class="sec-head"><h2>Quiet Parisian style, in silk and gold</h2></div></section>
 <section class="pillars wrap" style="padding-left:0;padding-right:0">
 <a class="pillar" href="clothing.html"><span class="label">Soie</span><h3>Clothing</h3><p>Parisian ready-to-wear from Sandro, IRO, Acne Studios, Marni and Miu Miu. Capsule wardrobes built to last.</p></a>
