@@ -88,7 +88,7 @@ img{max-width:100%;display:block}
 .hero p{margin:0;font-size:17px;color:var(--muted);max-width:44ch}
 .btn{align-self:flex-start;display:inline-block;border:1px solid var(--ink);padding:15px 30px;font:500 11px/1 var(--body);letter-spacing:.24em;text-transform:uppercase;text-decoration:none;color:var(--ink)}
 .btn:hover{background:var(--ink);color:var(--white)}
-.btns{display:inline-grid;grid-template-columns:1fr 1fr;gap:12px}.btns .btn{text-align:center;align-self:stretch}@media (max-width:520px){.btns{display:grid;grid-template-columns:1fr}}.btn-solid{background:var(--ink);color:var(--white)}.btn-solid:hover{background:transparent;color:var(--ink)}
+.btns{display:inline-grid;grid-template-columns:1fr 1fr;gap:12px;align-self:flex-start}.btns .btn{text-align:center;align-self:stretch}@media (max-width:520px){.btns{grid-template-columns:1fr}}.btn-solid{background:var(--ink);color:var(--white)}.btn-solid:hover{background:transparent;color:var(--ink)}
 @media (max-width:820px){.hero{grid-template-columns:1fr}.hero .tile{min-height:0;height:56vw;max-height:300px;border-right:0;border-bottom:1px solid var(--line)}.hero .copy{padding:26px 18px 30px;gap:16px}}
 
 /* edit row + grids */
