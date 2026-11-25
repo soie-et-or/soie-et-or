@@ -104,6 +104,14 @@ img{max-width:100%;display:block}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:44px 28px}
 
 /* pillars */
+.promise{text-align:center;font:italic 400 clamp(17px,2.2vw,21px)/1.4 var(--display);color:var(--muted);margin:0;padding:14px 16px;border-bottom:1px solid var(--line)}
+.rules{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));border-top:1px solid var(--line);border-bottom:1px solid var(--line);counter-reset:r}
+.rules li{counter-increment:r;border-right:1px solid var(--line)}.rules li:last-child{border-right:0}
+.rules a{display:flex;flex-direction:column;gap:8px;padding:28px clamp(16px,2vw,28px);text-decoration:none;height:100%}
+.rules a::before{content:counter(r);font:400 15px var(--mark);color:var(--gold)}
+.rules .rule{font:400 21px/1.25 var(--display);color:var(--ink)}.rules .rule i{display:block}
+.rules a:hover .rule{text-decoration:underline;text-underline-offset:3px}
+@media (max-width:820px){.rules{grid-template-columns:1fr}.rules li{border-right:0;border-bottom:1px solid var(--line)}.rules li:last-child{border-bottom:0}}
 .pillars{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
 .pillar{padding:36px clamp(20px,3vw,40px);border-right:1px solid var(--line);display:flex;flex-direction:column;gap:10px;text-decoration:none}
 .pillar:nth-child(3n){border-right:0}
@@ -574,7 +582,8 @@ def build():
         home_edit = (f'''<section class="wrap sec home-edit" style="padding-bottom:0"><div class="sec-head"><h2>The Edit</h2><a href="the-edit.html">See the edit</a></div>
 <p class="dek" style="margin:0 0 10px">Pieces we would choose ourselves, gathered by theme.</p><p class="disclose" style="text-align:left;margin:0 0 22px">{DISCLOSURE_SHORT}</p></section>'''
                      + edit_strip([e for _, e in all_edits], heading="Browse by theme", base="the-edit.html", narrow=False, place="home").replace('class="wrap edit-strip"', 'class="wrap edit-strip home-strip"'))
-    home = f"""<section class="hero">
+    home = f"""<p class="promise">Parisian styling advice, one look at a time.</p>
+<section class="hero">
 {tile('Soie', img=SITE.get('hero_image'))}
 <div class="copy">
 <span class="kicker">The edit &middot; {lead['category']}</span>
@@ -587,19 +596,21 @@ def build():
 <section class="row" aria-label="Latest articles">{row}</section>
 <div class="only-desk">{home_edit}</div>
 <section class="wrap sec">
-<div class="sec-head"><h2>Quiet Parisian style, in silk and gold</h2><a href="journal/index.html">All articles</a></div><p class="dek" style="margin:0">An edit of Parisian ready-to-wear, fine jewelry and watches worth keeping.</p>
+<div class="sec-head"><h2>Five rules for 2026</h2><a href="journal/index.html">All articles</a></div><p class="dek" style="margin:0 0 22px">Parisian styling advice, one look at a time. Start with the rule that speaks to you.</p>
 </section>
+<ol class="rules wrap" style="padding-left:0;padding-right:0"><li><a href="journal/everyday-gold-jewelry.html"><span class="label">Fine jewelry</span><span class="rule">One good piece,<i>worn every day</i></span></a></li><li><a href="journal/what-is-quiet-luxury.html"><span class="label">Quiet luxury</span><span class="rule">Fabric over logos,<i>colour when chosen</i></span></a></li><li><a href="journal/three-boots-parisian-wardrobe.html"><span class="label">Boots</span><span class="rule">Three pairs<i>for every winter day</i></span></a></li><li><a href="journal/french-lingerie-guide.html"><span class="label">Lingerie</span><span class="rule">Silk underneath,<i>lace that lies flat</i></span></a></li><li><a href="journal/the-case-for-a-small-watch.html"><span class="label">Watches</span><span class="rule">A small watch<i>says enough</i></span></a></li></ol>
+<section class="wrap sec" style="padding-bottom:0"><div class="sec-head"><h2>Quiet Parisian style, in silk and gold</h2></div></section>
 <section class="pillars wrap" style="padding-left:0;padding-right:0">
 <a class="pillar" href="clothing.html"><span class="label">Soie</span><h3>Clothing</h3><p>Parisian ready-to-wear from Sandro, IRO, Acne Studios, Marni and Miu Miu. Capsule wardrobes built to last.</p></a>
 <a class="pillar" href="jewelry.html"><span class="label">Or</span><h3>Jewelry</h3><p>Fine jewelry to wear every day, from houses like Pomellato and Chopard.</p></a>
 <a class="pillar" href="watches.html"><span class="label">Temps</span><h3>Watches</h3><p>Watches, new and pre-owned, with honest guidance on buying well.</p></a>
 <a class="pillar" href="lingerie.html"><span class="label">Dessous</span><h3>Lingerie</h3><p>French lingerie in silk and fine lace: the first layer of a good outfit.</p></a>
 <a class="pillar" href="boots.html"><span class="label">Bottes</span><h3>Boots</h3><p>Ankle, riding and heeled boots that see you through every winter.</p></a>
-<a class="pillar" href="travel.html"><span class="label">Voyage</span><h3>Chic travel</h3><p>One good bag, a few pieces that all combine, sunglasses and a cap.</p></a>
+<a class="pillar" href="travel.html"><span class="label">Voyage</span><h3>Chic travel</h3><p>Three travel outfits for a weekend in Paris: the case, the bag and what to wear on the way.</p></a>
 </section>
 """
     write("index.html", shell(f"{SITE['name']} · Quiet Parisian style, in silk and gold",
-        "An edit of quiet Parisian luxury: ready-to-wear, fine jewelry and watches worth keeping.", home, 0, "", ""))
+        "Parisian styling advice, one look at a time: complete outfits, capsule wardrobes, fine jewelry and watches worth keeping.", home, 0, "", ""))
 
     for key, g in GROUPS.items():
         items = [a for a in ARTICLES if group_of(a) == key]
