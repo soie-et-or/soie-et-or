@@ -195,6 +195,7 @@ html{scroll-behavior:smooth}
 .piece .label{font-size:11px}
 .piece-name{font:400 17px/1.3 var(--display);color:var(--ink);text-decoration:none}
 .piece-name:hover{text-decoration:underline;text-underline-offset:3px}
+.piece-why{display:block;margin-top:4px;font:italic 400 14px/1.35 var(--display);color:var(--muted)}
 .piece-shop{font-size:13px;color:var(--muted)}
 .gift-note{display:flex;flex-direction:column;gap:2px;margin:10px 0 2px;font-size:13.5px;line-height:1.45;border-top:1px solid var(--line);padding-top:10px}
 .gift-note dt{margin-top:6px;font:500 10px/1.6 var(--body);letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}
@@ -450,6 +451,7 @@ def edit_board(e, story_href="", place="art"):
 <a class="piece-img" href="{main}" {AFF_ATTRS} tabindex="-1" aria-hidden="true">{img}</a>
 <span class="label">{pr["type"].capitalize()} &middot; {pr["brand"]}</span>
 <a class="piece-name" href="{main}" {AFF_ATTRS}>{pr["name"]}</a>
+{f'<span class="piece-why">{pr["why"]}</span>' if pr.get("why") else ""}
 {"" if one_shop else f'<span class="piece-shop">at {pr.get("shop", "Mytheresa")}</span>'}
 {gift_note(pr)}<span class="piece-regions">Discover &mdash; {" &middot; ".join(regions)}</span>
 </div>''')
