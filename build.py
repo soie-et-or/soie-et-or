@@ -162,7 +162,7 @@ html{scroll-behavior:smooth}
 .strip-row .strip-tile{flex:0 0 230px;scroll-snap-align:start}
 @media (min-width:761px){.edit-strip.narrow .strip-tile{flex-basis:calc((100% - 32px) / 3)}}
 .marquee{display:contents}
-@media (min-width:821px) and (prefers-reduced-motion:no-preference){.home-strip .strip-row{overflow:hidden;scroll-snap-type:none}.home-strip .marquee{display:flex;gap:16px;width:max-content;animation:glide 70s linear infinite}.home-strip .strip-row:hover .marquee,.home-strip .strip-row:focus-within .marquee{animation-play-state:paused}}
+@media (min-width:821px) and (prefers-reduced-motion:no-preference){.home-strip .strip-row{overflow:hidden;scroll-snap-type:none}.home-strip .marquee{display:flex;gap:16px;width:max-content;animation:glide 140s linear infinite}.home-strip .strip-row:hover .marquee,.home-strip .strip-row:focus-within .marquee{animation-play-state:paused}}
 @keyframes glide{to{transform:translateX(calc(-50% - 8px))}}
 .home-strip{padding-bottom:64px}
 .home-strip .strip-row .strip-tile{flex-basis:250px}
