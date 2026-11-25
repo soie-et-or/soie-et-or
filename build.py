@@ -113,9 +113,10 @@ img{max-width:100%;display:block}
 /* pillars */
 .promise{text-align:center;font:italic 400 clamp(17px,2.2vw,21px)/1.4 var(--display);color:var(--muted);margin:0;padding:14px 16px;border-bottom:1px solid var(--line)}
 .rules-head{display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:22px clamp(14px,1.6vw,24px) 12px}.rules-head a{font:500 11px/1 var(--body);letter-spacing:.2em;text-transform:uppercase;color:var(--ink)}
-.rules{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));border-top:1px solid var(--line);border-bottom:1px solid var(--line);counter-reset:r}
+.rules{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(6,minmax(0,1fr));border-top:1px solid var(--line);border-bottom:1px solid var(--line);counter-reset:r}
 .rules li{counter-increment:r;border-right:1px solid var(--line)}.rules li:last-child{border-right:0}
 .rules a{display:flex;flex-direction:column;gap:6px;padding:18px clamp(14px,1.6vw,24px);text-decoration:none;height:100%}
+.rules-title{counter-increment:none!important;display:flex;flex-direction:column;justify-content:center;gap:10px;padding:18px clamp(14px,1.6vw,24px)}.rules-title a{display:inline;padding:0;font:500 11px/1 var(--body);letter-spacing:.2em;text-transform:uppercase;color:var(--ink);text-decoration:underline}.rules .rules-title a::before{content:none}
 .rules a::before{content:counter(r);font:400 15px var(--mark);color:var(--gold)}
 .rules .rule{font:400 18px/1.25 var(--display);color:var(--ink)}.rules .rule i{display:block}
 .rules a:hover .rule{text-decoration:underline;text-underline-offset:3px}
@@ -600,8 +601,7 @@ def build():
 <div class="btns"><a class="btn" href="journal/{lead['slug']}.html">Read the article</a><a class="btn btn-solid" href="the-edit.html">Shop the edits</a></div>
 </div>
 </section>
-<div class="rules-head"><span class="label">Five rules for 2026 &middot; Parisian styling advice</span><a href="journal/index.html">All articles</a></div>
-<ol class="rules"><li><a href="journal/everyday-gold-jewelry.html"><span class="label">Fine jewelry</span><span class="rule">One good piece,<i>worn every day</i></span></a></li><li><a href="journal/what-is-quiet-luxury.html"><span class="label">Quiet luxury</span><span class="rule">Fabric over logos,<i>colour when chosen</i></span></a></li><li><a href="journal/three-boots-parisian-wardrobe.html"><span class="label">Boots</span><span class="rule">Three pairs<i>for every winter day</i></span></a></li><li><a href="journal/french-lingerie-guide.html"><span class="label">Lingerie</span><span class="rule">Silk underneath,<i>lace that lies flat</i></span></a></li><li><a href="journal/the-case-for-a-small-watch.html"><span class="label">Watches</span><span class="rule">A small watch<i>says enough</i></span></a></li></ol>
+<ol class="rules"><li class="rules-title"><span class="rule">Five rules<i>for 2026</i></span><a href="journal/index.html">All articles</a></li><li><a href="journal/everyday-gold-jewelry.html"><span class="label">Fine jewelry</span><span class="rule">One good piece,<i>worn every day</i></span></a></li><li><a href="journal/what-is-quiet-luxury.html"><span class="label">Quiet luxury</span><span class="rule">Fabric over logos,<i>colour when chosen</i></span></a></li><li><a href="journal/three-boots-parisian-wardrobe.html"><span class="label">Boots</span><span class="rule">Three pairs<i>for every winter day</i></span></a></li><li><a href="journal/french-lingerie-guide.html"><span class="label">Lingerie</span><span class="rule">Silk underneath,<i>lace that lies flat</i></span></a></li><li><a href="journal/the-case-for-a-small-watch.html"><span class="label">Watches</span><span class="rule">A small watch<i>says enough</i></span></a></li></ol>
 <div class="only-mob">{home_edit}</div>
 <section class="row" aria-label="Latest articles">{row}</section>
 <div class="only-desk">{home_edit}</div>
