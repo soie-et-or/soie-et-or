@@ -111,6 +111,8 @@ img{max-width:100%;display:block}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:44px 28px}
 
 /* pillars */
+.theme-chips{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 12px}.theme-chips a{border:1px solid var(--line);padding:8px 14px;font:500 11px/1 var(--body);letter-spacing:.18em;text-transform:uppercase;color:var(--ink);text-decoration:none}.theme-chips a:hover{border-color:var(--ink)}
+.home-edit{padding-top:32px;padding-bottom:0}.home-strip .label{display:none}.strip-sub{display:block;margin-top:3px;font:500 10px/1.3 var(--body);letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
 .promise{text-align:center;font:italic 400 clamp(17px,2.2vw,21px)/1.4 var(--display);color:var(--muted);margin:0;padding:14px 16px;border-bottom:1px solid var(--line)}
 .rules-head{display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:22px clamp(14px,1.6vw,24px) 12px}.rules-head a{font:500 11px/1 var(--body);letter-spacing:.2em;text-transform:uppercase;color:var(--ink)}
 .rules{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(6,minmax(0,1fr));border-top:1px solid var(--line);border-bottom:1px solid var(--line);counter-reset:r}
@@ -481,7 +483,7 @@ def edit_board(e, story_href="", place="art"):
 {story}
 </div></section>'''
 
-def edit_strip(edits, heading="The Edit in this story", base="", narrow=True, place="strip"):
+def edit_strip(edits, heading="The Edit in this story", base="", narrow=True, place="strip", subs=None):
     """Near the top: one tile per edit. Each tile is a small collage of the edit's own product photos,
     laid out side by side in HTML (the images themselves are not altered or merged). Each photo links
     to that piece at the retailer; the title jumps to the board."""
@@ -495,8 +497,9 @@ def edit_strip(edits, heading="The Edit in this story", base="", narrow=True, pl
             url = tag(pr.get(f"url_{DEFAULT_REGION}") or pr.get("url_eu") or pr.get("url_us"), f"{place}-{board_key(e)}")
             alt = html_lib.escape(f'{pr["brand"]} {pr["name"]}', quote=True)
             cells.append(f'<a href="{url}" {AFF_ATTRS} title="{alt}"><img src="{pr["image"]}" alt="{alt}" loading="lazy"></a>')
+        sub = f'<span class="strip-sub">{subs[e["title"]]}</span>' if subs and e["title"] in subs else ""
         items.append(f'''<div class="strip-tile"><div class="collage c{len(cells)}">{"".join(cells)}</div>
-<a class="strip-title" href="{base}#{edit_id(e)}">{e["title"]}{"" if base else ' <svg class="down" width="9" height="14" viewBox="0 0 9 14" aria-hidden="true"><path d="M4.5 0.5v12.2M0.8 9l3.7 3.7L8.2 9" fill="none" stroke="currentColor" stroke-width="1"/></svg>'}</a></div>''')
+<a class="strip-title" href="{base}#{edit_id(e)}">{e["title"]}{"" if base else ' <svg class="down" width="9" height="14" viewBox="0 0 9 14" aria-hidden="true"><path d="M4.5 0.5v12.2M0.8 9l3.7 3.7L8.2 9" fill="none" stroke="currentColor" stroke-width="1"/></svg>'}</a>{sub}</div>''')
     return f'''<nav class="wrap{" narrow" if narrow else ""} edit-strip" aria-label="{heading}">
 <span class="label">{heading}</span><div class="strip-row">{"".join(items)}</div></nav>'''
 
@@ -589,9 +592,13 @@ def build():
     all_edits.sort(key=lambda ae: not ae[1].get("first"))
     home_edit = ""
     if all_edits:
-        home_edit = (f'''<section class="wrap sec home-edit" style="padding-bottom:0"><div class="sec-head"><h2>The Edit</h2><a href="the-edit.html">See the edit</a></div>
-<p class="dek only-desk" style="margin:0 0 10px">Pieces we would choose ourselves, gathered by theme.</p><p class="disclose" style="text-align:left;margin:0 0 22px">{DISCLOSURE_SHORT}</p></section>'''
-                     + edit_strip([e for _, e in all_edits], heading="Browse by theme", base="the-edit.html", narrow=False, place="home").replace('class="wrap edit-strip"', 'class="wrap edit-strip home-strip"'))
+        GL = {"clothing": "Looks", "jewelry": "Jewelry", "watches": "Watches", "lingerie": "Lingerie", "boots": "Boots", "travel": "Travel"}
+        subs = {e["title"]: f'{GL.get(group_of(a), "")} &middot; {len(e["products"])} pieces' for a, e in all_edits}
+        present = [k for k in GROUPS if any(group_of(a) == k for a, _ in all_edits)]
+        chips = "".join(f'<a href="{k}.html">{GL[k]}</a>' for k in present)
+        home_edit = (f'''<section class="wrap home-edit"><div class="sec-head"><h2>The Edit</h2><a href="the-edit.html">See the edit</a></div>
+<nav class="theme-chips" aria-label="Shop by theme">{chips}</nav><p class="disclose" style="text-align:left;margin:0">{DISCLOSURE_SHORT}</p></section>'''
+                     + edit_strip([e for _, e in all_edits], heading="Browse by theme", base="the-edit.html", narrow=False, place="home", subs=subs).replace('class="wrap edit-strip"', 'class="wrap edit-strip home-strip"'))
     home = f"""<p class="promise">Parisian styling advice, one look at a time.</p>
 <section class="hero">
 {tile('Soie', img=SITE.get('hero_image'))}
