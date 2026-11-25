@@ -161,6 +161,9 @@ html{scroll-behavior:smooth}
 .strip-row{display:flex;gap:16px;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:10px;scrollbar-width:thin;scrollbar-color:var(--line) transparent}
 .strip-row .strip-tile{flex:0 0 230px;scroll-snap-align:start}
 @media (min-width:761px){.edit-strip.narrow .strip-tile{flex-basis:calc((100% - 32px) / 3)}}
+.marquee{display:contents}
+@media (min-width:821px) and (prefers-reduced-motion:no-preference){.home-strip .strip-row{overflow:hidden;scroll-snap-type:none}.home-strip .marquee{display:flex;gap:16px;width:max-content;animation:glide 70s linear infinite}.home-strip .strip-row:hover .marquee,.home-strip .strip-row:focus-within .marquee{animation-play-state:paused}}
+@keyframes glide{to{transform:translateX(calc(-50% - 8px))}}
 .home-strip{padding-bottom:64px}
 .home-strip .strip-row .strip-tile{flex-basis:250px}
 .strip-tile{display:flex;flex-direction:column;gap:8px;min-width:0}
@@ -503,6 +506,16 @@ def edit_strip(edits, heading="The Edit in this story", base="", narrow=True, pl
     return f'''<nav class="wrap{" narrow" if narrow else ""} edit-strip" aria-label="{heading}">
 <span class="label">{heading}</span><div class="strip-row">{"".join(items)}</div></nav>'''
 
+def marquee(strip_html):
+    """Desktop: let the home strip glide slowly on its own (CSS only, no script). The tiles are repeated once,
+    hidden from screen readers and keyboard, so the loop is seamless. Hover pauses it; phones keep swiping;
+    people who prefer reduced motion get the normal row."""
+    a = strip_html.index('<div class="strip-row">') + len('<div class="strip-row">')
+    e = strip_html.rindex('</div></nav>')
+    items = strip_html[a:e]
+    dup = items.replace('<div class="strip-tile">', '<div class="strip-tile" aria-hidden="true">').replace('<a ', '<a tabindex="-1" ')
+    return strip_html[:a] + f'<div class="marquee">{items}{dup}</div>' + strip_html[e:]
+
 def edit_rail(current_slug, limit=10):
     """'From The Edit' at the foot of an article: a swipeable row of pieces from the edits of *other*
     articles, so every story ends with a few of the editor's picks."""
@@ -598,7 +611,7 @@ def build():
         chips = "".join(f'<a href="{k}.html">{GL[k]}</a>' for k in present)
         home_edit = (f'''<section class="wrap home-edit"><div class="sec-head"><h2>The Edit</h2><a href="the-edit.html">See the edit</a></div>
 <nav class="theme-chips" aria-label="Shop by theme">{chips}</nav><p class="disclose" style="text-align:left;margin:0">{DISCLOSURE_SHORT}</p></section>'''
-                     + edit_strip([e for _, e in all_edits], heading="Browse by theme", base="the-edit.html", narrow=False, place="home", subs=subs).replace('class="wrap edit-strip"', 'class="wrap edit-strip home-strip"'))
+                     + marquee(edit_strip([e for _, e in all_edits], heading="Browse by theme", base="the-edit.html", narrow=False, place="home", subs=subs)).replace('class="wrap edit-strip"', 'class="wrap edit-strip home-strip"'))
     home = f"""<p class="promise">Parisian styling advice, one look at a time.</p>
 <section class="hero">
 {tile('Soie', img=SITE.get('hero_image'))}
