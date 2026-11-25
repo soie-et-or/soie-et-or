@@ -120,7 +120,7 @@ img{max-width:100%;display:block}
 .rules a::before{content:counter(r);font:400 15px var(--mark);color:var(--gold)}
 .rules .rule{font:400 18px/1.25 var(--display);color:var(--ink)}.rules .rule i{display:block}
 .rules a:hover .rule{text-decoration:underline;text-underline-offset:3px}
-@media (max-width:820px){.rules{grid-template-columns:1fr}.rules li{border-right:0;border-bottom:1px solid var(--line)}.rules li:last-child{border-bottom:0}}
+@media (max-width:820px){.rules{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch}.rules li{flex:0 0 58%;scroll-snap-align:start;border-right:1px solid var(--line)}.rules li.rules-title{flex-basis:38%}}
 .pillars{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
 .pillar{padding:36px clamp(20px,3vw,40px);border-right:1px solid var(--line);display:flex;flex-direction:column;gap:10px;text-decoration:none}
 .pillar:nth-child(3n){border-right:0}
