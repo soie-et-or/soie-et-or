@@ -39,7 +39,7 @@ AFFILIATE_DOMAINS = [
 ARTICLES = [
  {
   "slug": "parisian-autumn-capsule",
-  "seo_title": 'Parisian Capsule Wardrobe for Autumn: 10 Pieces, Endless Outfits',
+  "seo_title": 'Parisian Capsule Wardrobe for Autumn: 10 Pieces',
   "title": "The Parisian Autumn Capsule: Ten Pieces, Endless Outfits",
   "dek": "A small wardrobe that does a lot of work, built the way Parisian women actually dress.",
   "category": "Wardrobe",
@@ -73,7 +73,7 @@ ARTICLES = [
  },
  {
   "slug": "everyday-gold-jewelry",
-  "seo_title": 'Everyday Gold Jewelry: How to Wear It With Knitwear and Denim',
+  "seo_title": 'Everyday Gold Jewelry, Worn the Parisian Way',
   "title": "Everyday Gold: How to Wear Fine Jewelry With Knitwear and Denim",
   "dek": "Fine jewelry is not only for evenings. The Parisian way is to wear a few good pieces every single day.",
   "category": "Jewelry",
@@ -109,6 +109,7 @@ ARTICLES = [
  },
  {
   "slug": "pre-owned-cartier-watch-guide",
+  "seo_title": 'Buying a Pre-Owned Cartier Watch: What to Check',
   "title": "Buying a Pre-Owned Cartier Watch: What to Check Before You Pay",
   "dek": "A pre-owned watch can be a smart way into fine watchmaking. Here is how to buy one with confidence.",
   "category": "Watches",
@@ -164,7 +165,7 @@ ARTICLES = [
  },
  {
   "slug": "what-is-quiet-luxury",
-  "seo_title": 'Quiet Luxury Outfits: What It Really Means + 3 Winter Looks',
+  "seo_title": 'Quiet Luxury Outfits: What It Means + 3 Winter Looks',
   "updated": '19 November 2026',
   "title": "What Quiet Luxury Really Means (and What It Does Not)",
   "dek": "The term is everywhere. Underneath the trend is a simple, lasting idea about how to dress.",
@@ -251,7 +252,7 @@ ARTICLES = [
  },
  {
   "slug": "french-lingerie-guide",
-  "seo_title": 'French Lingerie Guide: Silk Camisoles, Lace and Slip Dresses',
+  "seo_title": 'French Lingerie Guide: Silk, Lace & Slip Dresses',
   "updated": '19 November 2026',
   "title": "French Lingerie: The Quiet Art of Dressing Underneath",
   "dek": "Silk, fine lace and the right fit. Why French women treat lingerie as the first layer of a good outfit.",
@@ -324,7 +325,7 @@ ARTICLES = [
  },
  {
   "slug": "the-case-for-a-small-watch",
-  "seo_title": 'Small Gold Watches for Women: The Case for a Petite Watch',
+  "seo_title": 'Small Gold Watches for Women: Why Petite Wins',
   "title": "The Case for a Small Watch",
   "dek": "Big dials had their decade. A small, slim watch is quieter, easier to wear and closer to how Parisian women have always worn time.",
   "category": "Watches",
@@ -366,6 +367,7 @@ ARTICLES = [
  },
  {
   "slug": "buying-gold-jewelry-high-prices",
+  "seo_title": 'Buying Gold Jewelry When Gold Is Expensive',
   "title": "One Good Piece: Buying Gold Jewelry When Gold Is Expensive",
   "dek": "Gold has rarely cost more. That is a reason to buy less and choose better, whether the piece is a gift or for yourself.",
   "category": "Jewelry",

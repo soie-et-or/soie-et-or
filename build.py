@@ -630,7 +630,7 @@ def build():
     jcards = "\n".join(card(a, 1) for a in ARTICLES)
     jbody = head_block("Journal", "The journal", "Wardrobe notes, jewelry guides and honest advice on buying luxury well.") + \
             f'<section class="wrap sec" style="padding-top:0"><div class="grid">{jcards}</div></section>'
-    write("journal/index.html", shell(f"Journal · {SITE['name']}", "Wardrobe notes, jewelry guides and advice on buying luxury well.", jbody, 1, "journal", "journal/"))
+    write("journal/index.html", shell(f"Journal: Parisian Style Advice & Buying Guides · {SITE['name']}", "Parisian styling advice, wardrobe notes, fine jewelry guides and honest advice on buying luxury well.", jbody, 1, "journal", "journal/"))
 
     for a in ARTICLES:
         g = group_of(a)
@@ -656,7 +656,7 @@ def build():
         eb = (head_block("The Edit", "The Edit", "Pieces we would choose ourselves. Each edit belongs to a story; read it there, or browse them all here.")
               + f'<div class="wrap narrow"><p class="disclose">{DISCLOSURE_SHORT}</p></div>'
               + edit_strip([e for _, e in all_edits], heading="The edits", place="pstrip") + boards)
-        write("the-edit.html", shell(f"The Edit · {SITE['name']}", "Fine jewelry and pieces worth keeping, gathered by theme by the editor of Soie et Or.", mark_affiliate_links(eb), 0, "", "the-edit.html"))
+        write("the-edit.html", shell(f"The Edit: Parisian Style Picks by Theme · {SITE['name']}", "Complete looks and pieces worth keeping, gathered by theme: quiet luxury outfits, boots, French lingerie, fine jewelry and travel.", mark_affiliate_links(eb), 0, "", "the-edit.html"))
 
     simple_page("about.html", "About Soie et Or", "About", ABOUT, "about")
     simple_page("contact.html", "Contact", "Contact", CONTACT)
@@ -665,7 +665,7 @@ def build():
     simple_page("terms.html", "Terms of use", "Legal", TERMS)
 
     nf = head_block("404", "This page has slipped away", 'The link may be old or mistyped. <a href="/index.html">Back to the home page</a>.')
-    write("404.html", shell(f"Page not found · {SITE['name']}", "Page not found", nf, 0, "", "404.html"))
+    write("404.html", shell(f"Page not found · {SITE['name']}", "Page not found", nf, 0, "", "404.html").replace("<head>", '<head>\n<meta name="robots" content="noindex">', 1))
 
     urls = ["", "clothing.html", "lingerie.html", "boots.html", "jewelry.html", "watches.html", "travel.html", "journal/", "about.html", "contact.html",
             "affiliate-disclosure.html", "privacy.html", "terms.html", "the-edit.html"] + [f"journal/{a['slug']}.html" for a in ARTICLES]
