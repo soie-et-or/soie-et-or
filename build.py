@@ -769,7 +769,7 @@ def build():
 {head_block(a['category'], a['title'], a['dek'], f"{a['date']} &middot; {a['read']} read", f"/{g}.html")}
 {notice}
 {edit_strip(a.get("edits"))}
-<div class="wrap">{tile(a['category'], 'hero-tile', img=a.get('image'), depth=1)}</div>
+<div class="wrap">{tile(a.get('tile_word', a['category']), 'hero-tile', img=a.get('image'), depth=1)}</div>
 {body_with_edits(a['body'], a.get("edits"))}
 {shop}{rail}</article>
 <section class="wrap sec" style="border-top:1px solid var(--line)"><div class="sec-head"><h2>Keep reading</h2><a href="/journal/index.html">All articles</a></div><div class="grid">{more}</div></section>"""
@@ -802,7 +802,7 @@ def build():
                  ("watches", "Watches", {"watch"}),
                  ("extras", "Accessories", {"scarf", "sunglasses", "cap", "beret", "hat", "gloves", "mittens", "belt", "tights", "headband", "headphones"})]
     seen, picks = {}, []
-    newest = sorted(all_edits, key=lambda ae: iso_date(ae[0]["date"]), reverse=True)   # newest looks first; "From" points to the newest look
+    newest = sorted(all_edits, key=lambda ae: (ae[0]["category"] != "Gift guide", iso_date(ae[0]["date"])), reverse=True)   # newest looks first; "From" points to the newest look
     for a, e in newest:
         for pr in e["products"]:
             k = pr.get("image") or pr.get("url_eu")
