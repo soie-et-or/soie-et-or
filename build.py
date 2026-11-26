@@ -868,7 +868,7 @@ def build():
 <div class="pick-chips theme-chips" role="group" aria-label="Filter by kind">{chips}</div>
 {subchips}
 <div class="pick-grid" role="list">{"".join(cards)}</div></section>''')
-    write("our-picks.html", shell(f"Our Picks: Parisian Coats, Boots, Bags & Fine Jewelry · {SITE['name']}", "Every piece from our Parisian looks in one place: coats, knitwear, dresses, boots, bags, fine jewelry and watches, each with the look it belongs to.", mark_affiliate_links(pb), 0, "", "our-picks.html"))
+    write("our-picks.html", shell(f"Our Picks: Coats, Boots, Bags & Fine Jewelry · {SITE['name']}", "Every piece from our Parisian looks in one place: coats, knitwear, dresses, boots, bags, fine jewelry and watches, each with the look it belongs to.", mark_affiliate_links(pb), 0, "", "our-picks.html"))
 
     simple_page("about.html", "About Soie et Or", "About", ABOUT, "about")
     simple_page("contact.html", "Contact", "Contact", CONTACT)
