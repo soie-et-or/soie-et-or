@@ -1,6 +1,10 @@
 """Builds the static site for soie-et-or.com into ./site. Run: python3 build.py"""
 import html as html_lib, json, os, re, shutil
 from content import SITE, ARTICLES, ABOUT, CONTACT, DISCLOSURE, PRIVACY, TERMS, DISCLOSURE_SHORT, AFFILIATE_DOMAINS
+# Boards without products yet (work in progress) are left out of the site
+for _a in ARTICLES:
+    if _a.get("edits"):
+        _a["edits"] = [_e for _e in _a["edits"] if _e.get("products")]
 
 OUT = os.path.join(os.path.dirname(__file__), "site")
 FMT = dict(SITE)

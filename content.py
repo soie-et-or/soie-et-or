@@ -229,6 +229,32 @@ ARTICLES = [
 """
  },
  {
+  "slug": "what-to-pack-for-paris",
+  "seo_title": "What to Pack for Paris: 4 Outfits for a Winter Weekend",
+  "title": "What to Pack for Paris: Four Looks for the Weekend",
+  "dek": "A day of walking, a long lunch, dinner out and the rainy afternoon. Four outfits, built from the same few pieces.",
+  "category": "Travel",
+  "date": "26 November 2026",
+  "read": "4 min",
+  "tone": "camel",
+  "image": {"file": "cafe-le-progres.jpg", "pos": "center 60%",
+            "alt": "Cream Haussmann building with a red-awninged corner café in Paris"},
+  "body": """
+<p>You have arrived in one of the three travel outfits. Now the case opens. For two or three days in Paris you need four looks, and they should share as many pieces as possible: the coat you travelled in, one bag, two pairs of shoes. Here is how to build them.</p>
+<h2>Daytime in Paris</h2>
+<p>Museums, markets and the long walk between them. Flat shoes, a coat that works over everything and a bag that holds a scarf, a book and the sunglasses.</p>
+<h2>The long lunch</h2>
+<p>A terrace in the Marais or a bistro on the Left Bank. Relaxed, but finished: a good knit or a silk shirt, trousers that sit well, and the one piece of jewellery you wear every day.</p>
+<h2>Dinner out</h2>
+<p>The evening is where Paris dresses up, quietly. A slip dress or a silk top, a heel you can walk on over cobblestones, and a small bag that holds only what you need.</p>
+<h2>A rainy afternoon</h2>
+<p>It will rain at least once. A trench or a hooded coat, boots that do not mind puddles and a large scarf. Rain is no reason to look less put together.</p>
+<h2>The rule</h2>
+<p>Every piece in the case should appear in at least two of the four looks. If it does not, it stays at home.</p>
+""",
+  "edits": [{'title': 'Daytime in Paris', 'after': 'Daytime in Paris', 'scroll': True, 'intro': '', 'products': []}, {'title': 'The Long Lunch', 'after': 'The long lunch', 'scroll': True, 'intro': '', 'products': []}, {'title': 'Dinner Out', 'after': 'Dinner out', 'scroll': True, 'intro': '', 'products': []}, {'title': 'A Rainy Afternoon', 'after': 'A rainy afternoon', 'scroll': True, 'intro': '', 'products': []}],
+},
+{
   "slug": "chic-travel-packing",
   "seo_title": 'Paris Travel Outfits: 3 Chic Airport and Train Looks',
   "updated": '25 November 2026',
@@ -251,7 +277,7 @@ ARTICLES = [
 <h2>The extras</h2>
 <p>Sunglasses are the fastest way to look put together after an early train; choose a frame you will wear every day rather than a trend. Add something for your head, a beret, a leather cap or a simple wool one, and a pair of gloves for the evening walk along the river. That is all the accessories a weekend needs.</p>
 <h2>Once you are there</h2>
-<p>Next: what to pack for the weekend itself. A day of walking, a long lunch, dinner out and the rainy afternoon, built from the same few pieces. Coming soon in the journal.</p>
+<p>Next: <a href="what-to-pack-for-paris.html">what to pack for the weekend itself</a>. A day of walking, a long lunch, dinner out and the rainy afternoon, built from the same few pieces.</p>
 """
  },
  {
