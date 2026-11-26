@@ -13,7 +13,7 @@ FMT = dict(SITE)
 GROUPS = {
     "clothing": {"label": "Clothing", "title": "Clothing", "dek": "Parisian ready-to-wear and wardrobes built to last.",
                  "seo_title": 'Parisian Capsule Wardrobe & Outfit Advice', "seo_desc": 'Parisian styling advice for clothing: capsule wardrobes, quiet luxury outfits and ready-to-wear pieces built to last.',
-                 "cats": ["Wardrobe", "Brands", "Style notes"]},
+                 "cats": ["Wardrobe", "Brands", "Style notes"], "also": ["Travel"]},   # travel looks are outfits too, so they show here as well
     "jewelry": {"label": "Jewelry", "title": "Jewelry", "dek": "Fine jewelry to wear every day.", "seo_title": 'Fine Gold Jewelry Guides & Gift Ideas', "seo_desc": 'How to choose and wear fine gold jewelry the Parisian way: everyday pieces, gift ideas and buying well when gold is expensive.',
                  "cats": ["Jewelry"]},
     "watches": {"label": "Watches", "title": "Watches", "dek": "Watches, new and pre-owned, and how to buy them well.", "seo_title": "Small Women's Watches & Pre-Owned Watch Guides", "seo_desc": "Small, elegant women's watches and how to buy them well, new or pre-owned, with honest advice on what to check.",
@@ -721,7 +721,7 @@ def build():
         "Parisian styling advice, one look at a time: complete outfits, capsule wardrobes, fine jewelry and watches worth keeping.", home, 0, "", ""))
 
     for key, g in GROUPS.items():
-        items = [a for a in ARTICLES if group_of(a) == key]
+        items = [a for a in ARTICLES if group_of(a) == key or a["category"] in g.get("also", [])]
         cards = "\n".join(card(a, 0) for a in items)
         g_edits = [e for a in items for e in (a.get("edits") or [])]
         peek = (edit_strip(g_edits, heading=f"From the edit &middot; {g['title'].lower()}", base="the-edit.html", narrow=False, place="cat")
