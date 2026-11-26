@@ -238,6 +238,7 @@ html{scroll-behavior:smooth}
 /* our picks page */
 .pick-chips{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 30px}
 @media (max-width:640px){.pick-chips{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;margin-inline:-16px;padding-inline:16px;padding-bottom:2px}.pick-chips::-webkit-scrollbar{display:none}.pick-chips label{flex:0 0 auto;white-space:nowrap}}
+.sec-links{display:flex;gap:22px}
 .view-tabs{display:flex;justify-content:center;gap:28px;margin:-6px auto 30px}
 .view-tabs a{font:500 11px/1 var(--body);letter-spacing:.22em;text-transform:uppercase;color:var(--muted);text-decoration:none;padding:8px 2px;border-bottom:1px solid transparent}
 .view-tabs a:hover{color:var(--ink)}.view-tabs a[aria-current]{color:var(--ink);border-bottom-color:var(--gold)}
@@ -421,7 +422,7 @@ def shell(title, desc, body, depth, current="", canonical="", image=None, articl
 </main>
 <footer><div class="wrap">
 <div class="foot-row"><a class="logo" href="{p}index.html">SOIE ET OR</a>
-<nav class="nav" aria-label="Footer"><a href="{p}the-edit.html">The Edit</a><a href="{p}journal/index.html">Journal</a><a href="{p}about.html">About</a><a href="{p}affiliate-disclosure.html">Affiliate disclosure</a><a href="{p}privacy.html">Privacy</a><a href="{p}terms.html">Terms</a><a href="{p}contact.html">Contact</a><a href="{SITE['pinterest']}" rel="noopener">Pinterest</a></nav></div>
+<nav class="nav" aria-label="Footer"><a href="{p}the-edit.html">The Edit</a><a href="{p}our-picks.html">Our picks</a><a href="{p}journal/index.html">Journal</a><a href="{p}about.html">About</a><a href="{p}affiliate-disclosure.html">Affiliate disclosure</a><a href="{p}privacy.html">Privacy</a><a href="{p}terms.html">Terms</a><a href="{p}contact.html">Contact</a><a href="{SITE['pinterest']}" rel="noopener">Pinterest</a></nav></div>
 <hr class="gold-rule">
 <p class="foot-note">Soie et Or is an independent editorial site. Some links are affiliate links: we may earn a commission when you buy, at no extra cost to you. Brand names belong to their owners; we are not affiliated with or endorsed by the brands we write about.</p>
 <p class="foot-note">&copy; 2026 Soie et Or &middot; {SITE['domain']}</p>
@@ -691,7 +692,7 @@ def build():
         subs = {e["title"]: f'{GL.get(group_of(a), "")} &middot; {len(e["products"])} pieces' for a, e in all_edits}
         present = [k for k in GROUPS if any(group_of(a) == k for a, _ in all_edits)]
         chips = "".join(f'<a href="{k}.html">{GL[k]}</a>' for k in present)
-        home_edit = (f'''<section class="wrap home-edit"><div class="sec-head"><h2>The Edit</h2><a href="the-edit.html">See the edit</a></div>
+        home_edit = (f'''<section class="wrap home-edit"><div class="sec-head"><h2>The Edit</h2><span class="sec-links"><a href="the-edit.html">By look</a><a href="our-picks.html">By piece</a></span></div>
 <nav class="theme-chips" aria-label="Shop by theme">{chips}</nav><p class="disclose" style="text-align:left;margin:0">{DISCLOSURE_SHORT}</p></section>'''
                      + marquee(edit_strip([e for _, e in all_edits], heading="Browse by theme", base="the-edit.html", narrow=False, place="home", subs=subs)).replace('class="wrap edit-strip"', 'class="wrap edit-strip home-strip"'))
     slides = SITE.get("hero_slides") or []
@@ -743,7 +744,7 @@ def build():
         g_edits = [e for a in items for e in (a.get("edits") or [])]
         peek = (edit_strip(g_edits, heading=f"From the edit &middot; {g['title'].lower()}", base="the-edit.html", narrow=False, place="cat")
                 .replace('class="wrap edit-strip"', 'class="wrap edit-strip home-strip"')
-                + f'<p class="disclose wrap" style="text-align:left;max-width:none;margin:-14px auto 28px">{DISCLOSURE_SHORT}</p>') if g_edits else ""
+                + f'<p class="disclose wrap" style="text-align:left;max-width:none;margin:-14px auto 28px">{DISCLOSURE_SHORT} &middot; <a href="our-picks.html">Browse every piece by kind &rarr;</a></p>') if g_edits else ""
         b = head_block("Section", g["title"], g["dek"]) + peek + f'<section class="wrap sec" style="padding-top:0"><div class="grid">{cards}</div></section>'
         write(f"{key}.html", shell(f"{g.get('seo_title', g['title'])} · {SITE['name']}", g.get("seo_desc", g["dek"]), b, 0, key, f"{key}.html"))
 

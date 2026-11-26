@@ -205,6 +205,7 @@ html{scroll-behavior:smooth}
 /* our picks page */
 .pick-chips{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 30px}
 @media (max-width:640px){.pick-chips{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;margin-inline:-16px;padding-inline:16px;padding-bottom:2px}.pick-chips::-webkit-scrollbar{display:none}.pick-chips label{flex:0 0 auto;white-space:nowrap}}
+.sec-links{display:flex;gap:22px}
 .view-tabs{display:flex;justify-content:center;gap:28px;margin:-6px auto 30px}
 .view-tabs a{font:500 11px/1 var(--body);letter-spacing:.22em;text-transform:uppercase;color:var(--muted);text-decoration:none;padding:8px 2px;border-bottom:1px solid transparent}
 .view-tabs a:hover{color:var(--ink)}.view-tabs a[aria-current]{color:var(--ink);border-bottom-color:var(--gold)}
