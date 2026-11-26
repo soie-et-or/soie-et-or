@@ -237,6 +237,10 @@ html{scroll-behavior:smooth}
 @media (max-width:820px){.cap-list{grid-template-columns:1fr}.cap-row{grid-template-columns:112px minmax(0,1fr);gap:16px;padding-block:18px}.cap-num{font-size:24px}.cap-text h3{font-size:19px}.cap-text p{font-size:14.5px}}
 /* our picks page */
 .pick-chips{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 30px}
+@media (max-width:640px){.pick-chips{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;margin-inline:-16px;padding-inline:16px;padding-bottom:2px}.pick-chips::-webkit-scrollbar{display:none}.pick-chips label{flex:0 0 auto;white-space:nowrap}}
+.view-tabs{display:flex;justify-content:center;gap:28px;margin:-6px auto 30px}
+.view-tabs a{font:500 11px/1 var(--body);letter-spacing:.22em;text-transform:uppercase;color:var(--muted);text-decoration:none;padding:8px 2px;border-bottom:1px solid transparent}
+.view-tabs a:hover{color:var(--ink)}.view-tabs a[aria-current]{color:var(--ink);border-bottom-color:var(--gold)}
 .sub-chips{margin-top:-18px}.sub-chips label{font-size:10px;padding:7px 12px;border-style:dashed}
 .pick-chips label{cursor:pointer;user-select:none}
 .pf:focus-visible~.pick-chips{outline:2px solid var(--gold);outline-offset:4px}
@@ -501,6 +505,7 @@ def tag(url, label):
         return f"{url}&u1={label[:72]}"
     return url
 sub_tag = tag   # alias: build() has a local variable called tag
+VIEW_TABS = '<nav class="wrap view-tabs" aria-label="View the edit"><a href="the-edit.html"{look}>By look</a><a href="our-picks.html"{piece}>By piece</a></nav>'
 
 def list_board(e, place="art"):
     """A numbered list where each item carries its own piece: number, the advice, then the product.
@@ -769,6 +774,7 @@ def build():
     if all_edits:
         boards = "\n".join(edit_board(e, f"journal/{a['slug']}.html", place="page") for a, e in all_edits)
         eb = (head_block("The Edit", "The Edit", "Pieces we would choose ourselves. Each edit belongs to a story; read it there, or browse them all here.")
+              + VIEW_TABS.format(look=' aria-current="page"', piece="")
               + f'<div class="wrap narrow"><p class="disclose">{DISCLOSURE_SHORT}</p></div>'
               + edit_strip([e for _, e in all_edits], heading="The edits", place="pstrip") + boards)
         write("the-edit.html", shell(f"The Edit: Parisian Style Picks by Theme · {SITE['name']}", "Complete looks and pieces worth keeping, gathered by theme: quiet luxury outfits, boots, French lingerie, fine jewelry and travel.", mark_affiliate_links(eb), 0, "", "the-edit.html"))
@@ -791,7 +797,8 @@ def build():
                  ("watches", "Watches", {"watch"}),
                  ("extras", "Accessories", {"scarf", "sunglasses", "cap", "beret", "hat", "gloves", "mittens", "belt", "tights", "headband", "headphones"})]
     seen, picks = {}, []
-    for a, e in all_edits:
+    newest = sorted(all_edits, key=lambda ae: iso_date(ae[0]["date"]), reverse=True)   # newest looks first; "From" points to the newest look
+    for a, e in newest:
         for pr in e["products"]:
             k = pr.get("image") or pr.get("url_eu")
             if k in seen:
@@ -805,7 +812,7 @@ def build():
             seen[k] = {"pr": pr, "a": a, "e": e, "cat": cat, "n": 1}
             picks.append(seen[k])
     order = {c: i for i, (c, _, _) in enumerate(PICK_CATS)}
-    picks.sort(key=lambda p: order[p["cat"]])
+    picks.sort(key=lambda p: order[p["cat"]])   # stable: keeps newest-first inside each kind
     cards = []
     for p in picks:
         pr = p["pr"]; alt = html_lib.escape(f'{pr["brand"]} {pr["name"]}', quote=True)
@@ -850,12 +857,13 @@ def build():
         rules += (f'#pf-{c}:checked~.sub-{c}{{display:flex!important}}#sf-{c}-all:checked~.sub-{c} label[for=sf-{c}-all]{{background:var(--ink);color:var(--white)}}'
                   + "".join(f'#pf-{c}:checked~#sf-{c}-{k}:checked~.pick-grid .pick.c-{c}:not(.s-{k}){{display:none}}#sf-{c}-{k}:checked~.sub-{c} label[for=sf-{c}-{k}]{{background:var(--ink);color:var(--white)}}' for k, _ in opts))
     pb = (head_block("The Edit", "Our picks", "Every piece from our looks, in one place. Filter by what you are looking for; each piece shows the look it belongs to.")
+          + VIEW_TABS.format(look="", piece=' aria-current="page"')
           + f'''<section class="wrap picks"><style>.pf{{position:absolute;opacity:0;pointer-events:none}}#pf-all:checked~.pick-chips label[for=pf-all]{{background:var(--ink);color:var(--white)}}{rules}</style>
 <p class="disclose" style="text-align:left;margin:0 0 18px">{DISCLOSURE_SHORT}</p>{radios}
 <div class="pick-chips theme-chips" role="group" aria-label="Filter by kind">{chips}</div>
 {subchips}
 <div class="pick-grid" role="list">{"".join(cards)}</div></section>''')
-    write("our-picks.html", shell(f"Our Picks: Parisian Wardrobe Pieces by Kind · {SITE['name']}", "Every piece from our Parisian looks in one place, filtered by kind: coats, knits, boots, bags, jewelry and watches.", mark_affiliate_links(pb), 0, "", "our-picks.html").replace("<head>", '<head>\n<meta name="robots" content="noindex">', 1))
+    write("our-picks.html", shell(f"Our Picks: Parisian Coats, Boots, Bags & Fine Jewelry · {SITE['name']}", "Every piece from our Parisian looks in one place: coats, knitwear, dresses, boots, bags, fine jewelry and watches, each with the look it belongs to.", mark_affiliate_links(pb), 0, "", "our-picks.html"))
 
     simple_page("about.html", "About Soie et Or", "About", ABOUT, "about")
     simple_page("contact.html", "Contact", "Contact", CONTACT)
@@ -867,7 +875,7 @@ def build():
     write("404.html", shell(f"Page not found · {SITE['name']}", "Page not found", nf, 0, "", "404.html").replace("<head>", '<head>\n<meta name="robots" content="noindex">', 1))
 
     urls = ["", "clothing.html", "lingerie.html", "boots.html", "jewelry.html", "watches.html", "travel.html", "journal/", "about.html", "contact.html",
-            "affiliate-disclosure.html", "privacy.html", "terms.html", "the-edit.html"] + [f"journal/{a['slug']}.html" for a in ARTICLES]
+            "affiliate-disclosure.html", "privacy.html", "terms.html", "the-edit.html", "our-picks.html"] + [f"journal/{a['slug']}.html" for a in ARTICLES]
     lastmod = {f"journal/{a['slug']}.html": f"<lastmod>{iso_date(a.get('updated', a['date']))[:10]}</lastmod>" for a in ARTICLES}
     sm = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + \
          "\n".join(f"  <url><loc>{SITE['url']}/{u}</loc>{lastmod.get(u, '')}</url>" for u in urls) + "\n</urlset>\n"
