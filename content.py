@@ -252,7 +252,7 @@ ARTICLES = [
 <h2>The rule</h2>
 <p>Every piece in the case should appear in at least two of the four looks. If it does not, it stays at home.</p>
 """,
-  "edits": [{'title': 'Daytime in Paris', 'after': 'Daytime in Paris', 'scroll': True, 'intro': '', 'products': []}, {'title': 'The Long Lunch', 'after': 'The long lunch', 'scroll': True, 'intro': '', 'products': []}, {'title': 'Dinner Out', 'after': 'Dinner out', 'scroll': True, 'intro': '', 'products': []}, {'title': 'A Rainy Afternoon', 'after': 'A rainy afternoon', 'scroll': True, 'intro': '', 'products': []}],
+  "edits": [{'title': 'Daytime in Paris', 'after': 'Daytime in Paris', 'scroll': True, 'intro': '', 'products': [{'type': 'boot', 'brand': 'Brunello Cucinelli', 'name': 'Shearling-trimmed suede ankle boots', 'image': 'https://img.mytheresa.com/1000/1000/95/jpeg/catalog/product/5a/P01232148.jpg', 'url_eu': 'https://click.linksynergy.com/deeplink?id=QBaUG223uTk&mid=35663&murl=https%3A%2F%2Fwww.mytheresa.com%2Feuro%2Fen%2Fwomen%2Fbrunello-cucinelli-shearling-trimmed-suede-ankle-boots-grey-p01232148', 'url_us': 'https://click.linksynergy.com/deeplink?id=QBaUG223uTk&mid=43172&murl=https%3A%2F%2Fwww.mytheresa.com%2Fus%2Fen%2Fwomen%2Fbrunello-cucinelli-shearling-trimmed-suede-ankle-boots-grey-p01232148'}]}, {'title': 'The Long Lunch', 'after': 'The long lunch', 'scroll': True, 'intro': '', 'products': []}, {'title': 'Dinner Out', 'after': 'Dinner out', 'scroll': True, 'intro': '', 'products': []}, {'title': 'A Rainy Afternoon', 'after': 'A rainy afternoon', 'scroll': True, 'intro': '', 'products': []}],
 },
 {
   "slug": "chic-travel-packing",
