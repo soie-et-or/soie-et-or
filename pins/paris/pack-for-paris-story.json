@@ -1,0 +1,7 @@
+{"file": "/home/claude/out/packparis/pack-for-paris", "secs": 3, "theme": "ink", "effects": ["snow"], "loop": true,
+ "cta": "SEE THE FOUR LOOKS · SOIE-ET-OR.COM",
+ "pages": [
+  {"photo": "images/cafe-vrai-paris.jpg", "kicker": "What to pack for Paris", "title": "Four looks for", "italic": "a winter weekend", "focus": 0.45},
+  {"photo": "images/paris-hotel-breakfast-card.jpg", "kicker": "Day and night", "title": "From the long lunch", "italic": "to dinner out", "focus": 1.0},
+  {"photo": "images/leather-jacket-street-card.jpg", "kicker": "And when it rains", "title": "One leather coat,", "italic": "worn twice", "focus": 0.4}
+ ]}
