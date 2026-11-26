@@ -818,8 +818,10 @@ def build():
         sub = ""
         if p["cat"] == "boots":
             nm = pr["name"].lower()
-            sub = (" b-western" if any(w in nm for w in ("cowboy", "western", "biker")) else
-                   " b-knee" if "knee" in nm else " b-ankle" if ("ankle" in nm or "chelsea" in nm) else "")
+            sub = (" s-western" if any(w in nm for w in ("cowboy", "western", "biker")) else
+                   " s-knee" if "knee" in nm else " s-ankle" if ("ankle" in nm or "chelsea" in nm) else "")
+        elif p["cat"] == "jewelry":
+            sub = {"necklace": " s-necklaces", "ring": " s-rings", "bracelet": " s-bracelets", "earrings": " s-earrings"}.get(pr.get("type"), "")
         cards.append(f'''<div class="piece pick c-{p["cat"]}{sub}" role="listitem">
 <a class="piece-img" href="{main}" {AFF_ATTRS} tabindex="-1" aria-hidden="true"><img src="{pr["image"]}" alt="{alt}" loading="lazy"></a>
 <span class="label">{pr["type"].capitalize()} &middot; {pr["brand"]}</span>
@@ -832,13 +834,17 @@ def build():
     radios = '<input type="radio" name="pf" id="pf-all" class="pf" checked>' + "".join(f'<input type="radio" name="pf" id="pf-{c}" class="pf">' for c, _, _ in present)
     chips = '<label for="pf-all">All</label>' + "".join(f'<label for="pf-{c}">{lab}</label>' for c, lab, _ in present)
     rules = "".join(f'#pf-{c}:checked~.pick-grid .pick:not(.c-{c}){{display:none}}#pf-{c}:checked~.pick-chips label[for=pf-{c}]{{background:var(--ink);color:var(--white)}}' for c, _, _ in present)
-    BOOT_SUBS = [("ankle", "Ankle boots"), ("knee", "Knee-high boots"), ("western", "Western & biker")]
-    radios += '<input type="radio" name="bt" id="bt-all" class="pf" checked>' + "".join(f'<input type="radio" name="bt" id="bt-{k}" class="pf">' for k, _ in BOOT_SUBS)
-    subchips = ('<div class="pick-chips sub-chips theme-chips" role="group" aria-label="Filter boots by type"><label for="bt-all">All boots</label>'
-                + "".join(f'<label for="bt-{k}">{lab}</label>' for k, lab in BOOT_SUBS) + '</div>')
-    rules += ('.sub-chips{display:none!important}#pf-boots:checked~.sub-chips{display:flex!important}'
-              '#bt-all:checked~.sub-chips label[for=bt-all]{background:var(--ink);color:var(--white)}'
-              + "".join(f'#pf-boots:checked~#bt-{k}:checked~.pick-grid .pick.c-boots:not(.b-{k}){{display:none}}#bt-{k}:checked~.sub-chips label[for=bt-{k}]{{background:var(--ink);color:var(--white)}}' for k, _ in BOOT_SUBS))
+    SUBS = {"boots": ("All boots", [("ankle", "Ankle boots"), ("knee", "Knee-high boots"), ("western", "Western & biker")]),
+            "jewelry": ("All jewelry", [("necklaces", "Necklaces"), ("rings", "Rings"), ("bracelets", "Bracelets"), ("earrings", "Earrings")])}
+    subchips = ""
+    rules += ".sub-chips{display:none!important}"
+    for c, (all_lab, opts) in SUBS.items():
+        opts = [(k, lab) for k, lab in opts if any(f" s-{k}" in x for x in cards)]
+        radios += f'<input type="radio" name="sf-{c}" id="sf-{c}-all" class="pf" checked>' + "".join(f'<input type="radio" name="sf-{c}" id="sf-{c}-{k}" class="pf">' for k, _ in opts)
+        subchips += (f'<div class="pick-chips sub-chips sub-{c} theme-chips" role="group" aria-label="Filter {c} by type"><label for="sf-{c}-all">{all_lab}</label>'
+                     + "".join(f'<label for="sf-{c}-{k}">{lab}</label>' for k, lab in opts) + '</div>')
+        rules += (f'#pf-{c}:checked~.sub-{c}{{display:flex!important}}#sf-{c}-all:checked~.sub-{c} label[for=sf-{c}-all]{{background:var(--ink);color:var(--white)}}'
+                  + "".join(f'#pf-{c}:checked~#sf-{c}-{k}:checked~.pick-grid .pick.c-{c}:not(.s-{k}){{display:none}}#sf-{c}-{k}:checked~.sub-{c} label[for=sf-{c}-{k}]{{background:var(--ink);color:var(--white)}}' for k, _ in opts))
     pb = (head_block("The Edit", "Our picks", "Every piece from our looks, in one place. Filter by what you are looking for; each piece shows the look it belongs to.")
           + f'''<section class="wrap picks"><style>.pf{{position:absolute;opacity:0;pointer-events:none}}#pf-all:checked~.pick-chips label[for=pf-all]{{background:var(--ink);color:var(--white)}}{rules}</style>
 <p class="disclose" style="text-align:left;margin:0 0 18px">{DISCLOSURE_SHORT}</p>{radios}
