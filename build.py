@@ -773,8 +773,9 @@ def build():
         write("the-edit.html", shell(f"The Edit: Parisian Style Picks by Theme · {SITE['name']}", "Complete looks and pieces worth keeping, gathered by theme: quiet luxury outfits, boots, French lingerie, fine jewelry and travel.", mark_affiliate_links(eb), 0, "", "the-edit.html"))
 
     # Our picks: every piece once, filtered by kind (CSS only: radio buttons + :checked), each linking back to its look.
-    PICK_CATS = [("coats", "Coats & jackets", {"coat", "jacket", "blazer", "cardigan", "knit jacket"}),
-                 ("tops", "Knits & shirts", {"sweater", "knit", "shirt", "blouse", "top", "t-shirt"}),
+    PICK_CATS = [("coats", "Coats", {"coat"}),
+                 ("jackets", "Jackets & blazers", {"jacket", "blazer"}),
+                 ("tops", "Knits & shirts", {"sweater", "knit", "cardigan", "knit jacket", "shirt", "blouse", "top", "t-shirt"}),
                  ("bottoms", "Skirts & trousers", {"skirt", "trousers", "jeans", "dress", "shorts", "gown"}),
                  ("lingerie", "Lingerie", {"camisole", "bra", "bralette", "bodysuit", "corset", "slip dress", "pyjama trousers", "pyjama top"}),
                  ("boots", "Boots & shoes", {"boot", "sneakers", "loafers", "pumps", "shoes"}),
