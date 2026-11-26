@@ -1,54 +1,9 @@
-{
- "file": "pins/the-edit/style-notes-2026",
- "secs": 3,
- "theme": "ink",
- "effects": [
-  "diamonds"
- ],
- "loop": true,
- "pages": [
-  {
-   "photo": "images/paris-eiffel-street-card.jpg",
-   "kicker": "Parisian style advice",
-   "title": "The 2026 edit,",
-   "italic": "in five rules",
-   "brands": "Jewelry · Quiet luxury · Boots · Silk · Watches",
-   "focus": 0.4
-  },
-  {
-   "photo": "images/gold-hands-shadow-card.jpg",
-   "kicker": "1 · Fine jewelry",
-   "title": "One good piece,",
-   "italic": "worn every day",
-   "focus": 0.4
-  },
-  {
-   "photo": "images/leather-jacket-street-card.jpg",
-   "kicker": "2 · Quiet luxury",
-   "title": "Fabric over logos,",
-   "italic": "colour when chosen",
-   "focus": 0.4
-  },
-  {
-   "photo": "images/boots-street-bw-card.jpg",
-   "kicker": "3 · Boots",
-   "title": "Three pairs",
-   "italic": "for every winter day",
-   "focus": 0.6
-  },
-  {
-   "photo": "images/silk-ivory-card.jpg",
-   "kicker": "4 · Lingerie",
-   "title": "Silk underneath,",
-   "italic": "lace that lies flat",
-   "focus": 0.5
-  },
-  {
-   "photo": "images/small-watch-wrist-bw-card.jpg",
-   "kicker": "5 · Watches",
-   "title": "A small watch",
-   "italic": "says enough",
-   "focus": 0.5
-  }
- ]
-}
+{"file":"/home/claude/out/edit/style-notes-2026","secs":3,"theme":"ink","effects":["diamonds"],"loop":true,
+ "pages":[
+  {"photo":"images/portrait-black-blazer.jpg","kicker":"Parisian style advice","title":"The 2026 edit,","italic":"in five rules","brands":"Jewelry · Quiet luxury · Boots · Silk · Watches","focus":0.4},
+  {"photo":"images/gold-hands-shadow-card.jpg","kicker":"1 · Fine jewelry","title":"One good piece,","italic":"worn every day","focus":0.4},
+  {"photo":"images/leather-jacket-street-card.jpg","kicker":"2 · Quiet luxury","title":"Fabric over logos,","italic":"colour when chosen","focus":0.4},
+  {"photo":"images/boots-street-bw-card.jpg","kicker":"3 · Boots","title":"Three pairs","italic":"for every winter day","focus":0.6},
+  {"photo":"images/silk-ivory-card.jpg","kicker":"4 · Lingerie","title":"Silk underneath,","italic":"lace that lies flat","focus":0.5},
+  {"photo":"images/small-watch-wrist-bw-card.jpg","kicker":"5 · Watches","title":"A small watch","italic":"says enough","focus":0.5}
+ ]}
