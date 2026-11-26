@@ -784,7 +784,7 @@ def build():
                  ("trousers", "Trousers & jeans", {"trousers", "jeans"}),
                  ("lingerie", "Lace tops & lingerie", {"shorts", "camisole", "bra", "bralette", "bodysuit", "corset", "pyjama trousers", "pyjama top"}),
                  ("boots", "Boots", {"boot"}),
-                 ("shoes", "Sneakers & shoes", {"sneakers", "loafers", "pumps", "shoes"}),
+                 ("shoes", "Sneakers", {"sneakers", "loafers", "pumps", "shoes"}),
                  ("bags", "Bags", {"bag"}),
                  ("cases", "Suitcases", {"suitcase"}),
                  ("jewelry", "Jewelry", {"necklace", "ring", "bracelet", "earrings"}),
