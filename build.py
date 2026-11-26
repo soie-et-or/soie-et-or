@@ -1,6 +1,10 @@
 """Builds the static site for soie-et-or.com into ./site. Run: python3 build.py"""
 import html as html_lib, json, os, re, shutil
 from content import SITE, ARTICLES, ABOUT, CONTACT, DISCLOSURE, PRIVACY, TERMS, DISCLOSURE_SHORT, AFFILIATE_DOMAINS
+# Boards without products yet (work in progress) are left out of the site
+for _a in ARTICLES:
+    if _a.get("edits"):
+        _a["edits"] = [_e for _e in _a["edits"] if _e.get("products")]
 
 OUT = os.path.join(os.path.dirname(__file__), "site")
 FMT = dict(SITE)
@@ -8,12 +12,18 @@ FMT = dict(SITE)
 # Which nav section each article category belongs to
 GROUPS = {
     "clothing": {"label": "Clothing", "title": "Clothing", "dek": "Parisian ready-to-wear and wardrobes built to last.",
+                 "seo_title": 'Parisian Capsule Wardrobe & Outfit Advice', "seo_desc": 'Parisian styling advice for clothing: capsule wardrobes, quiet luxury outfits and ready-to-wear pieces built to last.',
                  "cats": ["Wardrobe", "Brands", "Style notes"]},
-    "jewelry": {"label": "Jewelry", "title": "Jewelry", "dek": "Fine jewelry to wear every day.", "cats": ["Jewelry"]},
-    "watches": {"label": "Watches", "title": "Watches", "dek": "Watches, new and pre-owned, and how to buy them well.", "cats": ["Watches"]},
-    "lingerie": {"label": "Lingerie", "title": "Lingerie", "dek": "French lingerie: silk, fine lace and the right fit.", "cats": ["Lingerie"]},
-    "boots": {"label": "Boots", "title": "Boots", "dek": "The boots a Parisian wardrobe needs, and how to make them last.", "cats": ["Boots"]},
-    "travel": {"label": "Travel", "title": "Chic travel", "dek": "Bags, outfits, sunglasses and caps for travelling light and well.", "cats": ["Travel"]},
+    "jewelry": {"label": "Jewelry", "title": "Jewelry", "dek": "Fine jewelry to wear every day.", "seo_title": 'Fine Gold Jewelry Guides & Gift Ideas', "seo_desc": 'How to choose and wear fine gold jewelry the Parisian way: everyday pieces, gift ideas and buying well when gold is expensive.',
+                 "cats": ["Jewelry"]},
+    "watches": {"label": "Watches", "title": "Watches", "dek": "Watches, new and pre-owned, and how to buy them well.", "seo_title": "Small Women's Watches & Pre-Owned Watch Guides", "seo_desc": "Small, elegant women's watches and how to buy them well, new or pre-owned, with honest advice on what to check.",
+                 "cats": ["Watches"]},
+    "lingerie": {"label": "Lingerie", "title": "Lingerie", "dek": "French lingerie: silk, fine lace and the right fit.", "seo_title": 'French Lingerie: Silk & Lace, the Parisian Way', "seo_desc": 'French lingerie the Parisian way: silk camisoles, fine lace, slip dresses and what to wear under a blazer or a knit.',
+                 "cats": ["Lingerie"]},
+    "boots": {"label": "Boots", "title": "Boots", "dek": "The boots a Parisian wardrobe needs, and how to make them last.", "seo_title": "Women's Winter Boots: Ankle, Riding & Heeled", "seo_desc": 'The boots a Parisian winter wardrobe needs: flat ankle boots, riding boots and heeled boots, and how to wear each one.',
+                 "cats": ["Boots"]},
+    "travel": {"label": "Travel", "title": "Chic travel", "dek": "Bags, outfits, sunglasses and caps for travelling light and well.", "seo_title": 'Paris Travel Outfits & Chic Packing', "seo_desc": 'Chic travel outfits for a weekend in Paris: the carry-on, the bag and what to wear on the train or plane.',
+                 "cats": ["Travel"]},
 }
 def group_of(a):
     for k, g in GROUPS.items():
@@ -82,14 +92,15 @@ img{max-width:100%;display:block}
 .hero p{margin:0;font-size:17px;color:var(--muted);max-width:44ch}
 .btn{align-self:flex-start;display:inline-block;border:1px solid var(--ink);padding:15px 30px;font:500 11px/1 var(--body);letter-spacing:.24em;text-transform:uppercase;text-decoration:none;color:var(--ink)}
 .btn:hover{background:var(--ink);color:var(--white)}
-@media (max-width:820px){.hero{grid-template-columns:1fr}.hero .tile{min-height:300px;border-right:0;border-bottom:1px solid var(--line)}}
+.btns{display:inline-grid;grid-template-columns:1fr 1fr;gap:12px;align-self:flex-start}.btns .btn{text-align:center;align-self:stretch}@media (max-width:520px){.btns{grid-template-columns:1fr}}.btn-solid{background:var(--ink);color:var(--white)}.btn-solid:hover{background:transparent;color:var(--ink)}
+@media (max-width:820px){.hero{grid-template-columns:1fr}.hero .tile{min-height:0;height:56vw;max-height:300px;border-right:0;border-bottom:1px solid var(--line)}.hero .copy{padding:26px 18px 30px;gap:16px}}
 
 /* edit row + grids */
 .row{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-bottom:1px solid var(--line)}
 .row .card{border-right:1px solid var(--line);padding:22px 24px 28px}
 .row .card:last-child{border-right:0}
 @media (max-width:980px){.row{grid-template-columns:repeat(2,minmax(0,1fr))}.row .card:nth-child(2n){border-right:0}.row .card{border-bottom:1px solid var(--line)}}
-@media (max-width:520px){.row{grid-template-columns:1fr}.row .card{border-right:0}}
+@media (max-width:520px){.row{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch}.row .card{flex:0 0 62%;scroll-snap-align:start;border-right:1px solid var(--line);border-bottom:0;padding:16px 16px 20px}.row .card p{display:none}.row .card h3{font-size:17px}}
 .card{display:flex;flex-direction:column;gap:14px;text-decoration:none;color:var(--ink);min-width:0}
 .card .tile{aspect-ratio:4/5;max-width:100%;padding:18px}
 .card .tile .word{font-size:clamp(30px,3vw,42px)}
@@ -104,6 +115,18 @@ img{max-width:100%;display:block}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:44px 28px}
 
 /* pillars */
+.theme-chips{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 12px}.theme-chips a{border:1px solid var(--line);padding:8px 14px;font:500 11px/1 var(--body);letter-spacing:.18em;text-transform:uppercase;color:var(--ink);text-decoration:none}.theme-chips a:hover{border-color:var(--ink)}
+.home-edit{padding-top:32px;padding-bottom:0}.home-strip .label{display:none}.strip-sub{display:block;margin-top:3px;font:500 10px/1.3 var(--body);letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+.promise{text-align:center;font:italic 400 clamp(17px,2.2vw,21px)/1.4 var(--display);color:var(--muted);margin:0;padding:14px 16px;border-bottom:1px solid var(--line)}
+.rules-head{display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:22px clamp(14px,1.6vw,24px) 12px}.rules-head a{font:500 11px/1 var(--body);letter-spacing:.2em;text-transform:uppercase;color:var(--ink)}
+.rules{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(6,minmax(0,1fr));border-top:1px solid var(--line);border-bottom:1px solid var(--line);counter-reset:r}
+.rules li{counter-increment:r;border-right:1px solid var(--line)}.rules li:last-child{border-right:0}
+.rules a{display:flex;flex-direction:column;gap:6px;padding:18px clamp(14px,1.6vw,24px);text-decoration:none;height:100%}
+.rules-title{counter-increment:none!important;display:flex;flex-direction:column;justify-content:center;gap:10px;padding:18px clamp(14px,1.6vw,24px)}.rules-title a{display:inline;padding:0;font:500 11px/1 var(--body);letter-spacing:.2em;text-transform:uppercase;color:var(--ink);text-decoration:underline}.rules .rules-title a::before{content:none}
+.rules a::before{content:counter(r);font:400 15px var(--mark);color:var(--gold)}
+.rules .rule{font:400 18px/1.25 var(--display);color:var(--ink)}.rules .rule i{display:block}
+.rules a:hover .rule{text-decoration:underline;text-underline-offset:3px}
+@media (max-width:820px){.rules{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch}.rules li{flex:0 0 58%;scroll-snap-align:start;border-right:1px solid var(--line)}.rules li.rules-title{flex-basis:38%}}
 .pillars{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
 .pillar{padding:36px clamp(20px,3vw,40px);border-right:1px solid var(--line);display:flex;flex-direction:column;gap:10px;text-decoration:none}
 .pillar:nth-child(3n){border-right:0}
@@ -123,7 +146,7 @@ img{max-width:100%;display:block}
 .tile.photo{padding:0}
 .tile.photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 .hero .tile.photo{min-height:640px}
-@media (max-width:820px){.hero .tile.photo{min-height:420px}.hero-tile.photo{aspect-ratio:4/3}}
+@media (max-width:820px){.hero .tile.photo{min-height:0;height:72vw;max-height:320px}.hero-tile.photo{aspect-ratio:4/3}}
 .disclose{font-size:12.5px;line-height:1.5;color:var(--muted);text-align:center;margin:-18px auto 28px;max-width:60ch}
 .disclose a{color:var(--muted)}
 .shop{padding-block:8px 64px}
@@ -142,6 +165,9 @@ html{scroll-behavior:smooth}
 .strip-row{display:flex;gap:16px;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:10px;scrollbar-width:thin;scrollbar-color:var(--line) transparent}
 .strip-row .strip-tile{flex:0 0 230px;scroll-snap-align:start}
 @media (min-width:761px){.edit-strip.narrow .strip-tile{flex-basis:calc((100% - 32px) / 3)}}
+.marquee{display:contents}
+@media (min-width:821px) and (prefers-reduced-motion:no-preference){.home-strip .strip-row{overflow-x:auto;scroll-snap-type:none}.home-strip .marquee{display:flex;gap:16px;width:max-content;animation:glide 140s linear infinite}.home-strip .strip-row:hover .marquee,.home-strip .strip-row:focus-within .marquee{animation-play-state:paused}}
+@keyframes glide{to{transform:translateX(calc(-50% - 8px))}}
 .home-strip{padding-bottom:64px}
 .home-strip .strip-row .strip-tile{flex-basis:250px}
 .strip-tile{display:flex;flex-direction:column;gap:8px;min-width:0}
@@ -195,6 +221,7 @@ html{scroll-behavior:smooth}
 .piece .label{font-size:11px}
 .piece-name{font:400 17px/1.3 var(--display);color:var(--ink);text-decoration:none}
 .piece-name:hover{text-decoration:underline;text-underline-offset:3px}
+.piece-why{display:block;margin-top:4px;font:italic 400 14px/1.35 var(--display);color:var(--muted)}
 .piece-shop{font-size:13px;color:var(--muted)}
 .gift-note{display:flex;flex-direction:column;gap:2px;margin:10px 0 2px;font-size:13.5px;line-height:1.45;border-top:1px solid var(--line);padding-top:10px}
 .gift-note dt{margin-top:6px;font:500 10px/1.6 var(--body);letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}
@@ -318,14 +345,14 @@ def shell(title, desc, body, depth, current="", canonical="", image=None, articl
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>{title}</title>
+<title>{html_lib.escape(title, quote=False)}</title>
 <link rel="icon" href="/favicon.ico" sizes="any">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
-<meta name="description" content="{desc}">
+<meta name="description" content="{html_lib.escape(desc, quote=True)}">
 <link rel="canonical" href="{SITE['url']}/{canonical}">
-<meta property="og:title" content="{title}">
-<meta property="og:description" content="{desc}">
+<meta property="og:title" content="{html_lib.escape(title, quote=True)}">
+<meta property="og:description" content="{html_lib.escape(desc, quote=True)}">
 <meta property="og:site_name" content="{SITE['name']}">
 {social_meta(title, desc, canonical, image, article)}
 {verify}
@@ -402,7 +429,7 @@ def shop_block(products):
 
 TYPE_WORD = {"necklace": "Collier", "ring": "Bague", "bracelet": "Bracelet", "earrings": "Boucles", "watch": "Montre", "boot": "Bottes",
              "camisole": "Caraco", "bra": "Soutien-gorge", "bralette": "Bralette", "bodysuit": "Body", "corset": "Corset", "top": "Haut",
-             "slip dress": "Nuisette", "gown": "Robe", "dress": "Robe", "coat": "Manteau", "cardigan": "Gilet", "knit jacket": "Gilet", "sweater": "Pull", "jeans": "Jean", "trousers": "Pantalon", "shirt": "Chemise", "bag": "Sac", "belt": "Ceinture", "tights": "Collant", "skirt": "Jupe", "shorts": "Short", "pyjama trousers": "Pyjama", "pyjama top": "Pyjama", "headband": "Bandeau"}
+             "slip dress": "Nuisette", "gown": "Robe", "dress": "Robe", "coat": "Manteau", "jacket": "Veste", "cardigan": "Gilet", "knit jacket": "Gilet", "sweater": "Pull", "jeans": "Jean", "trousers": "Pantalon", "shirt": "Chemise", "bag": "Sac", "suitcase": "Valise", "sneakers": "Baskets", "loafers": "Mocassins", "sunglasses": "Lunettes", "cap": "Casquette", "hat": "Chapeau", "beret": "Béret", "gloves": "Gants", "mittens": "Moufles", "scarf": "Écharpe", "headphones": "Casque", "t-shirt": "T-shirt", "blouse": "Blouse",  "belt": "Ceinture", "tights": "Collant", "skirt": "Jupe", "shorts": "Short", "pyjama trousers": "Pyjama", "pyjama top": "Pyjama", "headband": "Bandeau"}
 
 AFF_ATTRS = 'rel="sponsored nofollow noopener" target="_blank"'
 DEFAULT_REGION = "eu"   # where a click on the photo or name goes: "eu" (EU/UK programme) or "us"
@@ -450,6 +477,7 @@ def edit_board(e, story_href="", place="art"):
 <a class="piece-img" href="{main}" {AFF_ATTRS} tabindex="-1" aria-hidden="true">{img}</a>
 <span class="label">{pr["type"].capitalize()} &middot; {pr["brand"]}</span>
 <a class="piece-name" href="{main}" {AFF_ATTRS}>{pr["name"]}</a>
+{f'<span class="piece-why">{pr["why"]}</span>' if pr.get("why") else ""}
 {"" if one_shop else f'<span class="piece-shop">at {pr.get("shop", "Mytheresa")}</span>'}
 {gift_note(pr)}<span class="piece-regions">Discover &mdash; {" &middot; ".join(regions)}</span>
 </div>''')
@@ -462,7 +490,7 @@ def edit_board(e, story_href="", place="art"):
 {story}
 </div></section>'''
 
-def edit_strip(edits, heading="The Edit in this story", base="", narrow=True, place="strip"):
+def edit_strip(edits, heading="The Edit in this story", base="", narrow=True, place="strip", subs=None):
     """Near the top: one tile per edit. Each tile is a small collage of the edit's own product photos,
     laid out side by side in HTML (the images themselves are not altered or merged). Each photo links
     to that piece at the retailer; the title jumps to the board."""
@@ -476,10 +504,21 @@ def edit_strip(edits, heading="The Edit in this story", base="", narrow=True, pl
             url = tag(pr.get(f"url_{DEFAULT_REGION}") or pr.get("url_eu") or pr.get("url_us"), f"{place}-{board_key(e)}")
             alt = html_lib.escape(f'{pr["brand"]} {pr["name"]}', quote=True)
             cells.append(f'<a href="{url}" {AFF_ATTRS} title="{alt}"><img src="{pr["image"]}" alt="{alt}" loading="lazy"></a>')
+        sub = f'<span class="strip-sub">{subs[e["title"]]}</span>' if subs and e["title"] in subs else ""
         items.append(f'''<div class="strip-tile"><div class="collage c{len(cells)}">{"".join(cells)}</div>
-<a class="strip-title" href="{base}#{edit_id(e)}">{e["title"]}{"" if base else ' <svg class="down" width="9" height="14" viewBox="0 0 9 14" aria-hidden="true"><path d="M4.5 0.5v12.2M0.8 9l3.7 3.7L8.2 9" fill="none" stroke="currentColor" stroke-width="1"/></svg>'}</a></div>''')
+<a class="strip-title" href="{base}#{edit_id(e)}">{e["title"]}{"" if base else ' <svg class="down" width="9" height="14" viewBox="0 0 9 14" aria-hidden="true"><path d="M4.5 0.5v12.2M0.8 9l3.7 3.7L8.2 9" fill="none" stroke="currentColor" stroke-width="1"/></svg>'}</a>{sub}</div>''')
     return f'''<nav class="wrap{" narrow" if narrow else ""} edit-strip" aria-label="{heading}">
 <span class="label">{heading}</span><div class="strip-row">{"".join(items)}</div></nav>'''
+
+def marquee(strip_html):
+    """Desktop: let the home strip glide slowly on its own (CSS only, no script). The tiles are repeated once,
+    hidden from screen readers and keyboard, so the loop is seamless. Hover pauses it; phones keep swiping;
+    people who prefer reduced motion get the normal row."""
+    a = strip_html.index('<div class="strip-row">') + len('<div class="strip-row">')
+    e = strip_html.rindex('</div></nav>')
+    items = strip_html[a:e]
+    dup = items.replace('<div class="strip-tile">', '<div class="strip-tile" aria-hidden="true">').replace('<a ', '<a tabindex="-1" ')
+    return strip_html[:a] + f'<div class="marquee">{items}{dup}</div>' + strip_html[e:]
 
 def edit_rail(current_slug, limit=10):
     """'From The Edit' at the foot of an article: a swipeable row of pieces from the edits of *other*
@@ -563,52 +602,60 @@ def build():
         for name in os.listdir(iconsrc):
             shutil.copy(os.path.join(iconsrc, name), os.path.join(OUT, name))
 
-    lead, rest = ARTICLES[0], ARTICLES[1:]
+    lead = next((a for a in ARTICLES if a["slug"] == SITE.get("lead")), ARTICLES[0])
+    rest = [a for a in ARTICLES if a is not lead]
     row = "\n".join(card(a, 0) for a in rest[:4])
     all_edits = [(a, e) for a in ARTICLES for e in (a.get("edits") or [])]
     all_edits.sort(key=lambda ae: not ae[1].get("first"))
     home_edit = ""
     if all_edits:
-        home_edit = (f'''<section class="wrap sec home-edit" style="padding-bottom:0"><div class="sec-head"><h2>The Edit</h2><a href="the-edit.html">See the edit</a></div>
-<p class="dek" style="margin:0 0 10px">Pieces we would choose ourselves, gathered by theme.</p><p class="disclose" style="text-align:left;margin:0 0 22px">{DISCLOSURE_SHORT}</p></section>'''
-                     + edit_strip([e for _, e in all_edits], heading="Browse by theme", base="the-edit.html", narrow=False, place="home").replace('class="wrap edit-strip"', 'class="wrap edit-strip home-strip"'))
-    home = f"""<section class="hero">
+        GL = {"clothing": "Looks", "jewelry": "Jewelry", "watches": "Watches", "lingerie": "Lingerie", "boots": "Boots", "travel": "Travel"}
+        subs = {e["title"]: f'{GL.get(group_of(a), "")} &middot; {len(e["products"])} pieces' for a, e in all_edits}
+        present = [k for k in GROUPS if any(group_of(a) == k for a, _ in all_edits)]
+        chips = "".join(f'<a href="{k}.html">{GL[k]}</a>' for k in present)
+        home_edit = (f'''<section class="wrap home-edit"><div class="sec-head"><h2>The Edit</h2><a href="the-edit.html">See the edit</a></div>
+<nav class="theme-chips" aria-label="Shop by theme">{chips}</nav><p class="disclose" style="text-align:left;margin:0">{DISCLOSURE_SHORT}</p></section>'''
+                     + marquee(edit_strip([e for _, e in all_edits], heading="Browse by theme", base="the-edit.html", narrow=False, place="home", subs=subs)).replace('class="wrap edit-strip"', 'class="wrap edit-strip home-strip"'))
+    home = f"""<p class="promise">Parisian styling advice, one look at a time.</p>
+<section class="hero">
 {tile('Soie', img=SITE.get('hero_image'))}
 <div class="copy">
-<span class="kicker">The edit &middot; {lead['category']}</span>
+<span class="kicker">{SITE.get('lead_kicker', 'The edit &middot; ' + lead['category'])}</span>
 <h1>{lead['title']}</h1>
 <p>{lead['dek']}</p>
-<a class="btn" href="journal/{lead['slug']}.html">Read the edit</a>
+<div class="btns"><a class="btn" href="journal/{lead['slug']}.html">{SITE.get('lead_cta', 'Read the article')}</a><a class="btn btn-solid" href="the-edit.html">Shop the edits</a></div>
 </div>
 </section>
-<div class="only-mob">{home_edit}</div>
+{home_edit}
+<ol class="rules"><li class="rules-title"><span class="rule">Five rules<i>for 2026</i></span><a href="journal/index.html">All articles</a></li><li><a href="journal/everyday-gold-jewelry.html"><span class="label">Fine jewelry</span><span class="rule">One good piece,<i>worn every day</i></span></a></li><li><a href="journal/what-is-quiet-luxury.html"><span class="label">Quiet luxury</span><span class="rule">Fabric over logos,<i>colour when chosen</i></span></a></li><li><a href="journal/three-boots-parisian-wardrobe.html"><span class="label">Boots</span><span class="rule">Three pairs<i>for every winter day</i></span></a></li><li><a href="journal/french-lingerie-guide.html"><span class="label">Lingerie</span><span class="rule">Silk underneath,<i>lace that lies flat</i></span></a></li><li><a href="journal/the-case-for-a-small-watch.html"><span class="label">Watches</span><span class="rule">A small watch<i>says enough</i></span></a></li></ol>
 <section class="row" aria-label="Latest articles">{row}</section>
-<div class="only-desk">{home_edit}</div>
-<section class="wrap sec">
-<div class="sec-head"><h2>Quiet Parisian style, in silk and gold</h2><a href="journal/index.html">All articles</a></div><p class="dek" style="margin:0">An edit of Parisian ready-to-wear, fine jewelry and watches worth keeping.</p>
-</section>
+<section class="wrap sec" style="padding-bottom:0"><div class="sec-head"><h2>Quiet Parisian style, in silk and gold</h2></div></section>
 <section class="pillars wrap" style="padding-left:0;padding-right:0">
 <a class="pillar" href="clothing.html"><span class="label">Soie</span><h3>Clothing</h3><p>Parisian ready-to-wear from Sandro, IRO, Acne Studios, Marni and Miu Miu. Capsule wardrobes built to last.</p></a>
 <a class="pillar" href="jewelry.html"><span class="label">Or</span><h3>Jewelry</h3><p>Fine jewelry to wear every day, from houses like Pomellato and Chopard.</p></a>
 <a class="pillar" href="watches.html"><span class="label">Temps</span><h3>Watches</h3><p>Watches, new and pre-owned, with honest guidance on buying well.</p></a>
 <a class="pillar" href="lingerie.html"><span class="label">Dessous</span><h3>Lingerie</h3><p>French lingerie in silk and fine lace: the first layer of a good outfit.</p></a>
 <a class="pillar" href="boots.html"><span class="label">Bottes</span><h3>Boots</h3><p>Ankle, riding and heeled boots that see you through every winter.</p></a>
-<a class="pillar" href="travel.html"><span class="label">Voyage</span><h3>Chic travel</h3><p>One good bag, a few pieces that all combine, sunglasses and a cap.</p></a>
+<a class="pillar" href="travel.html"><span class="label">Voyage</span><h3>Chic travel</h3><p>Three travel outfits for a weekend in Paris: the case, the bag and what to wear on the way.</p></a>
 </section>
 """
-    write("index.html", shell(f"{SITE['name']} · Quiet Parisian style, in silk and gold",
-        "An edit of quiet Parisian luxury: ready-to-wear, fine jewelry and watches worth keeping.", home, 0, "", ""))
+    write("index.html", shell(f"{SITE['name']} · Parisian Styling Advice, Quiet Luxury & Fine Jewelry",
+        "Parisian styling advice, one look at a time: complete outfits, capsule wardrobes, fine jewelry and watches worth keeping.", home, 0, "", ""))
 
     for key, g in GROUPS.items():
         items = [a for a in ARTICLES if group_of(a) == key]
         cards = "\n".join(card(a, 0) for a in items)
-        b = head_block("Section", g["title"], g["dek"]) + f'<section class="wrap sec" style="padding-top:0"><div class="grid">{cards}</div></section>'
-        write(f"{key}.html", shell(f"{g['title']} · {SITE['name']}", g["dek"], b, 0, key, f"{key}.html"))
+        g_edits = [e for a in items for e in (a.get("edits") or [])]
+        peek = (edit_strip(g_edits, heading=f"From the edit &middot; {g['title'].lower()}", base="the-edit.html", narrow=False, place="cat")
+                .replace('class="wrap edit-strip"', 'class="wrap edit-strip home-strip"')
+                + f'<p class="disclose wrap" style="text-align:left;max-width:none;margin:-14px auto 28px">{DISCLOSURE_SHORT}</p>') if g_edits else ""
+        b = head_block("Section", g["title"], g["dek"]) + peek + f'<section class="wrap sec" style="padding-top:0"><div class="grid">{cards}</div></section>'
+        write(f"{key}.html", shell(f"{g.get('seo_title', g['title'])} · {SITE['name']}", g.get("seo_desc", g["dek"]), b, 0, key, f"{key}.html"))
 
     jcards = "\n".join(card(a, 1) for a in ARTICLES)
     jbody = head_block("Journal", "The journal", "Wardrobe notes, jewelry guides and honest advice on buying luxury well.") + \
             f'<section class="wrap sec" style="padding-top:0"><div class="grid">{jcards}</div></section>'
-    write("journal/index.html", shell(f"Journal · {SITE['name']}", "Wardrobe notes, jewelry guides and advice on buying luxury well.", jbody, 1, "journal", "journal/"))
+    write("journal/index.html", shell(f"Journal: Parisian Style Advice & Buying Guides · {SITE['name']}", "Parisian styling advice, wardrobe notes, fine jewelry guides and honest advice on buying luxury well.", jbody, 1, "journal", "journal/"))
 
     for a in ARTICLES:
         g = group_of(a)
@@ -627,14 +674,14 @@ def build():
 {shop}{rail}</article>
 <section class="wrap sec" style="border-top:1px solid var(--line)"><div class="sec-head"><h2>Keep reading</h2><a href="/journal/index.html">All articles</a></div><div class="grid">{more}</div></section>"""
         body = mark_affiliate_links(body)
-        write(f"journal/{a['slug']}.html", shell(f"{a['title']} · {SITE['name']}", a["dek"], body, 1, g, f"journal/{a['slug']}.html", image=a.get("image"), article=a))
+        write(f"journal/{a['slug']}.html", shell(f"{a.get('seo_title', a['title'])} · {SITE['name']}", a.get("seo_desc", a["dek"]), body, 1, g, f"journal/{a['slug']}.html", image=a.get("image"), article=a))
 
     if all_edits:
         boards = "\n".join(edit_board(e, f"journal/{a['slug']}.html", place="page") for a, e in all_edits)
         eb = (head_block("The Edit", "The Edit", "Pieces we would choose ourselves. Each edit belongs to a story; read it there, or browse them all here.")
               + f'<div class="wrap narrow"><p class="disclose">{DISCLOSURE_SHORT}</p></div>'
               + edit_strip([e for _, e in all_edits], heading="The edits", place="pstrip") + boards)
-        write("the-edit.html", shell(f"The Edit · {SITE['name']}", "Fine jewelry and pieces worth keeping, gathered by theme by the editor of Soie et Or.", mark_affiliate_links(eb), 0, "", "the-edit.html"))
+        write("the-edit.html", shell(f"The Edit: Parisian Style Picks by Theme · {SITE['name']}", "Complete looks and pieces worth keeping, gathered by theme: quiet luxury outfits, boots, French lingerie, fine jewelry and travel.", mark_affiliate_links(eb), 0, "", "the-edit.html"))
 
     simple_page("about.html", "About Soie et Or", "About", ABOUT, "about")
     simple_page("contact.html", "Contact", "Contact", CONTACT)
@@ -643,12 +690,13 @@ def build():
     simple_page("terms.html", "Terms of use", "Legal", TERMS)
 
     nf = head_block("404", "This page has slipped away", 'The link may be old or mistyped. <a href="/index.html">Back to the home page</a>.')
-    write("404.html", shell(f"Page not found · {SITE['name']}", "Page not found", nf, 0, "", "404.html"))
+    write("404.html", shell(f"Page not found · {SITE['name']}", "Page not found", nf, 0, "", "404.html").replace("<head>", '<head>\n<meta name="robots" content="noindex">', 1))
 
     urls = ["", "clothing.html", "lingerie.html", "boots.html", "jewelry.html", "watches.html", "travel.html", "journal/", "about.html", "contact.html",
             "affiliate-disclosure.html", "privacy.html", "terms.html", "the-edit.html"] + [f"journal/{a['slug']}.html" for a in ARTICLES]
+    lastmod = {f"journal/{a['slug']}.html": f"<lastmod>{iso_date(a.get('updated', a['date']))[:10]}</lastmod>" for a in ARTICLES}
     sm = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + \
-         "\n".join(f"  <url><loc>{SITE['url']}/{u}</loc></url>" for u in urls) + "\n</urlset>\n"
+         "\n".join(f"  <url><loc>{SITE['url']}/{u}</loc>{lastmod.get(u, '')}</url>" for u in urls) + "\n</urlset>\n"
     write("sitemap.xml", sm)
     write("robots.txt", f"User-agent: *\nAllow: /\nSitemap: {SITE['url']}/sitemap.xml\n")
     print("built", sum(len(f) for _, _, f in os.walk(OUT)), "files")
