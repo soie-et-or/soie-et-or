@@ -116,6 +116,7 @@ img{max-width:100%;display:block}
 
 /* pillars */
 .theme-chips{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 12px}.theme-chips a{border:1px solid var(--line);padding:8px 14px;font:500 11px/1 var(--body);letter-spacing:.18em;text-transform:uppercase;color:var(--ink);text-decoration:none}.theme-chips a:hover{border-color:var(--ink)}
+.theme-chips label{border:1px solid var(--line);padding:8px 14px;font:500 11px/1 var(--body);letter-spacing:.18em;text-transform:uppercase;color:var(--ink)}.theme-chips label:hover{border-color:var(--ink)}
 .home-edit{padding-top:32px;padding-bottom:0}.home-strip .label{display:none}.strip-sub{display:block;margin-top:3px;font:500 10px/1.3 var(--body);letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
 .promise{text-align:center;font:italic 400 clamp(17px,2.2vw,21px)/1.4 var(--display);color:var(--muted);margin:0;padding:14px 16px;border-bottom:1px solid var(--line)}
 .rules-head{display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:22px clamp(14px,1.6vw,24px) 12px}.rules-head a{font:500 11px/1 var(--body);letter-spacing:.2em;text-transform:uppercase;color:var(--ink)}
@@ -234,6 +235,15 @@ html{scroll-behavior:smooth}
 .cap-shop .label{font-size:10.5px}
 .cap-shop .piece-name{font-size:16px}
 @media (max-width:820px){.cap-list{grid-template-columns:1fr}.cap-row{grid-template-columns:112px minmax(0,1fr);gap:16px;padding-block:18px}.cap-num{font-size:24px}.cap-text h3{font-size:19px}.cap-text p{font-size:14.5px}}
+/* our picks page */
+.pick-chips{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 30px}
+.pick-chips label{cursor:pointer;user-select:none}
+.pf:focus-visible~.pick-chips{outline:2px solid var(--gold);outline-offset:4px}
+.pick-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:36px 22px;padding-bottom:60px}
+@media (max-width:1000px){.pick-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media (max-width:640px){.pick-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:26px 14px}}
+.pick-from{font-size:12px;letter-spacing:.06em;color:var(--ink);text-underline-offset:3px;margin-top:4px}
+.pick .piece-img{background:#fff}
 .piece{display:flex;flex-direction:column;gap:5px;min-width:0}
 @media (min-width:761px){
 .board-rail.n3{grid-template-columns:repeat(3,minmax(0,1fr))}
@@ -489,6 +499,7 @@ def tag(url, label):
     if url and "linksynergy.com" in url and "u1=" not in url:
         return f"{url}&u1={label[:72]}"
     return url
+sub_tag = tag   # alias: build() has a local variable called tag
 
 def list_board(e, place="art"):
     """A numbered list where each item carries its own piece: number, the advice, then the product.
@@ -760,6 +771,56 @@ def build():
               + f'<div class="wrap narrow"><p class="disclose">{DISCLOSURE_SHORT}</p></div>'
               + edit_strip([e for _, e in all_edits], heading="The edits", place="pstrip") + boards)
         write("the-edit.html", shell(f"The Edit: Parisian Style Picks by Theme · {SITE['name']}", "Complete looks and pieces worth keeping, gathered by theme: quiet luxury outfits, boots, French lingerie, fine jewelry and travel.", mark_affiliate_links(eb), 0, "", "the-edit.html"))
+
+    # Our picks: every piece once, filtered by kind (CSS only: radio buttons + :checked), each linking back to its look.
+    PICK_CATS = [("coats", "Coats & jackets", {"coat", "jacket", "blazer", "cardigan", "knit jacket"}),
+                 ("tops", "Knits & shirts", {"sweater", "knit", "shirt", "blouse", "top", "t-shirt"}),
+                 ("bottoms", "Skirts & trousers", {"skirt", "trousers", "jeans", "dress", "shorts", "gown"}),
+                 ("lingerie", "Lingerie", {"camisole", "bra", "bralette", "bodysuit", "corset", "slip dress", "pyjama trousers", "pyjama top"}),
+                 ("boots", "Boots & shoes", {"boot", "sneakers", "loafers", "pumps", "shoes"}),
+                 ("bags", "Bags & cases", {"bag", "suitcase"}),
+                 ("jewelry", "Jewelry", {"necklace", "ring", "bracelet", "earrings"}),
+                 ("watches", "Watches", {"watch"}),
+                 ("extras", "Accessories", {"scarf", "sunglasses", "cap", "beret", "hat", "gloves", "mittens", "belt", "tights", "headband", "headphones"})]
+    seen, picks = {}, []
+    for a, e in all_edits:
+        for pr in e["products"]:
+            k = pr.get("image") or pr.get("url_eu")
+            if k in seen:
+                seen[k]["n"] += 1
+                continue
+            cat = next((c for c, _, ts in PICK_CATS if pr.get("type") in ts), "extras")
+            seen[k] = {"pr": pr, "a": a, "e": e, "cat": cat, "n": 1}
+            picks.append(seen[k])
+    order = {c: i for i, (c, _, _) in enumerate(PICK_CATS)}
+    picks.sort(key=lambda p: order[p["cat"]])
+    cards = []
+    for p in picks:
+        pr = p["pr"]; alt = html_lib.escape(f'{pr["brand"]} {pr["name"]}', quote=True)
+        urls = {"eu": sub_tag(pr.get("url_eu"), "picks-" + p["cat"]), "us": sub_tag(pr.get("url_us"), "picks-" + p["cat"])}
+        main = urls.get(DEFAULT_REGION) or urls["eu"] or urls["us"] or "#"
+        regions = []
+        if urls["eu"]: regions.append(f'<a href="{urls["eu"]}" {AFF_ATTRS} aria-label="Discover {alt} in Europe and the UK">EU / UK</a>')
+        if urls["us"]: regions.append(f'<a href="{urls["us"]}" {AFF_ATTRS} aria-label="Discover {alt} in the US">US</a>')
+        more = f' &middot; in {p["n"]} looks' if p["n"] > 1 else ""
+        cards.append(f'''<div class="piece pick c-{p["cat"]}" role="listitem">
+<a class="piece-img" href="{main}" {AFF_ATTRS} tabindex="-1" aria-hidden="true"><img src="{pr["image"]}" alt="{alt}" loading="lazy"></a>
+<span class="label">{pr["type"].capitalize()} &middot; {pr["brand"]}</span>
+<a class="piece-name" href="{main}" {AFF_ATTRS}>{pr["name"]}</a>
+{f'<span class="piece-why">{pr["why"]}</span>' if pr.get("why") else ""}
+<a class="pick-from" href="journal/{p["a"]["slug"]}.html#{edit_id(p["e"])}">From: {p["e"]["title"]}{more} &rarr;</a>
+<span class="piece-regions">Discover &mdash; {" &middot; ".join(regions)}</span>
+</div>''')
+    present = [c for c in PICK_CATS if any(p["cat"] == c[0] for p in picks)]
+    radios = '<input type="radio" name="pf" id="pf-all" class="pf" checked>' + "".join(f'<input type="radio" name="pf" id="pf-{c}" class="pf">' for c, _, _ in present)
+    chips = '<label for="pf-all">All</label>' + "".join(f'<label for="pf-{c}">{lab}</label>' for c, lab, _ in present)
+    rules = "".join(f'#pf-{c}:checked~.pick-grid .pick:not(.c-{c}){{display:none}}#pf-{c}:checked~.pick-chips label[for=pf-{c}]{{background:var(--ink);color:var(--white)}}' for c, _, _ in present)
+    pb = (head_block("The Edit", "Our picks", "Every piece from our looks, in one place. Filter by what you are looking for; each piece shows the look it belongs to.")
+          + f'''<section class="wrap picks"><style>.pf{{position:absolute;opacity:0;pointer-events:none}}#pf-all:checked~.pick-chips label[for=pf-all]{{background:var(--ink);color:var(--white)}}{rules}</style>
+<p class="disclose" style="text-align:left;margin:0 0 18px">{DISCLOSURE_SHORT}</p>{radios}
+<div class="pick-chips theme-chips" role="group" aria-label="Filter by kind">{chips}</div>
+<div class="pick-grid" role="list">{"".join(cards)}</div></section>''')
+    write("our-picks.html", shell(f"Our Picks: Parisian Wardrobe Pieces by Kind · {SITE['name']}", "Every piece from our Parisian looks in one place, filtered by kind: coats, knits, boots, bags, jewelry and watches.", mark_affiliate_links(pb), 0, "", "our-picks.html").replace("<head>", '<head>\n<meta name="robots" content="noindex">', 1))
 
     simple_page("about.html", "About Soie et Or", "About", ABOUT, "about")
     simple_page("contact.html", "Contact", "Contact", CONTACT)
