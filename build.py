@@ -237,6 +237,7 @@ html{scroll-behavior:smooth}
 @media (max-width:820px){.cap-list{grid-template-columns:1fr}.cap-row{grid-template-columns:112px minmax(0,1fr);gap:16px;padding-block:18px}.cap-num{font-size:24px}.cap-text h3{font-size:19px}.cap-text p{font-size:14.5px}}
 /* our picks page */
 .pick-chips{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 30px}
+.sub-chips{margin-top:-18px}.sub-chips label{font-size:10px;padding:7px 12px;border-style:dashed}
 .pick-chips label{cursor:pointer;user-select:none}
 .pf:focus-visible~.pick-chips{outline:2px solid var(--gold);outline-offset:4px}
 .pick-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:36px 22px;padding-bottom:60px}
@@ -784,7 +785,8 @@ def build():
                  ("lingerie", "Lace tops & lingerie", {"shorts", "camisole", "bra", "bralette", "bodysuit", "corset", "pyjama trousers", "pyjama top"}),
                  ("boots", "Boots", {"boot"}),
                  ("shoes", "Sneakers & shoes", {"sneakers", "loafers", "pumps", "shoes"}),
-                 ("bags", "Bags & cases", {"bag", "suitcase"}),
+                 ("bags", "Bags", {"bag"}),
+                 ("cases", "Suitcases", {"suitcase"}),
                  ("jewelry", "Jewelry", {"necklace", "ring", "bracelet", "earrings"}),
                  ("watches", "Watches", {"watch"}),
                  ("extras", "Accessories", {"scarf", "sunglasses", "cap", "beret", "hat", "gloves", "mittens", "belt", "tights", "headband", "headphones"})]
@@ -813,7 +815,12 @@ def build():
         if urls["eu"]: regions.append(f'<a href="{urls["eu"]}" {AFF_ATTRS} aria-label="Discover {alt} in Europe and the UK">EU / UK</a>')
         if urls["us"]: regions.append(f'<a href="{urls["us"]}" {AFF_ATTRS} aria-label="Discover {alt} in the US">US</a>')
         more = f' &middot; in {p["n"]} looks' if p["n"] > 1 else ""
-        cards.append(f'''<div class="piece pick c-{p["cat"]}" role="listitem">
+        sub = ""
+        if p["cat"] == "boots":
+            nm = pr["name"].lower()
+            sub = (" b-western" if any(w in nm for w in ("cowboy", "western", "biker")) else
+                   " b-knee" if "knee" in nm else " b-ankle" if ("ankle" in nm or "chelsea" in nm) else "")
+        cards.append(f'''<div class="piece pick c-{p["cat"]}{sub}" role="listitem">
 <a class="piece-img" href="{main}" {AFF_ATTRS} tabindex="-1" aria-hidden="true"><img src="{pr["image"]}" alt="{alt}" loading="lazy"></a>
 <span class="label">{pr["type"].capitalize()} &middot; {pr["brand"]}</span>
 <a class="piece-name" href="{main}" {AFF_ATTRS}>{pr["name"]}</a>
@@ -825,10 +832,18 @@ def build():
     radios = '<input type="radio" name="pf" id="pf-all" class="pf" checked>' + "".join(f'<input type="radio" name="pf" id="pf-{c}" class="pf">' for c, _, _ in present)
     chips = '<label for="pf-all">All</label>' + "".join(f'<label for="pf-{c}">{lab}</label>' for c, lab, _ in present)
     rules = "".join(f'#pf-{c}:checked~.pick-grid .pick:not(.c-{c}){{display:none}}#pf-{c}:checked~.pick-chips label[for=pf-{c}]{{background:var(--ink);color:var(--white)}}' for c, _, _ in present)
+    BOOT_SUBS = [("ankle", "Ankle boots"), ("knee", "Knee-high boots"), ("western", "Western & biker")]
+    radios += '<input type="radio" name="bt" id="bt-all" class="pf" checked>' + "".join(f'<input type="radio" name="bt" id="bt-{k}" class="pf">' for k, _ in BOOT_SUBS)
+    subchips = ('<div class="pick-chips sub-chips theme-chips" role="group" aria-label="Filter boots by type"><label for="bt-all">All boots</label>'
+                + "".join(f'<label for="bt-{k}">{lab}</label>' for k, lab in BOOT_SUBS) + '</div>')
+    rules += ('.sub-chips{display:none!important}#pf-boots:checked~.sub-chips{display:flex!important}'
+              '#bt-all:checked~.sub-chips label[for=bt-all]{background:var(--ink);color:var(--white)}'
+              + "".join(f'#pf-boots:checked~#bt-{k}:checked~.pick-grid .pick.c-boots:not(.b-{k}){{display:none}}#bt-{k}:checked~.sub-chips label[for=bt-{k}]{{background:var(--ink);color:var(--white)}}' for k, _ in BOOT_SUBS))
     pb = (head_block("The Edit", "Our picks", "Every piece from our looks, in one place. Filter by what you are looking for; each piece shows the look it belongs to.")
           + f'''<section class="wrap picks"><style>.pf{{position:absolute;opacity:0;pointer-events:none}}#pf-all:checked~.pick-chips label[for=pf-all]{{background:var(--ink);color:var(--white)}}{rules}</style>
 <p class="disclose" style="text-align:left;margin:0 0 18px">{DISCLOSURE_SHORT}</p>{radios}
 <div class="pick-chips theme-chips" role="group" aria-label="Filter by kind">{chips}</div>
+{subchips}
 <div class="pick-grid" role="list">{"".join(cards)}</div></section>''')
     write("our-picks.html", shell(f"Our Picks: Parisian Wardrobe Pieces by Kind · {SITE['name']}", "Every piece from our Parisian looks in one place, filtered by kind: coats, knits, boots, bags, jewelry and watches.", mark_affiliate_links(pb), 0, "", "our-picks.html").replace("<head>", '<head>\n<meta name="robots" content="noindex">', 1))
 
