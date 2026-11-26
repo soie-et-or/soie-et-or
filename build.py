@@ -216,6 +216,24 @@ html{scroll-behavior:smooth}
 .board-intro{margin:0;color:var(--body-ink);font-size:16px;line-height:1.6}
 .board-story{grid-area:story;margin:0;color:var(--muted);font:italic 400 16px/1.6 var(--display)}
 .board-rail{grid-area:rail;display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:28px 20px}
+/* numbered list board (capsule): number, advice and the piece in one row */
+.board.cap{background:var(--silk)}
+.cap-in{padding-block:40px 48px}
+.cap-label{font-size:11px;margin:0 0 22px}
+.cap-list{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 48px}
+.cap-row{display:grid;grid-template-columns:150px minmax(0,1fr);gap:22px;align-items:start;padding-block:22px;border-top:1px solid var(--line)}
+.cap-img{display:block;aspect-ratio:1/1;background:#fff;position:relative;overflow:hidden}
+.cap-img img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;padding:8px;box-sizing:border-box}
+.cap-img.empty{background:transparent;border:1px solid var(--line)}
+.cap-img .word{position:absolute;left:12px;bottom:10px;font:italic 400 18px/1 var(--display);color:var(--muted)}
+.cap-text{display:flex;flex-direction:column;gap:6px;min-width:0}
+.cap-num{font:italic 400 30px/1 var(--display);color:var(--gold,#a88a4e)}
+.cap-text h3{font:400 21px/1.25 var(--display);margin:0;color:var(--ink)}
+.cap-text p{margin:0;font-size:15px;line-height:1.55;color:var(--body-ink)}
+.cap-shop{display:flex;flex-direction:column;gap:3px;margin-top:6px;padding-top:10px;border-top:1px dotted var(--line)}
+.cap-shop .label{font-size:10.5px}
+.cap-shop .piece-name{font-size:16px}
+@media (max-width:820px){.cap-list{grid-template-columns:1fr}.cap-row{grid-template-columns:112px minmax(0,1fr);gap:16px;padding-block:18px}.cap-num{font-size:24px}.cap-text h3{font-size:19px}.cap-text p{font-size:14.5px}}
 .piece{display:flex;flex-direction:column;gap:5px;min-width:0}
 @media (min-width:761px){
 .board-rail.n3{grid-template-columns:repeat(3,minmax(0,1fr))}
@@ -445,7 +463,7 @@ def shop_block(products):
 
 TYPE_WORD = {"necklace": "Collier", "ring": "Bague", "bracelet": "Bracelet", "earrings": "Boucles", "watch": "Montre", "boot": "Bottes",
              "camisole": "Caraco", "bra": "Soutien-gorge", "bralette": "Bralette", "bodysuit": "Body", "corset": "Corset", "top": "Haut",
-             "slip dress": "Nuisette", "gown": "Robe", "dress": "Robe", "coat": "Manteau", "jacket": "Veste", "cardigan": "Gilet", "knit jacket": "Gilet", "sweater": "Pull", "jeans": "Jean", "trousers": "Pantalon", "shirt": "Chemise", "bag": "Sac", "suitcase": "Valise", "sneakers": "Baskets", "loafers": "Mocassins", "sunglasses": "Lunettes", "cap": "Casquette", "hat": "Chapeau", "beret": "Béret", "gloves": "Gants", "mittens": "Moufles", "scarf": "Écharpe", "headphones": "Casque", "t-shirt": "T-shirt", "blouse": "Blouse",  "belt": "Ceinture", "tights": "Collant", "skirt": "Jupe", "shorts": "Short", "pyjama trousers": "Pyjama", "pyjama top": "Pyjama", "headband": "Bandeau"}
+             "slip dress": "Nuisette", "gown": "Robe", "dress": "Robe", "coat": "Manteau", "jacket": "Veste", "blazer": "Blazer", "cardigan": "Gilet", "knit jacket": "Gilet", "sweater": "Pull", "jeans": "Jean", "trousers": "Pantalon", "shirt": "Chemise", "bag": "Sac", "suitcase": "Valise", "sneakers": "Baskets", "loafers": "Mocassins", "sunglasses": "Lunettes", "cap": "Casquette", "hat": "Chapeau", "beret": "Béret", "gloves": "Gants", "mittens": "Moufles", "scarf": "Écharpe", "headphones": "Casque", "t-shirt": "T-shirt", "blouse": "Blouse",  "belt": "Ceinture", "tights": "Collant", "skirt": "Jupe", "shorts": "Short", "pyjama trousers": "Pyjama", "pyjama top": "Pyjama", "headband": "Bandeau"}
 
 AFF_ATTRS = 'rel="sponsored nofollow noopener" target="_blank"'
 DEFAULT_REGION = "eu"   # where a click on the photo or name goes: "eu" (EU/UK programme) or "us"
@@ -471,6 +489,33 @@ def tag(url, label):
     if url and "linksynergy.com" in url and "u1=" not in url:
         return f"{url}&u1={label[:72]}"
     return url
+
+def list_board(e, place="art"):
+    """A numbered list where each item carries its own piece: number, the advice, then the product.
+    Items without a product show the advice only. Used for articles built as a list (the capsule)."""
+    byp = {pr["url_eu"].rsplit("-", 1)[-1].lower(): pr for pr in e["products"]}
+    rows = []
+    for it in e["items"]:
+        pr = byp.get(it.get("p", "").lower())
+        shop = ""
+        if pr:
+            alt = html_lib.escape(f'{pr["brand"]} {pr["name"]}', quote=True)
+            label = f"{place}-{board_key(e)}"
+            urls = {"eu": tag(pr.get("url_eu"), label), "us": tag(pr.get("url_us"), label)}
+            main = urls.get(DEFAULT_REGION) or urls["eu"] or urls["us"]
+            regions = []
+            if urls["eu"]: regions.append(f'<a href="{urls["eu"]}" {AFF_ATTRS} aria-label="Discover {alt} in Europe and the UK">EU / UK</a>')
+            if urls["us"]: regions.append(f'<a href="{urls["us"]}" {AFF_ATTRS} aria-label="Discover {alt} in the US">US</a>')
+            img = f'<a class="cap-img" href="{main}" {AFF_ATTRS} tabindex="-1" aria-hidden="true"><img src="{pr["image"]}" alt="{alt}" loading="lazy"></a>'
+            shop = (f'<div class="cap-shop"><span class="label">{pr["brand"]}</span><a class="piece-name" href="{main}" {AFF_ATTRS}>{pr["name"]}</a>'
+                    f'<span class="piece-regions">Discover &mdash; {" &middot; ".join(regions)}</span></div>')
+        else:
+            img = f'<span class="cap-img empty" aria-hidden="true"><span class="word">{TYPE_WORD.get(it.get("type", ""), "")}</span></span>'
+        rows.append(f'<li class="cap-row{"" if pr else " no-piece"}">{img}<div class="cap-text"><span class="cap-num">{it["n"]:02d}</span>'
+                    f'<h3>{it["head"]}</h3><p>{it["text"]}</p>{shop}</div></li>')
+    return f'''<section class="board cap" id="{edit_id(e)}" aria-label="{html_lib.escape(e["title"], quote=True)}">
+<div class="wrap cap-in"><p class="label cap-label">The Edit &middot; Mytheresa &middot; affiliate links</p>
+<ol class="cap-list">{"".join(rows)}</ol></div></section>'''
 
 def edit_board(e, story_href="", place="art"):
     """One themed board, full width between the article's paragraphs: text on the left,
@@ -570,7 +615,7 @@ def body_with_edits(body, edits):
         for k, (start, text) in enumerate(heads):
             if text.lower() == e.get("after", "").lower():
                 pos = heads[k + 1][0] if k + 1 < len(heads) else len(body)
-        cuts.setdefault(pos, []).append(edit_board(e))
+        cuts.setdefault(pos, []).append(list_board(e) if e.get("items") else edit_board(e))
     out, last = [], 0
     for pos in sorted(cuts):
         chunk = body[last:pos].strip()
