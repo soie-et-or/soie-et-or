@@ -142,6 +142,22 @@ img{max-width:100%;display:block}
 .meta{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin:0}
 .crumb{text-decoration:none}
 .gold-rule{width:56px;height:1px;background:var(--gold);border:0;margin:0}
+/* hero slides: N photos + texts cross-fade on one clock (--n slides, 6s each); still first slide for reduced motion */
+.hero .h1{font:400 clamp(38px,4.6vw,62px)/1.04 var(--display);color:var(--ink);margin:0;text-wrap:balance}
+.hero .h1 i,.hero h1 i{display:block}
+.slides{position:relative;overflow:hidden}
+.slides img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.copy.stack{display:grid;align-items:center}
+.copy.stack>.slide{grid-area:1/1;display:flex;flex-direction:column;justify-content:center;gap:22px;min-width:0}
+@media (max-width:820px){.copy.stack>.slide{gap:16px}}
+.copy.stack .btns{grid-template-columns:15rem}@media (min-width:1100px){.copy.stack .btns{grid-template-columns:repeat(2,15rem)}}@media (max-width:820px){.copy.stack{align-items:stretch}.copy.stack>.slide{justify-content:flex-start}.copy.stack .btns{margin-top:auto}}
+.slides img+img,.copy.stack>.slide+.slide{opacity:0;visibility:hidden}
+@media (prefers-reduced-motion:no-preference){
+.slides img,.copy.stack>.slide{animation:slide calc(var(--n)*6s) linear infinite;animation-delay:calc((var(--i)*6s) - var(--n)*6s)}
+.slides img{animation-name:slideimg}
+.hero:hover .slides img,.hero:hover .slide,.hero:focus-within .slides img,.hero:focus-within .slide{animation-play-state:paused}}
+@keyframes slide{0%{opacity:1;visibility:visible}21%{opacity:1;visibility:visible}25%{opacity:0;visibility:hidden}96%{opacity:0;visibility:hidden}100%{opacity:1;visibility:visible}}
+@keyframes slideimg{0%{opacity:1;visibility:visible;transform:scale(1.02)}21%{opacity:1;visibility:visible}25%{opacity:0;visibility:hidden;transform:scale(1.09)}96%{opacity:0;visibility:hidden;transform:scale(1.02)}100%{opacity:1;visibility:visible;transform:scale(1.02)}}
 .hero-tile{aspect-ratio:16/7;max-width:100%;margin-bottom:44px}
 .tile.photo{padding:0}
 .tile.photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
@@ -616,8 +632,23 @@ def build():
         home_edit = (f'''<section class="wrap home-edit"><div class="sec-head"><h2>The Edit</h2><a href="the-edit.html">See the edit</a></div>
 <nav class="theme-chips" aria-label="Shop by theme">{chips}</nav><p class="disclose" style="text-align:left;margin:0">{DISCLOSURE_SHORT}</p></section>'''
                      + marquee(edit_strip([e for _, e in all_edits], heading="Browse by theme", base="the-edit.html", narrow=False, place="home", subs=subs)).replace('class="wrap edit-strip"', 'class="wrap edit-strip home-strip"'))
-    home = f"""<p class="promise">Parisian styling advice, one look at a time.</p>
-<section class="hero">
+    slides = SITE.get("hero_slides") or []
+    if slides:
+        n = len(slides)
+        imgs = "".join(f'<img src="assets/img/{sl["img"]}" alt="{sl["alt"] if i == 0 else ""}"{" aria-hidden=\"true\"" if i else ""} '
+                       f'{"" if i == 0 else "loading=\"lazy\" "}style="object-position:{sl.get("pos","center")};--i:{i}">' for i, sl in enumerate(slides))
+        texts = ""
+        for i, sl in enumerate(slides):
+            tag = "h1" if i == 0 else "p"
+            cls = "" if i == 0 else ' class="h1"'
+            texts += (f'<div class="slide" style="--i:{i}"{" aria-hidden=\"true\"" if i else ""}><span class="kicker">{sl["kicker"]}</span>'
+                      f'<{tag}{cls}>{sl["title"]} <i>{sl["italic"]}</i></{tag}><p>{sl["dek"]}</p>'
+                      f'<div class="btns"><a class="btn" href="{sl["href"]}"{" tabindex=\"-1\"" if i else ""}>{sl["cta"]}</a>'
+                      f'<a class="btn btn-solid" href="the-edit.html"{" tabindex=\"-1\"" if i else ""}>Shop the edits</a></div></div>')
+        hero_html = (f'<section class="hero" style="--n:{n}"><div class="tile photo slides">{imgs}</div>'
+                     f'<div class="copy stack">{texts}</div></section>')
+    else:
+        hero_html = f"""<section class="hero">
 {tile('Soie', img=SITE.get('hero_image'))}
 <div class="copy">
 <span class="kicker">{SITE.get('lead_kicker', 'The edit &middot; ' + lead['category'])}</span>
@@ -625,7 +656,9 @@ def build():
 <p>{lead['dek']}</p>
 <div class="btns"><a class="btn" href="journal/{lead['slug']}.html">{SITE.get('lead_cta', 'Read the article')}</a><a class="btn btn-solid" href="the-edit.html">Shop the edits</a></div>
 </div>
-</section>
+</section>"""
+    home = f"""<p class="promise">Parisian styling advice, one look at a time.</p>
+{hero_html}
 {home_edit}
 <ol class="rules"><li class="rules-title"><span class="rule">Five rules<i>for 2026</i></span><a href="journal/index.html">All articles</a></li><li><a href="journal/everyday-gold-jewelry.html"><span class="label">Fine jewelry</span><span class="rule">One good piece,<i>worn every day</i></span></a></li><li><a href="journal/what-is-quiet-luxury.html"><span class="label">Quiet luxury</span><span class="rule">Fabric over logos,<i>colour when chosen</i></span></a></li><li><a href="journal/three-boots-parisian-wardrobe.html"><span class="label">Boots</span><span class="rule">Three pairs<i>for every winter day</i></span></a></li><li><a href="journal/french-lingerie-guide.html"><span class="label">Lingerie</span><span class="rule">Silk underneath,<i>lace that lies flat</i></span></a></li><li><a href="journal/the-case-for-a-small-watch.html"><span class="label">Watches</span><span class="rule">A small watch<i>says enough</i></span></a></li></ol>
 <section class="row" aria-label="Latest articles">{row}</section>
