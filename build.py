@@ -781,7 +781,7 @@ def build():
                  ("dresses", "Dresses", {"dress", "gown", "slip dress"}),
                  ("skirts", "Skirts", {"skirt"}),
                  ("trousers", "Trousers & jeans", {"trousers", "jeans"}),
-                 ("lingerie", "Lingerie", {"shorts", "camisole", "bra", "bralette", "bodysuit", "corset", "pyjama trousers", "pyjama top"}),
+                 ("lingerie", "Lace tops & lingerie", {"shorts", "camisole", "bra", "bralette", "bodysuit", "corset", "pyjama trousers", "pyjama top"}),
                  ("boots", "Boots & shoes", {"boot", "sneakers", "loafers", "pumps", "shoes"}),
                  ("bags", "Bags & cases", {"bag", "suitcase"}),
                  ("jewelry", "Jewelry", {"necklace", "ring", "bracelet", "earrings"}),
@@ -797,6 +797,8 @@ def build():
             cat = next((c for c, _, ts in PICK_CATS if pr.get("type") in ts), "extras")
             if pr.get("type") == "coat" and "leather" in pr["name"].lower():
                 cat = "jackets"   # leather coats sit with the jackets
+            if pr.get("type") == "top" and "lace" in pr["name"].lower():
+                cat = "lingerie"  # lace tops sit with the lingerie
             seen[k] = {"pr": pr, "a": a, "e": e, "cat": cat, "n": 1}
             picks.append(seen[k])
     order = {c: i for i, (c, _, _) in enumerate(PICK_CATS)}
