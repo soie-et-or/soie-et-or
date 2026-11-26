@@ -650,7 +650,7 @@ def body_with_edits(body, edits):
 def card(a, depth):
     p = rel(depth)
     return f"""<a class="card" href="{p}journal/{a['slug']}.html">
-{tile(a['category'], img=card_img(a), depth=depth)}
+{tile(a.get('tile_word', a['category']), img=card_img(a), depth=depth)}
 <span class="label">{a['category']} &middot; {a['read']}</span>
 <h3>{a['title']}</h3><p>{a['dek']}</p></a>"""
 
