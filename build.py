@@ -744,10 +744,11 @@ def build():
         cards = "\n".join(card(a, 0) for a in items)
         g_edits = [e for a in items for e in (a.get("edits") or [])]
         heading = f"From the edit &middot; {g['title'].lower()}"
-        peek = (edit_strip(g_edits, heading=heading, base="the-edit.html", narrow=False, place="cat")
+        strip = edit_strip(g_edits, heading=heading, base="the-edit.html", narrow=False, place="cat")
+        peek = ((marquee(strip) if len(g_edits) >= 5 else strip)   # glide only when the row is long enough to loop
                 .replace('class="wrap edit-strip"', 'class="wrap edit-strip home-strip"')
                 .replace(f'<span class="label">{heading}</span>', f'<div class="strip-head"><span class="label">{heading}</span><a href="our-picks.html">Shop by piece &rarr;</a></div>', 1)
-                + f'<p class="disclose wrap" style="text-align:left;max-width:none;margin:-14px auto 28px">{DISCLOSURE_SHORT}</p>') if g_edits else ""
+                + f'<div class="wrap"><p class="disclose" style="text-align:left;max-width:none;margin:-14px 0 28px">{DISCLOSURE_SHORT}</p></div>') if g_edits else ""
         b = head_block("Section", g["title"], g["dek"]) + peek + f'<section class="wrap sec" style="padding-top:0"><div class="grid">{cards}</div></section>'
         write(f"{key}.html", shell(f"{g.get('seo_title', g['title'])} · {SITE['name']}", g.get("seo_desc", g["dek"]), b, 0, key, f"{key}.html"))
 
