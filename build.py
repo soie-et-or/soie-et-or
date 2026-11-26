@@ -775,7 +775,9 @@ def build():
     # Our picks: every piece once, filtered by kind (CSS only: radio buttons + :checked), each linking back to its look.
     PICK_CATS = [("coats", "Coats", {"coat"}),
                  ("jackets", "Jackets & blazers", {"jacket", "blazer"}),
-                 ("tops", "Knits & shirts", {"sweater", "knit", "cardigan", "knit jacket", "shirt", "blouse", "top", "t-shirt"}),
+                 ("knits", "Knitwear", {"sweater", "knit", "cardigan", "knit jacket"}),
+                 ("shirts", "Shirts", {"shirt", "blouse"}),
+                 ("tops", "Tops", {"top", "t-shirt"}),
                  ("bottoms", "Skirts & trousers", {"skirt", "trousers", "jeans", "dress", "shorts", "gown"}),
                  ("lingerie", "Lingerie", {"camisole", "bra", "bralette", "bodysuit", "corset", "slip dress", "pyjama trousers", "pyjama top"}),
                  ("boots", "Boots & shoes", {"boot", "sneakers", "loafers", "pumps", "shoes"}),
