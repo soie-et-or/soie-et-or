@@ -820,6 +820,9 @@ def build():
             nm = pr["name"].lower()
             sub = (" s-western" if any(w in nm for w in ("cowboy", "western", "biker")) else
                    " s-knee" if "knee" in nm else " s-ankle" if ("ankle" in nm or "chelsea" in nm) else "")
+        elif p["cat"] == "extras":
+            sub = {"sunglasses": " s-sunglasses", "cap": " s-hats", "beret": " s-hats", "hat": " s-hats", "headband": " s-hats",
+                   "gloves": " s-gloves", "mittens": " s-gloves", "scarf": " s-scarves", "tights": " s-tights", "belt": " s-belts"}.get(pr.get("type"), "")
         elif p["cat"] == "jewelry":
             sub = {"necklace": " s-necklaces", "ring": " s-rings", "bracelet": " s-bracelets", "earrings": " s-earrings"}.get(pr.get("type"), "")
         cards.append(f'''<div class="piece pick c-{p["cat"]}{sub}" role="listitem">
@@ -835,7 +838,8 @@ def build():
     chips = '<label for="pf-all">All</label>' + "".join(f'<label for="pf-{c}">{lab}</label>' for c, lab, _ in present)
     rules = "".join(f'#pf-{c}:checked~.pick-grid .pick:not(.c-{c}){{display:none}}#pf-{c}:checked~.pick-chips label[for=pf-{c}]{{background:var(--ink);color:var(--white)}}' for c, _, _ in present)
     SUBS = {"boots": ("All boots", [("ankle", "Ankle boots"), ("knee", "Knee-high boots"), ("western", "Western & biker")]),
-            "jewelry": ("All jewelry", [("necklaces", "Necklaces"), ("rings", "Rings"), ("bracelets", "Bracelets"), ("earrings", "Earrings")])}
+            "jewelry": ("All jewelry", [("necklaces", "Necklaces"), ("rings", "Rings"), ("bracelets", "Bracelets"), ("earrings", "Earrings")]),
+            "extras": ("All accessories", [("sunglasses", "Sunglasses"), ("hats", "Hats & caps"), ("gloves", "Gloves"), ("scarves", "Scarves"), ("tights", "Tights"), ("belts", "Belts")])}
     subchips = ""
     rules += ".sub-chips{display:none!important}"
     for c, (all_lab, opts) in SUBS.items():
