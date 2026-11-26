@@ -239,6 +239,7 @@ html{scroll-behavior:smooth}
 .pick-chips{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 30px}
 @media (max-width:640px){.pick-chips{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;margin-inline:-16px;padding-inline:16px;padding-bottom:2px}.pick-chips::-webkit-scrollbar{display:none}.pick-chips label{flex:0 0 auto;white-space:nowrap}}
 .sec-links{display:flex;gap:22px}
+.strip-head{display:flex;justify-content:space-between;align-items:baseline;gap:16px}.strip-head a{margin-left:auto;font:500 11px/1 var(--body);letter-spacing:.2em;text-transform:uppercase;color:var(--ink);text-underline-offset:4px;white-space:nowrap}
 .view-tabs{display:flex;justify-content:center;gap:28px;margin:-6px auto 30px}
 .view-tabs a{font:500 11px/1 var(--body);letter-spacing:.22em;text-transform:uppercase;color:var(--muted);text-decoration:none;padding:8px 2px;border-bottom:1px solid transparent}
 .view-tabs a:hover{color:var(--ink)}.view-tabs a[aria-current]{color:var(--ink);border-bottom-color:var(--gold)}
@@ -422,7 +423,7 @@ def shell(title, desc, body, depth, current="", canonical="", image=None, articl
 </main>
 <footer><div class="wrap">
 <div class="foot-row"><a class="logo" href="{p}index.html">SOIE ET OR</a>
-<nav class="nav" aria-label="Footer"><a href="{p}the-edit.html">The Edit</a><a href="{p}our-picks.html">Our picks</a><a href="{p}journal/index.html">Journal</a><a href="{p}about.html">About</a><a href="{p}affiliate-disclosure.html">Affiliate disclosure</a><a href="{p}privacy.html">Privacy</a><a href="{p}terms.html">Terms</a><a href="{p}contact.html">Contact</a><a href="{SITE['pinterest']}" rel="noopener">Pinterest</a></nav></div>
+<nav class="nav" aria-label="Footer"><a href="{p}the-edit.html">The Edit</a><a href="{p}our-picks.html">Our picks by item</a><a href="{p}journal/index.html">Journal</a><a href="{p}about.html">About</a><a href="{p}affiliate-disclosure.html">Affiliate disclosure</a><a href="{p}privacy.html">Privacy</a><a href="{p}terms.html">Terms</a><a href="{p}contact.html">Contact</a><a href="{SITE['pinterest']}" rel="noopener">Pinterest</a></nav></div>
 <hr class="gold-rule">
 <p class="foot-note">Soie et Or is an independent editorial site. Some links are affiliate links: we may earn a commission when you buy, at no extra cost to you. Brand names belong to their owners; we are not affiliated with or endorsed by the brands we write about.</p>
 <p class="foot-note">&copy; 2026 Soie et Or &middot; {SITE['domain']}</p>
@@ -742,9 +743,11 @@ def build():
         items = [a for a in ARTICLES if group_of(a) == key or a["category"] in g.get("also", [])]
         cards = "\n".join(card(a, 0) for a in items)
         g_edits = [e for a in items for e in (a.get("edits") or [])]
-        peek = (edit_strip(g_edits, heading=f"From the edit &middot; {g['title'].lower()}", base="the-edit.html", narrow=False, place="cat")
+        heading = f"From the edit &middot; {g['title'].lower()}"
+        peek = (edit_strip(g_edits, heading=heading, base="the-edit.html", narrow=False, place="cat")
                 .replace('class="wrap edit-strip"', 'class="wrap edit-strip home-strip"')
-                + f'<p class="disclose wrap" style="text-align:left;max-width:none;margin:-14px auto 28px">{DISCLOSURE_SHORT} &middot; <a href="our-picks.html">Browse every piece by kind &rarr;</a></p>') if g_edits else ""
+                .replace(f'<span class="label">{heading}</span>', f'<div class="strip-head"><span class="label">{heading}</span><a href="our-picks.html">Shop by piece &rarr;</a></div>', 1)
+                + f'<p class="disclose wrap" style="text-align:left;max-width:none;margin:-14px auto 28px">{DISCLOSURE_SHORT}</p>') if g_edits else ""
         b = head_block("Section", g["title"], g["dek"]) + peek + f'<section class="wrap sec" style="padding-top:0"><div class="grid">{cards}</div></section>'
         write(f"{key}.html", shell(f"{g.get('seo_title', g['title'])} · {SITE['name']}", g.get("seo_desc", g["dek"]), b, 0, key, f"{key}.html"))
 
