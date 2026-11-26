@@ -212,7 +212,9 @@ ARTICLES = [
  },
  {
   "slug": "cost-per-wear",
+  "seo_title": "Cost Per Wear: How to Choose Investment Pieces Worth Buying",
   "title": "Cost Per Wear: How to Think About Investment Pieces",
+  "updated": "26 November 2026",
   "dek": "A simple calculation that changes how you shop, and why the expensive coat can be the economical choice.",
   "category": "Wardrobe",
   "date": "20 October 2026",
@@ -224,19 +226,21 @@ ARTICLES = [
   "body": """
 <p>Cost per wear is the price of a piece divided by the number of times you wear it. It is a simple idea, and it is the clearest way to judge whether a luxury purchase is indulgent or sensible.</p>
 <h2>An example</h2>
-<p>A coat that costs 900 euros and is worn 60 days a year for five years has been worn 300 times. That is 3 euros per wear. A trend coat that costs 150 euros and is worn ten times before it feels dated costs 15 euros per wear. The cheaper coat was five times more expensive.</p>
+<p>A coat that costs 900 euros and is worn 60 days a year for five years has been worn 300 times. That is 3 euros per wear. A coat like the one in <a href="/journal/parisian-autumn-capsule.html">our winter capsule</a> is exactly this kind of piece. A trend coat that costs 150 euros and is worn ten times before it feels dated costs 15 euros per wear. The cheaper coat was five times more expensive.</p>
 <h2>What makes a good investment piece</h2>
 <ul>
 <li><strong>You will wear it often.</strong> Be honest about your real life, not the life in the picture.</li>
-<li><strong>It works with what you own.</strong> If it needs new shoes and a new bag, add those to the price.</li>
+<li><strong>It works with what you own.</strong> If it needs new shoes and a new bag, add those to the price. A <a href="/journal/parisian-autumn-capsule.html">ten-piece capsule</a> makes this easy to check.</li>
 <li><strong>It is built to last.</strong> Look at seams, lining, buttons and fabric weight.</li>
-<li><strong>It will not date quickly.</strong> Classic shapes in classic colours.</li>
+<li><strong>It will not date quickly.</strong> Classic shapes in classic colours. This is the idea behind <a href="/journal/what-is-quiet-luxury.html">quiet luxury</a>, too.</li>
 </ul>
 <h2>Jewelry and watches</h2>
-<p>Fine jewelry and watches can be the ultimate cost-per-wear pieces. A ring worn every day for twenty years becomes almost free per wear, and good pieces can often be resold. Buying <a href="/journal/pre-owned-cartier-watch-guide.html">pre-owned</a> lowers the entry price further.</p>
+<p>Fine jewelry and watches can be the ultimate cost-per-wear pieces. A ring worn every day for twenty years becomes almost free per wear, and good pieces can often be resold. Our guides to <a href="/journal/everyday-gold-jewelry.html">everyday gold</a>, <a href="/journal/buying-gold-jewelry-high-prices.html">buying gold when it is expensive</a> and <a href="/journal/the-case-for-a-small-watch.html">the small watch</a> go further. Buying <a href="/journal/pre-owned-cartier-watch-guide.html">pre-owned</a> lowers the entry price further.</p>
 <h2>When not to use it</h2>
 <p>Cost per wear is a tool, not a rule. Some pieces are worth it for one perfect evening. The idea is not to stop enjoying fashion, but to spend with intention.</p>
-"""
+<p>Next: <a href="/journal/three-boots-parisian-wardrobe.html">the three boots every Parisian wardrobe needs</a>, the clearest cost-per-wear case on your feet.</p>
+""",
+  "edits": [{'title': 'The Lowest Cost Per Wear', 'after': 'What makes a good investment piece', 'intro': 'Five pieces you will wear hundreds of times: the coat, the boots, the bag, the ring and the watch.', 'products': [{'type': 'coat', 'brand': 'Max Mara', 'name': 'Scarf-detail camel hair and mohair coat', 'image': 'https://img.mytheresa.com/1000/1000/95/jpeg/catalog/product/04/P01217134.jpg', 'url_eu': 'https://click.linksynergy.com/deeplink?id=QBaUG223uTk&mid=35663&murl=https%3A%2F%2Fwww.mytheresa.com%2Feuro%2Fen%2Fwomen%2Fmax-mara-scarf-detail-camel-hair-and-mohair-coat-beige-p01217134', 'url_us': 'https://click.linksynergy.com/deeplink?id=QBaUG223uTk&mid=43172&murl=https%3A%2F%2Fwww.mytheresa.com%2Fus%2Fen%2Fwomen%2Fmax-mara-scarf-detail-camel-hair-and-mohair-coat-beige-p01217134', 'why': 'Worn most days from October to March: the clearest cost-per-wear case there is.'}, {'type': 'boot', 'brand': 'The Row', 'name': 'Leather Chelsea boots', 'image': 'https://img.mytheresa.com/1000/1000/95/jpeg/catalog/product/5f/P01100967.jpg', 'url_eu': 'https://click.linksynergy.com/deeplink?id=QBaUG223uTk&mid=35663&murl=https%3A%2F%2Fwww.mytheresa.com%2Feuro%2Fen%2Fwomen%2Fthe-row-leather-chelsea-boots-black-p01100967', 'url_us': 'https://click.linksynergy.com/deeplink?id=QBaUG223uTk&mid=43172&murl=https%3A%2F%2Fwww.mytheresa.com%2Fus%2Fen%2Fwomen%2Fthe-row-leather-chelsea-boots-black-p01100967', 'why': 'Plain black leather that goes with almost everything you own.'}, {'type': 'bag', 'brand': 'The Row', 'name': 'Marcel leather top-handle bag', 'image': 'https://img.mytheresa.com/1000/1000/95/jpeg/catalog/product/cc/P01247467.jpg', 'url_eu': 'https://click.linksynergy.com/deeplink?id=QBaUG223uTk&mid=35663&murl=https%3A%2F%2Fwww.mytheresa.com%2Feuro%2Fen%2Fwomen%2Fthe-row-marcel-leather-top-handle-bag-black-p01247467', 'url_us': 'https://click.linksynergy.com/deeplink?id=QBaUG223uTk&mid=43172&murl=https%3A%2F%2Fwww.mytheresa.com%2Fus%2Fen%2Fwomen%2Fthe-row-marcel-leather-top-handle-bag-black-p01247467', 'why': 'Black, structured and without a logo, so it will not date.'}, {'type': 'ring', 'brand': 'Bvlgari', 'name': 'B.zero1 18kt gold ring', 'image': 'https://img.mytheresa.com/1000/1000/95/jpeg/catalog/product/22/P01030239.jpg', 'url_eu': 'https://click.linksynergy.com/deeplink?id=QBaUG223uTk&mid=35663&murl=https%3A%2F%2Fwww.mytheresa.com%2Feuro%2Fen%2Fwomen%2Fbvlgari-b-zero1-18kt-gold-ring-gold-p01030239', 'url_us': 'https://click.linksynergy.com/deeplink?id=QBaUG223uTk&mid=43172&murl=https%3A%2F%2Fwww.mytheresa.com%2Fus%2Fen%2Fwomen%2Fbvlgari-b-zero1-18kt-gold-ring-gold-p01030239', 'why': 'A ring you never take off becomes almost free per wear.'}, {'type': 'watch', 'brand': 'Bvlgari', 'name': 'Serpenti Tubogas 35mm watch', 'image': 'https://img.mytheresa.com/1000/1000/95/jpeg/catalog/product/28/P01213741.jpg', 'url_eu': 'https://click.linksynergy.com/deeplink?id=QBaUG223uTk&mid=35663&murl=https%3A%2F%2Fwww.mytheresa.com%2Feuro%2Fen%2Fwomen%2Fbvlgari-serpenti-tubogas-35mm-stainless-steel-watch-silver-p01213741', 'url_us': 'https://click.linksynergy.com/deeplink?id=QBaUG223uTk&mid=43172&murl=https%3A%2F%2Fwww.mytheresa.com%2Fus%2Fen%2Fwomen%2Fbvlgari-serpenti-tubogas-35mm-stainless-steel-watch-silver-p01213741', 'why': 'Steel for every day, in a shape that has been around for decades.'}]}]
  },
  {
   "slug": "what-to-pack-for-paris",
