@@ -374,6 +374,16 @@ def social_meta(title, desc, canonical, image=None, article=None):
               "url": SITE["url"] + "/", "description": SITE["tagline"]}
     else:
         ld = None
+    crumbs = None
+    if article:
+        g = group_of(article)
+        crumbs = [("Home", ""), (GROUPS[g]["title"], f"{g}.html"), (article["title"], canonical)]
+    elif canonical.removesuffix(".html") in GROUPS:
+        crumbs = [("Home", ""), (GROUPS[canonical.removesuffix(".html")]["title"], canonical)]
+    if crumbs:
+        bl = {"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [
+              {"@type": "ListItem", "position": i + 1, "name": n, "item": f"{SITE['url']}/{u}"} for i, (n, u) in enumerate(crumbs)]}
+        tags.append('<script type="application/ld+json">' + json.dumps(bl, ensure_ascii=False).replace("</", "<\\/") + "</script>")
     if ld:
         tags.append('<script type="application/ld+json">' + json.dumps(ld, ensure_ascii=False).replace("</", "<\\/") + "</script>")
     return "\n".join(tags)
@@ -396,6 +406,7 @@ def shell(title, desc, body, depth, current="", canonical="", image=None, articl
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="max-image-preview:large">
 <title>{html_lib.escape(title, quote=False)}</title>
 <link rel="icon" href="/favicon.ico" sizes="any">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
@@ -433,12 +444,31 @@ def shell(title, desc, body, depth, current="", canonical="", image=None, articl
 """
     return fix_links(html, depth)
 
+WEBP_SIZES = (900, 1600)   # made by tools/make_webp.py and committed in images/ (the build itself needs no image library)
+
+def srcset(file, depth, sizes):
+    """srcset/sizes attributes for a photo in assets/img, using the WebP copies made by make_webp."""
+    folder = os.path.join(OUT, "assets", "img"); base = os.path.splitext(file)[0]
+    if not os.path.exists(os.path.join(folder, base + ".webp")):
+        return ""
+    size = jpeg_size(os.path.join(folder, file))
+    if not size:
+        return ""
+    full = size[0]
+    p = f"{rel(depth)}assets/img/"
+    items = [f"{p}{base}-{w}.webp {w}w" for w in WEBP_SIZES if os.path.exists(os.path.join(folder, f"{base}-{w}.webp"))]
+    items.append(f"{p}{base}.webp {full}w")
+    return f' srcset="{", ".join(items)}" sizes="{sizes}"'
+
 def tile(word, cls="", img=None, depth=0):
     """A photo when one is set ({file, alt, pos}), otherwise the silk tile with an italic word."""
     if img:
         pos = img.get("pos", "center")
-        return (f'<div class="tile photo {cls}"><img src="{rel(depth)}assets/img/{img["file"]}" alt="{img["alt"]}" '
-                f'loading="lazy" style="object-position:{pos}"></div>')
+        hero = "hero-tile" in cls
+        sizes = "(max-width:1300px) 100vw, 1280px" if hero else "(max-width:760px) 100vw, (max-width:1100px) 50vw, 33vw"
+        load = 'fetchpriority="high"' if hero else 'loading="lazy"'
+        return (f'<div class="tile photo {cls}"><img src="{rel(depth)}assets/img/{img["file"]}"{srcset(img["file"], depth, sizes)} alt="{img["alt"]}" '
+                f'{load} style="object-position:{pos}"></div>')
     return f'<div class="tile {cls}" aria-hidden="true"><span class="rule"></span><span class="word">{word}</span></div>'
 
 def card_img(a):
@@ -699,7 +729,7 @@ def build():
     slides = SITE.get("hero_slides") or []
     if slides:
         n = len(slides)
-        imgs = "".join(f'<img src="assets/img/{sl["img"]}" alt="{sl["alt"] if i == 0 else ""}"{" aria-hidden=\"true\"" if i else ""} '
+        imgs = "".join(f'<img src="assets/img/{sl["img"]}"{srcset(sl["img"], 0, "(max-width:820px) 100vw, 50vw")} alt="{sl["alt"] if i == 0 else ""}"{" aria-hidden=\"true\"" if i else ""} '
                        f'{"" if i == 0 else "loading=\"lazy\" "}style="object-position:{sl.get("pos","center")};--i:{i}">' for i, sl in enumerate(slides))
         texts = ""
         for i, sl in enumerate(slides):
